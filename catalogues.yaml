@@ -1,7 +1,213 @@
-# One entry per catalogue to query. Empty until the first catalogues are chosen.
+# Catalogues to query, one entry per catalogue endpoint.
 #
-# - id: example-node-services        # stable identifier, used in file names
-#   node: example-node               # node id, as in eosc-basic-compliance's nodes.yaml
-#   type: service-catalogue          # or research-product-catalogue
-#   endpoint: https://catalogue.example.org/api/services
-catalogues: []
+# Fields
+#   id        stable identifier, used in evidence file names
+#   node      node id, as in eosc-basic-compliance's nodes.yaml
+#   name      catalogue name as the node or the EOSC EU Node lists it
+#   type      service-catalogue | research-product-catalogue
+#   protocol  een-services-api (GET /services, Service Bundle records)
+#             | oai-pmh (research products, harvested via OpenAIRE)
+#   endpoint  the URL to query; for oai-pmh the base URL, without ?verb=
+#   website   human-facing catalogue site, where listed
+#   listed    what the source sheet says about it, quoted, not verified here:
+#             compliance = its "Compliance to guidelines" column,
+#             status = its "Status" column ("" when the row leaves it empty)
+#   source    which sheet the endpoint comes from
+#   note      anything a reader needs to know before trusting the entry
+#
+# Sources, both shared in October 2026 and not live censuses:
+#   enrolment  = "Catalogues for enrolment to the EOSC EU Node (EEN)",
+#                tab "Catalogues status" (rows up to 5 October 2026)
+#   production = production_env_node_services.xlsx, tabs "Services" and
+#                "Research product catalogues"
+#
+# Every endpoint below answered one request on 23 October 2026 (HTTP 200,
+# JSON for the service APIs, OAI-PMH XML for Identify) unless the note says
+# otherwise. That shows the endpoint is up, nothing about compliance.
+
+catalogues:
+
+  # ---------------------------------------------------------------- services
+  - id: bbmri-eric-services
+    node: bbmri-eric
+    name: EOSC Node BBMRI-ERIC Service Catalogue
+    type: service-catalogue
+    protocol: een-services-api
+    endpoint: https://eosc-catalogue.bbmri-eric.eu/services
+    website: https://eosc-catalogue.bbmri-eric.eu
+    listed: {compliance: Compliant for enrolment, status: READY FOR PROD}
+    source: enrolment, production
+    note: >-
+      The enrolment row writes the host as "eosc-catalogue.EOSC Node
+      BBMRI-ERIC.eu" (a find-and-replace slip); the production sheet has the
+      real host, used here.
+
+  - id: eosc-fi-services
+    node: eosc-fi
+    name: EOSC-FI Service Catalogue
+    type: service-catalogue
+    protocol: een-services-api
+    endpoint: https://data.eosc.fi/v1/services
+    website: https://eosc.fi
+    listed: {compliance: Not compliant, status: ""}
+    source: enrolment
+    note: >-
+      An earlier row for the same catalogue is REJECTED ("adopts new service
+      classification vocabulary"); the row with this endpoint (9 March 2026)
+      has no status.
+
+  - id: eosc-dto-services
+    node: eosc-dto
+    name: European DTO Service Catalogue
+    type: service-catalogue
+    protocol: een-services-api
+    endpoint: https://gcat.d4science.org/gcat/ext/eosc/EOSC-Node-DTO/services
+    website: https://eosc-dto.d4science.org/service-catalogue-organization/eoscnodedto-catalogue
+    listed: {compliance: Not compliant, status: ""}
+    source: enrolment
+    note: >-
+      DTO's other service catalogue, Blue-Cloud (READY FOR PROD), lists no API
+      endpoint and is not included yet.
+
+  - id: eosc-sk-services
+    node: eosc-sk
+    name: EOSC Slovakia - Service Catalogue
+    type: service-catalogue
+    protocol: een-services-api
+    endpoint: https://sc.eosc.sk/api/v1/services
+    website: https://sc.eosc.sk/
+    listed: {compliance: Compliant for enrolment, status: READY FOR PROD}
+    source: enrolment
+    note: >-
+      The sheet gives the API root, https://sc.eosc.sk/api/v1, which describes
+      its endpoints; /services is the listing. Its envelope adds node,
+      quantity, order, sort and version to total/from/to, unlike the others.
+
+  - id: data-terra-services
+    node: data-terra
+    name: Data Terra EOSC Node Service Catalogue
+    type: service-catalogue
+    protocol: een-services-api
+    endpoint: https://services.earth-data.eu/services
+    website: https://earth-data.eu/
+    listed: {compliance: Compliant for enrolment, status: ""}
+    source: enrolment
+    note: Listed as adopting the new service classification vocabulary.
+
+  - id: eudat-services
+    node: eudat
+    name: EUDAT Node Service Catalogue
+    type: service-catalogue
+    protocol: een-services-api
+    endpoint: https://portal.eudat.eu/api/services
+    website: https://portal.eudat.eu/catalog
+    listed: {compliance: Not sure, status: ""}
+    source: enrolment
+    note: The enrolment row says "under validation".
+
+  - id: geant-services
+    node: geant
+    name: GEANT Service Catalogue
+    type: service-catalogue
+    protocol: een-services-api
+    endpoint: https://geant-node-catalogue.geant.org/services
+    website: https://geant-node-catalogue.geant.org
+    listed: {compliance: Not sure, status: ""}
+    source: enrolment
+    note: >-
+      The enrolment row says "under validation". Unlike GÉANT's landing page,
+      the catalogue API answered without a Cloudflare challenge.
+
+  # ------------------------------------------------------ research products
+  - id: bbmri-eric-oai
+    node: bbmri-eric
+    name: EOSC Node BBMRI-ERIC Data Set Catalogue
+    type: research-product-catalogue
+    protocol: oai-pmh
+    endpoint: https://eosc-catalogue.bbmri-eric.eu/oai
+    listed: {compliance: Not compliant, status: ""}
+    source: enrolment, production
+    note: The production sheet says "Improvement requested".
+
+  - id: cern-opendata-oai
+    node: cern
+    name: CERN Open Data Portal
+    type: research-product-catalogue
+    protocol: oai-pmh
+    endpoint: https://opendata.cern/oai2d
+    listed: {compliance: Compliant for enrolment, status: READY FOR PROD}
+    source: enrolment, production
+
+  - id: eosc-it-cnr-iris-oai
+    node: eosc-it
+    name: CNR IRIS
+    type: research-product-catalogue
+    protocol: oai-pmh
+    endpoint: https://iris.cnr.it/oai/openaire4
+    listed: {compliance: Already compliant, status: READY FOR PROD}
+    source: enrolment, production
+    note: Did not answer Identify within 20 s on 23 October 2026.
+
+  - id: eosc-it-unito-iris-oai
+    node: eosc-it
+    name: IRIS AperTO (Università di Torino)
+    type: research-product-catalogue
+    protocol: oai-pmh
+    endpoint: https://iris.unito.it/oai/openaire4
+    listed: {compliance: Already compliant, status: READY FOR PROD}
+    source: enrolment, production
+    note: Did not answer Identify within 20 s on 23 October 2026.
+
+  - id: data-terra-oai
+    node: data-terra
+    name: Data Terra research products
+    type: research-product-catalogue
+    protocol: oai-pmh
+    endpoint: https://resources.earth-data.eu/oai
+    listed: {compliance: "", status: ""}
+    source: production
+    note: >-
+      Not in the enrolment sheet under this endpoint; the production sheet
+      says "Improvement requested".
+
+  - id: panosc-rodare-oai
+    node: panosc
+    name: RODARE (Rossendorf Data Repository)
+    type: research-product-catalogue
+    protocol: oai-pmh
+    endpoint: https://rodare.hzdr.de/oai2d
+    listed: {compliance: Compliant for enrolment, status: READY FOR PROD}
+    source: enrolment, production
+
+  - id: eudat-b2find-oai
+    node: eudat
+    name: B2FIND
+    type: research-product-catalogue
+    protocol: oai-pmh
+    endpoint: https://b2find.eudat.eu/oai
+    listed: {compliance: Already compliant, status: READY FOR PROD}
+    source: enrolment, production
+
+  - id: eosc-dto-zenodo-oai
+    node: eosc-dto
+    name: EOSC Node | EU DTO Zenodo Community
+    type: research-product-catalogue
+    protocol: oai-pmh
+    endpoint: https://zenodo.org/oai2d
+    listed: {compliance: Already compliant, status: ""}
+    source: enrolment, production
+    note: >-
+      This is all of Zenodo; the node's records are one community, so a harvest
+      needs that community's OAI set, still to be identified. Zenodo is also
+      listed, separately, by the CERN node.
+
+  - id: eosc-cz-nmd-oai
+    node: eosc-cz
+    name: National Metadata Directory
+    type: research-product-catalogue
+    protocol: oai-pmh
+    endpoint: https://test1.nma.du.cesnet.cz/oai2d
+    listed: {compliance: Already compliant, status: READY FOR PROD}
+    source: enrolment, production
+    note: >-
+      The host name says test; it is the endpoint the production sheet lists.
