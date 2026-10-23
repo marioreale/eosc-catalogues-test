@@ -1,0 +1,7 @@
+# One entry per catalogue to query. Empty until the first catalogues are chosen.
+#
+# - id: example-node-services        # stable identifier, used in file names
+#   node: example-node               # node id, as in eosc-basic-compliance's nodes.yaml
+#   type: service-catalogue          # or research-product-catalogue
+#   endpoint: https://catalogue.example.org/api/services
+catalogues: []
