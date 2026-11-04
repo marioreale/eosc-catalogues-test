@@ -16,6 +16,9 @@ PROTOCOL_FOR_TYPE = {
     "service-catalogue": "een-services-api",
     "research-product-catalogue": "oai-pmh",
 }
+# What the production sheet says, quoted: its "Comments" and "Evaluation /
+# EOSC-A" columns.
+LISTED_KEYS = {"comment", "evaluation_eosc_a"}
 REQUIRED = ("id", "node", "name", "type", "protocol", "endpoint", "source")
 
 
@@ -33,6 +36,7 @@ class Catalogue:
     endpoint: str
     source: str
     website: str = ""
+    display_endpoint: str = ""
     note: str = ""
     listed: dict = field(default_factory=dict)
 
@@ -62,10 +66,17 @@ def load(path: Path) -> list[Catalogue]:
             raise ConfigError(f"{where}: endpoint must be an absolute https URL")
         if e["protocol"] == "oai-pmh" and "verb=" in parts.query:
             raise ConfigError(f"{where}: give the OAI-PMH base URL, without ?verb=")
+        shown = e.get("display_endpoint") or ""
+        if shown and not shown.startswith("https://"):
+            raise ConfigError(f"{where}: display_endpoint must be an https URL")
+        unknown = set(e.get("listed") or {}) - LISTED_KEYS
+        if unknown:
+            raise ConfigError(f"{where}: unknown listed field(s) {', '.join(sorted(unknown))}")
         out.append(
             Catalogue(
                 **{k: e[k] for k in REQUIRED},
                 website=e.get("website") or "",
+                display_endpoint=shown,
                 note=e.get("note") or "",
                 listed=e.get("listed") or {},
             )

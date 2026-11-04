@@ -16,7 +16,7 @@
   const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const initials = (name) => name.replace(/^EOSC (Node )?/, '').replace(/[()]/g, '').split(/[\s-]+/).filter(Boolean).slice(0, 2).map((w) => w[0]).join('').toUpperCase();
 
-  const SOURCE_LABEL = { enrolment: 'Enrolment sheet', production: 'Production sheet', 'resource-hub': 'Resource Hub' };
+  const SOURCE_LABEL = { production: 'Production sheet' };
 
   function verdict(row) {
     const cfgOk = row.checks.every((c) => c.passed);
@@ -46,9 +46,11 @@
 
     const quoted = [];
     String(row.source).split(',').map((s) => s.trim()).forEach((s) =>
-      quoted.push(`<span class="q ${s === 'resource-hub' ? 'hub' : ''}">${esc(SOURCE_LABEL[s] || s)}</span>`));
-    if (row.listed && row.listed.compliance) quoted.push(`<span class="q st">“${esc(row.listed.compliance)}”</span>`);
-    if (row.listed && 'status' in row.listed) quoted.push(`<span class="q st">Status: ${row.listed.status ? esc(row.listed.status) : '(empty)'}</span>`);
+      quoted.push(`<span class="q">${esc(SOURCE_LABEL[s] || s)}</span>`));
+    const L = row.listed || {};
+    if (L.comment) quoted.push(`<span class="q st">Comment: “${esc(L.comment)}”</span>`);
+    if (L.evaluation_eosc_a) quoted.push(`<span class="q st">EOSC-A evaluation: “${esc(L.evaluation_eosc_a)}”</span>`);
+    if (!L.comment && !L.evaluation_eosc_a) quoted.push('<span class="q none">No comment in the sheet</span>');
 
     return `<article class="card" data-node="${esc(row.node)}" style="--node:${colorOf(row.node)}">
       <div class="card-top">
@@ -60,7 +62,9 @@
         </div>
         <span class="verdict ${v.cls}">${v.text}</span>
       </div>
-      <div class="endpoint"><a href="${esc(p ? p.url : row.endpoint)}" rel="noopener" target="_blank">${esc(row.endpoint)}</a></div>
+      <div class="endpoint">${row.display_endpoint
+        ? `<a href="${esc(row.display_endpoint)}" rel="noopener" target="_blank">${esc(row.display_endpoint)}</a>`
+        : `<a href="${esc(p ? p.url : row.endpoint)}" rel="noopener" target="_blank">${esc(row.endpoint)}</a>`}</div>
       <div class="row"><span>Config ${passed}/${row.checks.length}</span><div class="checks">${checks}</div></div>
       <div class="row"><span>Probe</span>${probe}</div>
       <div class="row"><span>Source</span><div class="quote">${quoted.join('')}</div></div>

@@ -45,7 +45,6 @@ NODE_NAMES = {
     "eosc-de": "EOSC Node Germany",
 }
 
-SHEET_STATUSES = {"", "NEW", "TESTING", "READY FOR PROD", "REJECTED"}
 OAI_NS = "{http://www.openarchives.org/OAI/2.0/}"
 TIMEOUT = 20.0
 
@@ -65,12 +64,8 @@ def config_checks(c: Catalogue) -> list[dict]:
     if c.protocol == "oai-pmh":
         out.append(check("oai-base", "OAI-PMH base URL has no ?verb=",
                          "verb=" not in c.endpoint))
-    status = c.listed.get("status", "")
-    out.append(check("listed", "Sheet status quoted, from the allowed set",
-                     status in SHEET_STATUSES, status or "(none)"))
-    if c.source == "resource-hub":
-        out.append(check("hub", "Resource Hub entry names its Hub record",
-                         c.listed == {} and "Hub record 21.11166/" in c.note))
+    out.append(check("source", "Endpoint taken from the production sheet",
+                     c.source == "production", c.source))
     return out
 
 

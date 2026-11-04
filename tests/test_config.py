@@ -19,8 +19,9 @@ KNOWN_NODES = {
 
 
 def test_the_first_catalogues_are_configured():
-    assert len(CATALOGUES) == 22
+    assert len(CATALOGUES) == 19
     assert sum(c.type == "service-catalogue" for c in CATALOGUES) == 10
+    assert len({c.node for c in CATALOGUES}) == 12
 
 
 def test_ids_are_unique_and_nodes_are_known():
@@ -41,10 +42,18 @@ def test_endpoints_are_https_and_oai_bases_have_no_verb():
             assert "verb=" not in c.endpoint, c.id
 
 
-def test_listed_status_is_quoted_not_judged():
-    allowed = {"", "NEW", "TESTING", "READY FOR PROD", "REJECTED"}
+def test_every_entry_comes_from_the_production_sheet():
     for c in CATALOGUES:
-        assert c.listed.get("status", "") in allowed, c.id
+        assert c.source == "production", c.id
+        assert set(c.listed) <= {"comment", "evaluation_eosc_a"}, c.id
+
+
+def test_a_display_endpoint_is_explained_in_the_note():
+    shown = [c for c in CATALOGUES if c.display_endpoint]
+    assert [c.id for c in shown] == ["eosc-cz-nmd-oai"]
+    for c in shown:
+        assert c.display_endpoint != c.endpoint
+        assert c.display_endpoint in c.note and c.endpoint in c.note
 
 
 def _write(tmp_path, body):
@@ -91,14 +100,12 @@ def test_duplicate_ids_are_rejected(tmp_path):
         load(_write(tmp_path, body))
 
 
-def test_resource_hub_entries_carry_no_sheet_status():
-    """The Resource Hub has no compliance or status column: entries taken
-    from it quote nothing, and name their Hub record in the note."""
-    hub = [c for c in CATALOGUES if c.source == "resource-hub"]
-    assert len(hub) == 6
-    for c in hub:
-        assert c.listed == {}, c.id
-        assert "Hub record 21.11166/" in c.note, c.id
+def test_unknown_listed_fields_are_rejected(tmp_path):
+    body = ENTRY.format(
+        type="service-catalogue", protocol="een-services-api", endpoint="https://x.example/s"
+    ) + "    listed: {status: READY FOR PROD}\n"
+    with pytest.raises(ConfigError, match="unknown listed field"):
+        load(_write(tmp_path, body))
 
 
 def test_every_known_node_has_a_display_name():

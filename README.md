@@ -37,48 +37,40 @@ collection and checks, HTML (with Markdown, CSV and JSON) for the reports.
 
 ## Status
 
-`catalogues.yaml` lists **22 catalogues of 13 nodes**: 10 Service Catalogues
-queried through the EOSC EU Node services API (`GET /services`) and 12 Research
+`catalogues.yaml` lists **19 catalogues of 12 nodes**: 10 Service Catalogues
+queried through the EOSC EU Node services API (`GET /services`) and 9 Research
 Product Catalogues queried through OAI-PMH.
 
-- **16 come from two sheets** shared in October 2026: the EOSC EU Node
-  enrolment list ("Catalogues status") and the production-environment sheet.
-  Each of these entries quotes what the sheet says about it (`listed`), without
-  judging it.
-- **6 come from the EOSC EU Node Resource Hub** ([Data Sources](https://open-science-cloud.ec.europa.eu/resources/datasources),
-  read through its public catalogue API on 4 November 2026). They are EGI's,
-  Italy's and PaNOSC's Service Catalogues, and Poland's Most Wiedzy, RepOD and
-  ROHub. The Hub has no status column, so these entries have no `listed`
-  field; each note gives the Hub record PID and where the Hub's declared URL
-  was corrected (EGI declares the host root, which answers 404; RepOD
-  declares `?verb=Identify`).
+Every endpoint comes from one source, the production sheet
+`production_env_node_services.xlsx` (shared in October 2026): its "Service
+Catalogue registered" column (tab "Services") and its "Research Product
+Catalogue registered" column (tab "Research product catalogues"). Where the
+sheet comments on a catalogue ("Comments", "Evaluation / EOSC-A"), the entry
+quotes it in `listed`, without judging it.
 
-Each endpoint was sent one request: the sheet entries on 23 October 2026, the
-Hub entries on 4 November 2026. All answered except the two Italian IRIS
-OAI-PMH servers, which timed out at 20 s on 23 October. An answer shows only
-that the endpoint is up, nothing about compliance. No check exists yet.
+Left out: two rows of the research product tab that are web pages, not OAI-PMH
+endpoints (Finland's `metax.fairdata.fi`, Poland's `odis.ecudo.pl`).
 
 | Node | Service Catalogue | Research Product Catalogue(s) |
 |---|---|---|
 | BBMRI-ERIC | `eosc-catalogue.bbmri-eric.eu/services` | `eosc-catalogue.bbmri-eric.eu/oai` |
 | CERN | | CERN Open Data (`opendata.cern/oai2d`) |
-| Czechia | | National Metadata Directory (`test1.nma.du.cesnet.cz/oai2d`) |
+| Czechia | | National Metadata Directory (shown as `nma.du.cesnet.cz/oai2d`, queried at `test1.nma.du.cesnet.cz/oai2d`) |
 | Data Terra | `services.earth-data.eu/services` | `resources.earth-data.eu/oai` |
 | DTO | `gcat.d4science.org/.../EOSC-Node-DTO/services` | Zenodo community (`zenodo.org/oai2d`, set to be identified) |
-| EGI | `egi-eosc-catalogue.dyn.cloud.e-infra.cz/services` (Hub) | |
+| EGI | `egi-eosc-catalogue.dyn.cloud.e-infra.cz/services` | |
 | EUDAT | `portal.eudat.eu/api/services` | B2FIND (`b2find.eudat.eu/oai`) |
 | Finland | `data.eosc.fi/v1/services` | |
 | GÉANT | `geant-node-catalogue.geant.org/services` | |
-| Italy | `gcat.d4science.org/.../EOSC-IT_Node/services` (Hub) | CNR IRIS, IRIS AperTO (UniTo) (`/oai/openaire4`) |
-| PaNOSC | `pan-training.eu/service-catalogue/api/v3/services` (Hub) | RODARE (`rodare.hzdr.de/oai2d`) |
-| Poland | | Most Wiedzy (`mostwiedzy.pl/en/oai-pmh`), RepOD (`repod.icm.edu.pl/oai`), ROHub (`api.rohub.org/api/oai2d/`) (all Hub) |
+| Italy | `gcat.d4science.org/.../EOSC-IT_Node/services` | CNR IRIS, IRIS AperTO (UniTo) (`/oai/openaire4`) |
+| PaNOSC | `pan-training.eu/service-catalogue/api/v3/services` | RODARE (`rodare.hzdr.de/oai2d`) |
 | Slovakia | `sc.eosc.sk/api/v1/services` | |
 
-Not yet included: DTO's Blue-Cloud catalogue (no endpoint in the sheets),
-catalogues listed as REJECTED, and the 13 data sources the Resource Hub
-registers under the EOSC EU Node itself (Zenodo, PANGAEA, BASE and others),
-which are not node catalogues. The Hub does not list BBMRI-ERIC's OAI-PMH
-endpoint, which the sheets do.
+Czechia: the page shows the intended production address
+`https://nma.du.cesnet.cz/oai2d`, but the probe queries
+`https://test1.nma.du.cesnet.cz/oai2d`, the address the sheet lists. On
+4 November 2026 the production address presented a generic certificate and
+answered 404 (field `display_endpoint` and the entry's note).
 
 ## Results page
 

@@ -182,6 +182,7 @@ h1 { margin: 0; font: 800 clamp(40px, 7vw, 84px)/0.98 var(--font-display); lette
 .quote { display: flex; flex-wrap: wrap; gap: 6px; }
 .q { font-size: 12.5px; padding: 3px 8px; border-radius: 6px; border: 1px solid var(--line); color: #d9def2; }
 .q.st { border-color: rgba(251, 191, 36, 0.4); color: #f4dfa3; }
+.q.none { color: var(--faint); border-style: dashed; }
 .q.hub { border-color: rgba(34, 211, 238, 0.45); color: #a5f0fb; }
 details.note { font-size: 13.5px; color: #c3c9e3; border-top: 1px dashed var(--line); padding-top: 10px; }
 details.note summary { cursor: pointer; color: var(--muted); font-size: 13px; }

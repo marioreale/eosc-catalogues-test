@@ -3,36 +3,36 @@
 # Fields
 #   id        stable identifier, used in evidence file names
 #   node      node id, as in eosc-basic-compliance's nodes.yaml
-#   name      catalogue name as the node or the EOSC EU Node lists it
+#   name      catalogue name (the production sheet names nodes, not
+#             catalogues; the name is the one the catalogue gives itself)
 #   type      service-catalogue | research-product-catalogue
 #   protocol  een-services-api (GET /services, Service Bundle records)
 #             | oai-pmh (research products, harvested via OpenAIRE)
-#   endpoint  the URL to query; for oai-pmh the base URL, without ?verb=
-#   website   human-facing catalogue site, where listed
-#   listed    what the source sheet says about it, quoted, not verified here:
-#             compliance = its "Compliance to guidelines" column,
-#             status = its "Status" column ("" when the row leaves it empty)
-#   source    where the endpoint comes from (a sheet, or the Resource Hub)
+#   endpoint  the URL queried; for oai-pmh the base URL, without ?verb=
+#   display_endpoint
+#             optional: the URL shown on the results page when it differs
+#             from the one queried (see the note of the entry)
+#   website   human-facing catalogue site, where known
+#   listed    what the production sheet says about the catalogue, quoted,
+#             not verified here (research product catalogues only):
+#             comment = its "Comments" column,
+#             evaluation_eosc_a = its "Evaluation / EOSC-A" column
+#   source    where the endpoint comes from: always "production"
 #   note      anything a reader needs to know before trusting the entry
 #
-# Sources, both shared in October 2026 and not live censuses:
-#   enrolment  = "Catalogues for enrolment to the EOSC EU Node (EEN)",
-#                tab "Catalogues status" (rows up to 5 October 2026)
-#   production = production_env_node_services.xlsx, tabs "Services" and
-#                "Research product catalogues"
-# and one live listing:
-#   resource-hub = the EOSC EU Node Resource Hub's Data Sources
-#                (https://open-science-cloud.ec.europa.eu/resources/datasources),
-#                read through its public catalogue API on 4 November 2026
-#                (https://api.open-science-cloud.ec.europa.eu/action/catalogue/
-#                items?catalogue=datasources). The Hub has no compliance or
-#                status column, so these entries carry no "listed" field; its
-#                record PID is given in the note.
+# Source: production_env_node_services.xlsx (shared in October 2026, a
+# snapshot, not a live census):
+#   tab "Services", column "Service Catalogue registered" (10 nodes), and
+#   tab "Research product catalogues", column "Research Product Catalogue
+#   registered" (11 rows). Two of those rows are left out because they are
+#   web pages, not OAI-PMH endpoints: Finland's https://metax.fairdata.fi/
+#   ("Improvement requested") and Poland's https://odis.ecudo.pl/
+#   ("Improvement requested -> should probably be permenent rejected since it
+#   is a scientific database").
 #
-# Every endpoint below answered one request on 23 October 2026 (HTTP 200,
-# JSON for the service APIs, OAI-PMH XML for Identify) unless the note says
-# otherwise; the resource-hub entries were checked the same way on
-# 4 November 2026. That shows the endpoint is up, nothing about compliance.
+# Every endpoint below answered one request on 23 October or 4 November 2026
+# unless the note says otherwise. That shows the endpoint is up, nothing about
+# compliance. The results page probes them again on every run.
 
 catalogues:
 
@@ -44,12 +44,7 @@ catalogues:
     protocol: een-services-api
     endpoint: https://eosc-catalogue.bbmri-eric.eu/services
     website: https://eosc-catalogue.bbmri-eric.eu
-    listed: {compliance: Compliant for enrolment, status: READY FOR PROD}
-    source: enrolment, production
-    note: >-
-      The enrolment row writes the host as "eosc-catalogue.EOSC Node
-      BBMRI-ERIC.eu" (a find-and-replace slip); the production sheet has the
-      real host, used here.
+    source: production
 
   - id: eosc-fi-services
     node: eosc-fi
@@ -58,12 +53,7 @@ catalogues:
     protocol: een-services-api
     endpoint: https://data.eosc.fi/v1/services
     website: https://eosc.fi
-    listed: {compliance: Not compliant, status: ""}
-    source: enrolment
-    note: >-
-      An earlier row for the same catalogue is REJECTED ("adopts new service
-      classification vocabulary"); the row with this endpoint (9 March 2026)
-      has no status.
+    source: production
 
   - id: eosc-dto-services
     node: eosc-dto
@@ -72,11 +62,7 @@ catalogues:
     protocol: een-services-api
     endpoint: https://gcat.d4science.org/gcat/ext/eosc/EOSC-Node-DTO/services
     website: https://eosc-dto.d4science.org/service-catalogue-organization/eoscnodedto-catalogue
-    listed: {compliance: Not compliant, status: ""}
-    source: enrolment
-    note: >-
-      DTO's other service catalogue, Blue-Cloud (READY FOR PROD), lists no API
-      endpoint and is not included yet.
+    source: production
 
   - id: eosc-sk-services
     node: eosc-sk
@@ -85,12 +71,10 @@ catalogues:
     protocol: een-services-api
     endpoint: https://sc.eosc.sk/api/v1/services
     website: https://sc.eosc.sk/
-    listed: {compliance: Compliant for enrolment, status: READY FOR PROD}
-    source: enrolment
+    source: production
     note: >-
-      The sheet gives the API root, https://sc.eosc.sk/api/v1, which describes
-      its endpoints; /services is the listing. Its envelope adds node,
-      quantity, order, sort and version to total/from/to, unlike the others.
+      Its envelope adds node, quantity, order, sort and version to
+      total/from/to, unlike the others.
 
   - id: data-terra-services
     node: data-terra
@@ -99,9 +83,7 @@ catalogues:
     protocol: een-services-api
     endpoint: https://services.earth-data.eu/services
     website: https://earth-data.eu/
-    listed: {compliance: Compliant for enrolment, status: ""}
-    source: enrolment
-    note: Listed as adopting the new service classification vocabulary.
+    source: production
 
   - id: eudat-services
     node: eudat
@@ -110,9 +92,7 @@ catalogues:
     protocol: een-services-api
     endpoint: https://portal.eudat.eu/api/services
     website: https://portal.eudat.eu/catalog
-    listed: {compliance: Not sure, status: ""}
-    source: enrolment
-    note: The enrolment row says "under validation".
+    source: production
 
   - id: geant-services
     node: geant
@@ -121,11 +101,10 @@ catalogues:
     protocol: een-services-api
     endpoint: https://geant-node-catalogue.geant.org/services
     website: https://geant-node-catalogue.geant.org
-    listed: {compliance: Not sure, status: ""}
-    source: enrolment
+    source: production
     note: >-
-      The enrolment row says "under validation". Unlike GÉANT's landing page,
-      the catalogue API answered without a Cloudflare challenge.
+      Unlike GÉANT's landing page, the catalogue API answered without a
+      Cloudflare challenge.
 
   - id: egi-services
     node: egi
@@ -134,12 +113,11 @@ catalogues:
     protocol: een-services-api
     endpoint: https://egi-eosc-catalogue.dyn.cloud.e-infra.cz/services
     website: https://www.egi.eu/services
-    source: resource-hub
+    source: production
     note: >-
-      Hub record 21.11166/x2h84Y (registered 16 July 2026). The Hub declares
-      protocol "Other" and the host root, https://egi-eosc-catalogue.dyn.cloud.e-infra.cz/,
-      which answers HTTP 404; /services is the listing (total 16 on
-      4 November 2026, all returned in one page).
+      The host root, https://egi-eosc-catalogue.dyn.cloud.e-infra.cz/,
+      answers HTTP 404; /services is the listing (16 services on
+      4 November 2026, all in one page).
 
   - id: eosc-it-services
     node: eosc-it
@@ -148,12 +126,10 @@ catalogues:
     protocol: een-services-api
     endpoint: https://gcat.d4science.org/gcat/ext/eosc/EOSC-IT_Node/services
     website: https://eosc.it/catalogue
-    source: resource-hub
+    source: production
     note: >-
-      Hub record 21.11166/wB5lBN (registered 29 September 2026). Same gCat
-      software as the DTO catalogue. Total 6 on 4 November 2026; the listing
-      includes IRIS AperTO, which is also listed below as a research product
-      catalogue.
+      Same gCat software as the DTO catalogue. Its listing includes IRIS
+      AperTO, which is also listed below as a research product catalogue.
 
   - id: panosc-services
     node: panosc
@@ -162,11 +138,10 @@ catalogues:
     protocol: een-services-api
     endpoint: https://pan-training.eu/service-catalogue/api/v3/services
     website: https://services.tesshub.hzdr.de/collections/eosc-panosc-node-services
-    source: resource-hub
+    source: production
     note: >-
-      Hub record 21.11166/5wBq5q (registered 10 July 2026). Paginated: total
-      17 on 4 November 2026, 10 returned per page. Like Slovakia's, its
-      envelope adds count, order, sort and version.
+      Paginated: 17 services on 4 November 2026, 10 returned per page. Like
+      Slovakia's, its envelope adds count, order, sort and version.
 
   # ------------------------------------------------------ research products
   - id: bbmri-eric-oai
@@ -175,9 +150,8 @@ catalogues:
     type: research-product-catalogue
     protocol: oai-pmh
     endpoint: https://eosc-catalogue.bbmri-eric.eu/oai
-    listed: {compliance: Not compliant, status: ""}
-    source: enrolment, production
-    note: The production sheet says "Improvement requested".
+    listed: {comment: Improvement requested}
+    source: production
 
   - id: cern-opendata-oai
     node: cern
@@ -185,8 +159,8 @@ catalogues:
     type: research-product-catalogue
     protocol: oai-pmh
     endpoint: https://opendata.cern/oai2d
-    listed: {compliance: Compliant for enrolment, status: READY FOR PROD}
-    source: enrolment, production
+    source: production
+    note: The sheet gives https://opendata.cern/oai2d?verb=Identify; the base URL is used here.
 
   - id: eosc-it-cnr-iris-oai
     node: eosc-it
@@ -194,9 +168,8 @@ catalogues:
     type: research-product-catalogue
     protocol: oai-pmh
     endpoint: https://iris.cnr.it/oai/openaire4
-    listed: {compliance: Already compliant, status: READY FOR PROD}
-    source: enrolment, production
-    note: Did not answer Identify within 20 s on 23 October 2026.
+    source: production
+    note: Did not answer Identify within 20 s on 23 October 2026, nor in some later runs.
 
   - id: eosc-it-unito-iris-oai
     node: eosc-it
@@ -204,8 +177,7 @@ catalogues:
     type: research-product-catalogue
     protocol: oai-pmh
     endpoint: https://iris.unito.it/oai/openaire4
-    listed: {compliance: Already compliant, status: READY FOR PROD}
-    source: enrolment, production
+    source: production
     note: Did not answer Identify within 20 s on 23 October 2026.
 
   - id: data-terra-oai
@@ -214,11 +186,8 @@ catalogues:
     type: research-product-catalogue
     protocol: oai-pmh
     endpoint: https://resources.earth-data.eu/oai
-    listed: {compliance: "", status: ""}
+    listed: {comment: Improvement requested}
     source: production
-    note: >-
-      Not in the enrolment sheet under this endpoint; the production sheet
-      says "Improvement requested".
 
   - id: panosc-rodare-oai
     node: panosc
@@ -226,8 +195,8 @@ catalogues:
     type: research-product-catalogue
     protocol: oai-pmh
     endpoint: https://rodare.hzdr.de/oai2d
-    listed: {compliance: Compliant for enrolment, status: READY FOR PROD}
-    source: enrolment, production
+    source: production
+    note: The sheet gives https://rodare.hzdr.de/oai2d?verb=Identify; the base URL is used here.
 
   - id: eudat-b2find-oai
     node: eudat
@@ -235,8 +204,8 @@ catalogues:
     type: research-product-catalogue
     protocol: oai-pmh
     endpoint: https://b2find.eudat.eu/oai
-    listed: {compliance: Already compliant, status: READY FOR PROD}
-    source: enrolment, production
+    listed: {evaluation_eosc_a: "Catalogue openly accessible, UAP/AUP linked"}
+    source: production
 
   - id: eosc-dto-zenodo-oai
     node: eosc-dto
@@ -244,12 +213,10 @@ catalogues:
     type: research-product-catalogue
     protocol: oai-pmh
     endpoint: https://zenodo.org/oai2d
-    listed: {compliance: Already compliant, status: ""}
-    source: enrolment, production
+    source: production
     note: >-
       This is all of Zenodo; the node's records are one community, so a harvest
-      needs that community's OAI set, still to be identified. Zenodo is also
-      listed, separately, by the CERN node.
+      needs that community's OAI set, still to be identified.
 
   - id: eosc-cz-nmd-oai
     node: eosc-cz
@@ -257,49 +224,13 @@ catalogues:
     type: research-product-catalogue
     protocol: oai-pmh
     endpoint: https://test1.nma.du.cesnet.cz/oai2d
-    listed: {compliance: Already compliant, status: READY FOR PROD}
-    source: enrolment, production
+    display_endpoint: https://nma.du.cesnet.cz/oai2d
+    listed: {evaluation_eosc_a: "https://test1.nma.du.cesnet.cz/"}
+    source: production
     note: >-
-      The host name says test; it is the endpoint the production sheet lists.
-
-  - id: eosc-pl-mostwiedzy-oai
-    node: eosc-pl
-    name: Most Wiedzy Open Research Data Catalog
-    type: research-product-catalogue
-    protocol: oai-pmh
-    endpoint: https://mostwiedzy.pl/en/oai-pmh
-    website: https://mostwiedzy.pl/
-    source: resource-hub
-    note: >-
-      Hub record 21.11166/kFNSMX (registered 5 October 2026), re3data
-      r3d100013366. The Hub records it as not OpenAIRE-compliant ("Not
-      compatible / Not relevant"). Identify reports its baseURL with a
-      trailing slash.
-
-  - id: eosc-pl-repod-oai
-    node: eosc-pl
-    name: RepOD Repository for Open Data
-    type: research-product-catalogue
-    protocol: oai-pmh
-    endpoint: https://repod.icm.edu.pl/oai
-    website: https://repod.icm.edu.pl/
-    source: resource-hub
-    note: >-
-      Hub record 21.11166/3S6tct (registered 7 October 2026). The Hub
-      declares https://repod.icm.edu.pl/oai?verb=Identify; the base URL is
-      used here, as Identify confirms (a Dataverse OAI server). The Hub records
-      it as not OpenAIRE-compliant.
-
-  - id: eosc-pl-rohub-oai
-    node: eosc-pl
-    name: ROHub
-    type: research-product-catalogue
-    protocol: oai-pmh
-    endpoint: https://api.rohub.org/api/oai2d/
-    website: https://reliance.rohub.org/
-    source: resource-hub
-    note: >-
-      Hub record 21.11166/l9sqU5 (registered 7 October 2026), re3data
-      r3d100013832, declared OpenAIRE 4.0 compatible. Its Identify response
-      gives a broken baseURL ("https://<arguments.base.Str object at …>/api/oai2d/"),
-      which a harvester that trusts Identify would follow.
+      Shown as https://nma.du.cesnet.cz/oai2d, the intended production
+      address, but queried at https://test1.nma.du.cesnet.cz/oai2d, the
+      address the production sheet lists. On 4 November 2026 the production
+      address did not work: its server presented a generic certificate ("TRAEFIK
+      DEFAULT CERT", not valid for the host) and answered "404 page not
+      found"; the test1 address answered Identify.
