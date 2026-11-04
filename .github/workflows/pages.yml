@@ -27,6 +27,9 @@ jobs:
       # does not stop the publication; the "tests" workflow still goes red.
       - run: uv run pytest -q --junitxml=junit.xml || true
       - run: uv run catalogue-check report --junit junit.xml --out site/results.json
+      # GitHub Pages lets browsers cache files for 10 minutes. Tagging the script
+      # and stylesheet with the commit makes every publication load fresh copies.
+      - run: sed -i "s/?v=dev/?v=${GITHUB_SHA::7}/g" site/index.html
       - uses: actions/upload-pages-artifact@v3
         with:
           path: site
