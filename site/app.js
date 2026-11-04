@@ -126,11 +126,61 @@
     // suite
     if (t) {
       $('#suite-sum').textContent = `${t.passed} passed, ${t.failed} failed, ${t.skipped} skipped, out of ${t.total} tests (pytest, same run).`;
-      $('#suite-list').innerHTML = t.cases.map((c) => `<li class="${c.outcome}"><i aria-hidden="true"></i><span>${esc(c.file.replace(/^tests\./, ''))} · ${esc(c.name)}</span></li>`).join('');
+      $('#suite-list').innerHTML = t.cases.map((c, i) => `<li class="${c.outcome}"><button type="button" class="test-btn" data-i="${i}" aria-haspopup="dialog" title="What this test checks"><i aria-hidden="true"></i><span>${esc(c.file.replace(/^tests\./, ''))} · ${esc(c.name)}</span><b class="info" aria-hidden="true">i</b></button></li>`).join('');
+      loadDescriptions().then((d) => {
+        $('#suite-list').addEventListener('click', (ev) => {
+          const b = ev.target.closest('.test-btn');
+          if (b) openTest(t.cases[Number(b.dataset.i)], d, b);
+        });
+      });
     } else {
       $('#suite-sum').textContent = 'The test suite results were not included in this run.';
     }
   }
+
+  // Test descriptions, the same as docs/README.md "The 19 tests".
+  let descriptions = null;
+  function loadDescriptions() {
+    if (!descriptions) {
+      descriptions = fetch('test-descriptions.json', { cache: 'no-store' })
+        .then((r) => (r.ok ? r.json() : { tests: {} }))
+        .catch(() => ({ tests: {} }));
+    }
+    return descriptions;
+  }
+  function describe(name, d) {
+    const all = d.tests || {};
+    if (all[name]) return all[name];
+    const m = /^([^[]+)\[(.*)\]$/.exec(name); // parametrized: match the case by its message
+    if (m) {
+      const key = Object.keys(all).find((k) => k.startsWith(m[1] + '[') && m[2].endsWith(k.slice(m[1].length + 1, -1)));
+      if (key) return all[key];
+    }
+    return null;
+  }
+  const OUTCOME = { passed: 'Passed', failed: 'Failed', skipped: 'Skipped' };
+  function openTest(c, d, opener) {
+    const dlg = $('#test-dialog');
+    const info = describe(c.name, d);
+    $('#td-n').textContent = info ? `Test ${info.n} of 19 · ${info.file}` : c.file.replace(/^tests\./, '') + '.py';
+    $('#td-name').textContent = c.name;
+    const o = $('#td-outcome');
+    o.textContent = OUTCOME[c.outcome] || c.outcome;
+    o.className = 'td-outcome ' + c.outcome;
+    $('#td-asserts').textContent = info ? info.asserts : 'No description available for this test yet.';
+    $('#td-why').textContent = info ? info.why : '';
+    $('#td-why-row').hidden = !info;
+    $('#td-param').hidden = !(info && /\[/.test(c.name));
+    $('#td-param').textContent = d.note || '';
+    dlg.returnFocusTo = opener;
+    dlg.showModal();
+  }
+  (function wireDialog() {
+    const dlg = document.getElementById('test-dialog');
+    if (!dlg) return;
+    dlg.addEventListener('click', (ev) => { if (ev.target === dlg) dlg.close(); });
+    dlg.addEventListener('close', () => { if (dlg.returnFocusTo) dlg.returnFocusTo.focus(); });
+  })();
 
   fetch('results.json', { cache: 'no-store' })
     .then((r) => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })

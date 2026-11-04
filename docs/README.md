@@ -222,13 +222,17 @@ case writes a small invalid file to a temporary directory and expects a
 
 ### `tests/test_cli.py`: the command-line tool
 
-| # | Test | What it asserts |
-|---|---|---|
-| 15 | `test_version` | `catalogue-check version` exits 0 and prints the package version. |
-| 16 | `test_catalogues_lists_the_configured_ones` | `catalogue-check catalogues` exits 0, lists `bbmri-eric-services`, and ends with `22 catalogue(s): 10 service, 12 research product.` |
-| 17 | `test_an_empty_list_is_reported` | An empty `catalogues: []` file prints `No catalogues configured yet.` and exits 0. |
-| 18 | `test_a_bad_file_is_a_configuration_error` | An entry with only an `id` makes the command exit with status 2. |
-| 19 | `test_report_without_probe_writes_per_catalogue_checks` | `catalogue-check report --no-probe` writes JSON with 22 catalogues. Each has a node name, no probe result, and all its configuration checks passing. |
+| # | Test | What it asserts | Why |
+|---|---|---|---|
+| 15 | `test_version` | `catalogue-check version` exits 0 and prints the package version. | The command-line tool installs and starts. |
+| 16 | `test_catalogues_lists_the_configured_ones` | `catalogue-check catalogues` exits 0, lists `bbmri-eric-services`, and ends with `22 catalogue(s): 10 service, 12 research product.` | The listing command reads the committed file and counts it correctly. |
+| 17 | `test_an_empty_list_is_reported` | An empty `catalogues: []` file prints `No catalogues configured yet.` and exits 0. | An empty file is reported, not treated as an error. |
+| 18 | `test_a_bad_file_is_a_configuration_error` | An entry with only an `id` makes the command exit with status 2. | A malformed file stops the tool with a distinct exit code. |
+| 19 | `test_report_without_probe_writes_per_catalogue_checks` | `catalogue-check report --no-probe` writes JSON with 22 catalogues. Each has a node name, no probe result, and all its configuration checks passing. | The results page's data file is built correctly, without using the network. |
+
+On the [results page](https://marioreale.github.io/eosc-catalogues-test/),
+selecting a test in the Test suite list opens these descriptions. They are kept
+in `site/test-descriptions.json`.
 
 ## What the results page shows
 

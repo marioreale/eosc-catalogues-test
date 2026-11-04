@@ -201,6 +201,36 @@ details.note p { margin: 8px 0 0; }
 .suite-list li.passed i { background: var(--pass); }
 .suite-list li.failed i { background: var(--fail); }
 .suite-list li.skipped i { background: var(--faint); }
+.suite-list li { padding: 0; }
+.test-btn { all: unset; box-sizing: border-box; display: flex; gap: 10px; align-items: center; width: 100%; padding: 8px 10px; cursor: pointer; border-radius: 8px; font: inherit; color: inherit; }
+.test-btn span { flex: 1; }
+.test-btn i { flex: none; width: 8px; height: 8px; border-radius: 50%; }
+.suite-list li.passed .test-btn i { background: var(--pass); }
+.suite-list li.failed .test-btn i { background: var(--fail); }
+.test-btn .info { flex: none; width: 18px; height: 18px; border-radius: 50%; border: 1px solid var(--faint); color: var(--muted); font: 700 11px/16px var(--font-body); text-align: center; }
+.test-btn:hover, .test-btn:focus-visible { background: var(--card-2); }
+.test-btn:hover .info, .test-btn:focus-visible .info { border-color: var(--svc); color: var(--svc); }
+.test-btn:focus-visible { outline: 2px solid var(--svc); outline-offset: 1px; }
+.suite-hint { margin: 10px 0 0; color: var(--faint); font-size: 13px; }
+
+.test-dialog { width: min(560px, calc(100vw - 32px)); background: var(--card); color: var(--text); border: 1px solid var(--line); border-radius: var(--radius); padding: 24px 26px 18px; box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5); }
+.test-dialog::backdrop { background: rgba(5, 8, 20, 0.7); backdrop-filter: blur(2px); }
+.test-dialog[open] { animation: td-in 160ms ease-out; }
+@keyframes td-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+.td-close-form { position: absolute; top: 10px; right: 10px; margin: 0; }
+.td-close { all: unset; cursor: pointer; width: 32px; height: 32px; border-radius: 8px; text-align: center; font: 400 22px/32px var(--font-body); color: var(--muted); }
+.td-close:hover, .td-close:focus-visible { background: var(--card-2); color: var(--text); }
+.td-n { margin: 0 0 6px; font: 600 12px/1.3 var(--font-mono); color: var(--faint); letter-spacing: 0.03em; }
+.td-name { margin: 0 36px 10px 0; font: 600 15px/1.4 var(--font-mono); word-break: break-word; }
+.td-outcome { display: inline-block; font: 700 11.5px/1 var(--font-mono); text-transform: uppercase; letter-spacing: 0.05em; padding: 6px 8px; border-radius: 6px; }
+.td-outcome.passed { background: rgba(52, 211, 153, 0.15); color: var(--pass); }
+.td-outcome.failed { background: rgba(248, 113, 113, 0.15); color: var(--fail); }
+.td-outcome.skipped { background: rgba(255, 255, 255, 0.06); color: var(--muted); }
+.test-dialog h4 { margin: 18px 0 4px; font: 700 11.5px/1 var(--font-mono); text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+.test-dialog p { margin: 0; font-size: 15px; line-height: 1.55; }
+.td-param { margin-top: 14px !important; font-size: 13.5px !important; color: var(--muted); }
+.td-src { margin-top: 18px !important; font-size: 13px !important; color: var(--faint); }
+.td-src a { color: var(--muted); }
 
 .foot { border-top: 1px solid var(--line); padding: 24px 0 40px; color: var(--muted); font-size: 14px; }
 .foot p { margin: 4px 0; }
