@@ -19,8 +19,8 @@ KNOWN_NODES = {
 
 
 def test_the_first_catalogues_are_configured():
-    assert len(CATALOGUES) == 16
-    assert sum(c.type == "service-catalogue" for c in CATALOGUES) == 7
+    assert len(CATALOGUES) == 22
+    assert sum(c.type == "service-catalogue" for c in CATALOGUES) == 10
 
 
 def test_ids_are_unique_and_nodes_are_known():
@@ -89,3 +89,13 @@ def test_duplicate_ids_are_rejected(tmp_path):
     body = one + one.split("catalogues:\n", 1)[1]
     with pytest.raises(ConfigError, match="duplicate id"):
         load(_write(tmp_path, body))
+
+
+def test_resource_hub_entries_carry_no_sheet_status():
+    """The Resource Hub has no compliance or status column: entries taken
+    from it quote nothing, and name their Hub record in the note."""
+    hub = [c for c in CATALOGUES if c.source == "resource-hub"]
+    assert len(hub) == 6
+    for c in hub:
+        assert c.listed == {}, c.id
+        assert "Hub record 21.11166/" in c.note, c.id

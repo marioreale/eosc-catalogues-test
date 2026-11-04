@@ -18,7 +18,7 @@ def test_catalogues_lists_the_configured_ones():
     result = runner.invoke(app, ["catalogues"])
     assert result.exit_code == 0
     assert "bbmri-eric-services" in result.output
-    assert "16 catalogue(s): 7 service, 9 research product." in result.output
+    assert "22 catalogue(s): 10 service, 12 research product." in result.output
 
 
 def test_an_empty_list_is_reported(tmp_path: Path):
