@@ -65,6 +65,8 @@ code { font-family: var(--font-mono); font-size: 0.86em; background: rgba(255,25
 .brand:focus-visible { outline: 2px solid var(--svc); outline-offset: 3px; }
 .foot-brand { margin: 0 0 14px !important; }
 .foot-brand img { display: inline-block; height: 26px; width: auto; padding: 8px 12px; background: #fff; border-radius: 8px; box-sizing: content-box; }
+.foot-brand a { display: inline-block; border-radius: 8px; }
+.foot-brand a:focus-visible { outline: 2px solid var(--svc); outline-offset: 3px; }
 .eyebrow { margin: 0 0 10px; font: 500 13px/1 var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
 h1 { margin: 0; font: 800 clamp(40px, 7vw, 84px)/0.98 var(--font-display); letter-spacing: -0.02em; }
 .grad { background: linear-gradient(90deg, var(--svc), var(--rp)); -webkit-background-clip: text; background-clip: text; color: transparent; }
