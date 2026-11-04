@@ -18,7 +18,7 @@ def test_catalogues_lists_the_configured_ones():
     result = runner.invoke(app, ["catalogues"])
     assert result.exit_code == 0
     assert "bbmri-eric-services" in result.output
-    assert "19 catalogue(s): 10 service, 9 research product." in result.output
+    assert "22 catalogue(s): 10 service, 12 research product." in result.output
 
 
 def test_an_empty_list_is_reported(tmp_path: Path):
@@ -43,7 +43,7 @@ def test_report_without_probe_writes_per_catalogue_checks(tmp_path: Path):
     result = runner.invoke(app, ["report", "--no-probe", "--out", str(out)])
     assert result.exit_code == 0, result.output
     data = json.loads(out.read_text())
-    assert len(data["catalogues"]) == 19
+    assert len(data["catalogues"]) == 22
     for row in data["catalogues"]:
         assert row["probe"] is None
         assert row["node_name"]

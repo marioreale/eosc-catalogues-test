@@ -19,9 +19,9 @@ KNOWN_NODES = {
 
 
 def test_the_first_catalogues_are_configured():
-    assert len(CATALOGUES) == 19
+    assert len(CATALOGUES) == 22
     assert sum(c.type == "service-catalogue" for c in CATALOGUES) == 10
-    assert len({c.node for c in CATALOGUES}) == 12
+    assert len({c.node for c in CATALOGUES}) == 13
 
 
 def test_ids_are_unique_and_nodes_are_known():
@@ -42,10 +42,19 @@ def test_endpoints_are_https_and_oai_bases_have_no_verb():
             assert "verb=" not in c.endpoint, c.id
 
 
-def test_every_entry_comes_from_the_production_sheet():
+def test_every_entry_comes_from_the_production_sheet_but_poland():
     for c in CATALOGUES:
-        assert c.source == "production", c.id
+        expected = "resource-hub" if c.node == "eosc-pl" else "production"
+        assert c.source == expected, c.id
         assert set(c.listed) <= {"comment", "evaluation_eosc_a"}, c.id
+
+
+def test_resource_hub_entries_quote_nothing_and_name_their_record():
+    hub = [c for c in CATALOGUES if c.source == "resource-hub"]
+    assert len(hub) == 3
+    for c in hub:
+        assert c.listed == {}, c.id
+        assert "Hub record 21.11166/" in c.note, c.id
 
 
 def test_a_display_endpoint_is_explained_in_the_note():

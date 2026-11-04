@@ -64,8 +64,12 @@ def config_checks(c: Catalogue) -> list[dict]:
     if c.protocol == "oai-pmh":
         out.append(check("oai-base", "OAI-PMH base URL has no ?verb=",
                          "verb=" not in c.endpoint))
-    out.append(check("source", "Endpoint taken from the production sheet",
-                     c.source == "production", c.source))
+    if c.source == "resource-hub":
+        out.append(check("source", "Resource Hub entry names its Hub record",
+                         c.listed == {} and "Hub record 21.11166/" in c.note, c.source))
+    else:
+        out.append(check("source", "Endpoint taken from the production sheet",
+                         c.source == "production", c.source))
     return out
 
 

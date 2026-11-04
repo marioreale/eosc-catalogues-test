@@ -16,7 +16,7 @@
   const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const initials = (name) => name.replace(/^EOSC (Node )?/, '').replace(/[()]/g, '').split(/[\s-]+/).filter(Boolean).slice(0, 2).map((w) => w[0]).join('').toUpperCase();
 
-  const SOURCE_LABEL = { production: 'Production sheet' };
+  const SOURCE_LABEL = { production: 'Production sheet', 'resource-hub': 'Resource Hub' };
 
   function verdict(row) {
     const cfgOk = row.checks.every((c) => c.passed);
@@ -46,11 +46,11 @@
 
     const quoted = [];
     String(row.source).split(',').map((s) => s.trim()).forEach((s) =>
-      quoted.push(`<span class="q">${esc(SOURCE_LABEL[s] || s)}</span>`));
+      quoted.push(`<span class="q ${s === 'resource-hub' ? 'hub' : ''}">${esc(SOURCE_LABEL[s] || s)}</span>`));
     const L = row.listed || {};
     if (L.comment) quoted.push(`<span class="q st">Comment: “${esc(L.comment)}”</span>`);
     if (L.evaluation_eosc_a) quoted.push(`<span class="q st">EOSC-A evaluation: “${esc(L.evaluation_eosc_a)}”</span>`);
-    if (!L.comment && !L.evaluation_eosc_a) quoted.push('<span class="q none">No comment in the sheet</span>');
+    if (!L.comment && !L.evaluation_eosc_a && row.source === 'production') quoted.push('<span class="q none">No comment in the sheet</span>');
 
     return `<article class="card" data-node="${esc(row.node)}" style="--node:${colorOf(row.node)}">
       <div class="card-top">

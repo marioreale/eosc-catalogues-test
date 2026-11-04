@@ -37,16 +37,22 @@ collection and checks, HTML (with Markdown, CSV and JSON) for the reports.
 
 ## Status
 
-`catalogues.yaml` lists **19 catalogues of 12 nodes**: 10 Service Catalogues
-queried through the EOSC EU Node services API (`GET /services`) and 9 Research
+`catalogues.yaml` lists **22 catalogues of 13 nodes**: 10 Service Catalogues
+queried through the EOSC EU Node services API (`GET /services`) and 12 Research
 Product Catalogues queried through OAI-PMH.
 
-Every endpoint comes from one source, the production sheet
+Every endpoint but Poland's comes from the production sheet
 `production_env_node_services.xlsx` (shared in October 2026): its "Service
 Catalogue registered" column (tab "Services") and its "Research Product
 Catalogue registered" column (tab "Research product catalogues"). Where the
 sheet comments on a catalogue ("Comments", "Evaluation / EOSC-A"), the entry
 quotes it in `listed`, without judging it.
+
+Poland's three research product catalogues (Most Wiedzy, RepOD, ROHub) are
+not in the production sheet; they come from the EOSC EU Node Resource Hub's
+[Data Sources](https://open-science-cloud.ec.europa.eu/resources/datasources),
+read through its public catalogue API on 4 November 2026. The Hub has no
+comment column, so they quote nothing; each note gives the Hub record PID.
 
 Left out: two rows of the research product tab that are web pages, not OAI-PMH
 endpoints (Finland's `metax.fairdata.fi`, Poland's `odis.ecudo.pl`).
@@ -64,6 +70,7 @@ endpoints (Finland's `metax.fairdata.fi`, Poland's `odis.ecudo.pl`).
 | GÉANT | `geant-node-catalogue.geant.org/services` | |
 | Italy | `gcat.d4science.org/.../EOSC-IT_Node/services` | CNR IRIS, IRIS AperTO (UniTo) (`/oai/openaire4`) |
 | PaNOSC | `pan-training.eu/service-catalogue/api/v3/services` | RODARE (`rodare.hzdr.de/oai2d`) |
+| Poland | | Most Wiedzy (`mostwiedzy.pl/en/oai-pmh`), RepOD (`repod.icm.edu.pl/oai`), ROHub (`api.rohub.org/api/oai2d/`) (Resource Hub) |
 | Slovakia | `sc.eosc.sk/api/v1/services` | |
 
 Czechia: the page shows the intended production address

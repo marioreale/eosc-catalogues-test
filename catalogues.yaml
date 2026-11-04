@@ -17,7 +17,8 @@
 #             not verified here (research product catalogues only):
 #             comment = its "Comments" column,
 #             evaluation_eosc_a = its "Evaluation / EOSC-A" column
-#   source    where the endpoint comes from: always "production"
+#   source    where the endpoint comes from: "production", or "resource-hub"
+#             for the three Poland catalogues
 #   note      anything a reader needs to know before trusting the entry
 #
 # Source: production_env_node_services.xlsx (shared in October 2026, a
@@ -29,6 +30,12 @@
 #   ("Improvement requested") and Poland's https://odis.ecudo.pl/
 #   ("Improvement requested -> should probably be permenent rejected since it
 #   is a scientific database").
+#
+# Exception, for Poland only: the EOSC EU Node Resource Hub's Data Sources
+# (https://open-science-cloud.ec.europa.eu/resources/datasources), read through
+# its public catalogue API on 4 November 2026. The Hub has no comment or
+# evaluation column, so these entries quote nothing; the note gives the Hub
+# record PID.
 #
 # Every endpoint below answered one request on 23 October or 4 November 2026
 # unless the note says otherwise. That shows the endpoint is up, nothing about
@@ -234,3 +241,47 @@ catalogues:
       address did not work: its server presented a generic certificate ("TRAEFIK
       DEFAULT CERT", not valid for the host) and answered "404 page not
       found"; the test1 address answered Identify.
+
+  # Poland: not in the production sheet, whose only Poland row
+  # (https://odis.ecudo.pl/) is a web page; these three come from the Resource Hub.
+  - id: eosc-pl-mostwiedzy-oai
+    node: eosc-pl
+    name: Most Wiedzy Open Research Data Catalog
+    type: research-product-catalogue
+    protocol: oai-pmh
+    endpoint: https://mostwiedzy.pl/en/oai-pmh
+    website: https://mostwiedzy.pl/
+    source: resource-hub
+    note: >-
+      Hub record 21.11166/kFNSMX (registered 5 October 2026), re3data
+      r3d100013366. The Hub records it as not OpenAIRE-compliant ("Not
+      compatible / Not relevant"). Identify reports its baseURL with a
+      trailing slash.
+
+  - id: eosc-pl-repod-oai
+    node: eosc-pl
+    name: RepOD Repository for Open Data
+    type: research-product-catalogue
+    protocol: oai-pmh
+    endpoint: https://repod.icm.edu.pl/oai
+    website: https://repod.icm.edu.pl/
+    source: resource-hub
+    note: >-
+      Hub record 21.11166/3S6tct (registered 7 October 2026). The Hub
+      declares https://repod.icm.edu.pl/oai?verb=Identify; the base URL is
+      used here, as Identify confirms (a Dataverse OAI server). The Hub records
+      it as not OpenAIRE-compliant.
+
+  - id: eosc-pl-rohub-oai
+    node: eosc-pl
+    name: ROHub
+    type: research-product-catalogue
+    protocol: oai-pmh
+    endpoint: https://api.rohub.org/api/oai2d/
+    website: https://reliance.rohub.org/
+    source: resource-hub
+    note: >-
+      Hub record 21.11166/l9sqU5 (registered 7 October 2026), re3data
+      r3d100013832, declared OpenAIRE 4.0 compatible. Its Identify response
+      gives a broken baseURL ("https://<arguments.base.Str object at …>/api/oai2d/"),
+      which a harvester that trusts Identify would follow.
