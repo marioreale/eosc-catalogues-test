@@ -80,9 +80,29 @@ registers under the EOSC EU Node itself (Zenodo, PANGAEA, BASE and others),
 which are not node catalogues. The Hub does not list BBMRI-ERIC's OAI-PMH
 endpoint, which the sheets do.
 
+## Results page
+
+The per-catalogue results are published at
+**https://marioreale.github.io/eosc-catalogues-test/**, rebuilt by the
+`results page` workflow on every push to `main` (or by hand, through
+*Run workflow*). Each run:
+
+1. runs the test suite (`pytest`, results included in the page);
+2. runs `catalogue-check report`, which, for each catalogue, evaluates the
+   configuration checks entry by entry and sends one request to its endpoint
+   (`GET` for a Service Catalogue, `?verb=Identify` for OAI-PMH), recording
+   the HTTP status, the time taken and a few facts from the answer;
+3. publishes `site/` (static HTML reading `results.json`) to GitHub Pages.
+
+A card is green when the endpoint answered in the expected format, amber when
+it answered but something deserves a look (for example an Identify `baseURL`
+that differs from the endpoint queried) or timed out, and red when it did not
+answer or a configuration check failed. None of this is a compliance verdict.
+
 ```bash
 uv sync
 uv run catalogue-check version
 uv run catalogue-check catalogues   # list and validate catalogues.yaml
+uv run catalogue-check report       # write site/results.json (add --no-probe for offline)
 uv run pytest -q
 ```

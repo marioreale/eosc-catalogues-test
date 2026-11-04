@@ -99,3 +99,9 @@ def test_resource_hub_entries_carry_no_sheet_status():
     for c in hub:
         assert c.listed == {}, c.id
         assert "Hub record 21.11166/" in c.note, c.id
+
+
+def test_every_known_node_has_a_display_name():
+    from catalogue_check.report import NODE_NAMES
+
+    assert set(NODE_NAMES) == KNOWN_NODES

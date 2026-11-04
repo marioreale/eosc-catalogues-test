@@ -34,3 +34,17 @@ def test_a_bad_file_is_a_configuration_error(tmp_path: Path):
     f.write_text("catalogues:\n  - id: x\n")
     result = runner.invoke(app, ["catalogues", "--file", str(f)])
     assert result.exit_code == 2
+
+
+def test_report_without_probe_writes_per_catalogue_checks(tmp_path: Path):
+    import json
+
+    out = tmp_path / "results.json"
+    result = runner.invoke(app, ["report", "--no-probe", "--out", str(out)])
+    assert result.exit_code == 0, result.output
+    data = json.loads(out.read_text())
+    assert len(data["catalogues"]) == 22
+    for row in data["catalogues"]:
+        assert row["probe"] is None
+        assert row["node_name"]
+        assert all(c["passed"] for c in row["checks"]), row["id"]

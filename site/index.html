@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>EOSC Node Catalogues — test results</title>
+  <meta name="description" content="Per-catalogue test results for the Service and Research Product Catalogues of EOSC Nodes.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='13' fill='none' stroke='%2322d3ee' stroke-width='4'/><circle cx='16' cy='16' r='4' fill='%23a78bfa'/></svg>">
+  <link rel="preconnect" href="https://api.fontshare.com">
+  <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@500,700,800&f[]=satoshi@400,500,700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip" href="#services">Skip to results</a>
+
+  <header class="hero">
+    <div class="wrap">
+      <p class="eyebrow">eosc-catalogues-test · results</p>
+      <h1>EOSC Node <span class="grad">Catalogues</span></h1>
+      <p class="lede">Every catalogue configured in <code>catalogues.yaml</code>, one card each, with the node that contributes it. Service Catalogues and Research Product Catalogues are reported separately.</p>
+      <p class="meta" id="meta">Loading results…</p>
+
+      <div class="kpis" id="kpis" aria-live="polite"></div>
+    </div>
+  </header>
+
+  <nav class="bar" aria-label="Filters">
+    <div class="wrap bar-inner">
+      <div class="jump">
+        <a href="#services" class="jump-svc">Service Catalogues <b id="n-svc">–</b></a>
+        <a href="#products" class="jump-rp">Research Product Catalogues <b id="n-rp">–</b></a>
+      </div>
+      <div class="nodes" id="node-filter" role="group" aria-label="Filter by node"></div>
+    </div>
+  </nav>
+
+  <main class="wrap">
+    <section class="scope" aria-labelledby="scope-h">
+      <h2 id="scope-h">What each card shows</h2>
+      <div class="scope-grid">
+        <div class="scope-item">
+          <span class="tag tag-cfg">Configuration</span>
+          <p>The checks of the test suite, evaluated for this entry: required fields, known node, protocol matching the type, HTTPS endpoint, OAI-PMH base URL without <code>?verb=</code>, quoted sheet status, Resource Hub record. No network involved.</p>
+        </div>
+        <div class="scope-item">
+          <span class="tag tag-probe">Availability probe</span>
+          <p>One request per endpoint during the run: <code>GET</code> the services endpoint (must answer 200 with JSON) or <code>?verb=Identify</code> on the OAI-PMH base URL (must answer 200 with an Identify response).</p>
+        </div>
+        <div class="scope-item">
+          <span class="tag tag-quote">Quoted, not judged</span>
+          <p>What the October 2026 sheets say about the catalogue (compliance, status), or that it comes from the EOSC EU Node Resource Hub. Reported as written.</p>
+        </div>
+      </div>
+      <p class="caveat"><strong>Not tested:</strong> compliance with the EEN services API or the OpenAIRE guidelines, harvesting of records, and metadata quality (DCAT/DCAT-AP). A green probe only means the endpoint is up and speaks the expected format.</p>
+    </section>
+
+    <section id="services" class="group group-svc" aria-labelledby="svc-h">
+      <div class="group-head">
+        <h2 id="svc-h"><span class="dot"></span>Service Catalogues</h2>
+        <p>Queried through the EOSC EU Node services API (<code>GET /services</code>).</p>
+      </div>
+      <div class="cards" id="cards-svc"></div>
+    </section>
+
+    <section id="products" class="group group-rp" aria-labelledby="rp-h">
+      <div class="group-head">
+        <h2 id="rp-h"><span class="dot"></span>Research Product Catalogues</h2>
+        <p>Queried through OAI-PMH (<code>?verb=Identify</code>).</p>
+      </div>
+      <div class="cards" id="cards-rp"></div>
+    </section>
+
+    <section class="suite" aria-labelledby="suite-h">
+      <h2 id="suite-h">Test suite</h2>
+      <p id="suite-sum" class="suite-sum"></p>
+      <ul class="suite-list" id="suite-list"></ul>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="wrap">
+      <p>Source: <a href="https://github.com/marioreale/eosc-catalogues-test">marioreale/eosc-catalogues-test</a> · raw data: <a href="results.json">results.json</a> · <span id="foot-run"></span></p>
+      <p>Node ids and names follow <a href="https://github.com/marioreale/eosc-basic-compliance">eosc-basic-compliance</a>'s <code>nodes.yaml</code>.</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

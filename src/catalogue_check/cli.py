@@ -45,3 +45,26 @@ def catalogues(
         f"\n{len(entries)} catalogue(s): {services} service, "
         f"{len(entries) - services} research product."
     )
+
+
+@app.command()
+def report(
+    file: Path = typer.Option(DEFAULT_CATALOGUES, "--file", help="Catalogue configuration."),
+    out: Path = typer.Option(Path("site/results.json"), "--out", help="Where to write the JSON."),
+    probe: bool = typer.Option(True, "--probe/--no-probe", help="Send one request per endpoint."),
+    junit: Path | None = typer.Option(None, "--junit", help="pytest JUnit XML to include."),
+) -> None:
+    """Write per-catalogue results (configuration checks and availability probe) as JSON."""
+    from catalogue_check import report as rep
+
+    try:
+        entries = load(file)
+    except ConfigError as exc:
+        typer.echo(f"Configuration error: {exc}", err=True)
+        raise typer.Exit(2) from exc
+    tests = rep.junit_summary(junit) if junit and junit.exists() else None
+    data = rep.build(entries, probe, tests)
+    rep.write(data, out)
+    answered = sum((r["probe"] or {}).get("outcome") == "pass" for r in data["catalogues"])
+    typer.echo(f"Wrote {out}: {len(entries)} catalogue(s)"
+               + (f", {answered} answered the probe." if probe else "."))

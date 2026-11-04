@@ -1,0 +1,42 @@
+name: results page
+
+# Runs the test suite, probes every catalogue endpoint once and publishes the
+# per-catalogue results to GitHub Pages.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: uv sync --locked
+      # The page shows the test results whatever they are, so a failing test
+      # does not stop the publication; the "tests" workflow still goes red.
+      - run: uv run pytest -q --junitxml=junit.xml || true
+      - run: uv run catalogue-check report --junit junit.xml --out site/results.json
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
