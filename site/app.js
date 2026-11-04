@@ -9,6 +9,9 @@
     'eosc-de': '#fcd34d',
   };
   const colorOf = (id) => NODE_COLORS[id] || '#94a3b8';
+  // Node logos from https://eosc.eu/building-the-eosc-federation (EOSC Nodes tab).
+  const LOGOS = new Set(['bbmri-eric', 'cern', 'eosc-cz', 'eosc-dto', 'data-terra', 'eosc-fi', 'panosc',
+    'eudat', 'egi', 'geant', 'eosc-pl', 'eosc-it', 'eosc-sk']);
   const $ = (s) => document.querySelector(s);
   const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const initials = (name) => name.replace(/^EOSC (Node )?/, '').replace(/[()]/g, '').split(/[\s-]+/).filter(Boolean).slice(0, 2).map((w) => w[0]).join('').toUpperCase();
@@ -50,7 +53,9 @@
     return `<article class="card" data-node="${esc(row.node)}" style="--node:${colorOf(row.node)}">
       <div class="card-top">
         <div>
-          <div class="node-badge"><span class="sw" aria-hidden="true">${esc(initials(row.node_name))}</span>${esc(row.node_name)}</div>
+          ${LOGOS.has(row.node)
+            ? `<div class="node-logo"><img src="logos/${esc(row.node)}.png" alt="${esc(row.node_name)}" loading="lazy" onerror="this.parentNode.outerHTML='<div class=&quot;node-badge&quot;>${esc(row.node_name)}</div>'"></div>`
+            : `<div class="node-badge"><span class="sw" aria-hidden="true">${esc(initials(row.node_name))}</span>${esc(row.node_name)}</div>`}
           <h3>${esc(row.name)}</h3>
         </div>
         <span class="verdict ${v.cls}">${v.text}</span>

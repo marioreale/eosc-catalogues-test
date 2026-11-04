@@ -149,6 +149,13 @@ h1 { margin: 0; font: 800 clamp(40px, 7vw, 84px)/0.98 var(--font-display); lette
 .card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
 .node-badge { display: inline-flex; align-items: center; gap: 8px; font: 700 13px/1.2 var(--font-body); color: var(--node); }
 .node-badge .sw { width: 22px; height: 22px; border-radius: 6px; background: var(--node); color: #0b1020; display: grid; place-items: center; font: 800 11px/1 var(--font-display); }
+.node-logo {
+  display: inline-flex; align-items: center;
+  margin-bottom: 8px; padding: 6px 10px;
+  background: #fff; border-radius: 8px;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--node) 70%, transparent);
+}
+.node-logo img { display: block; height: 30px; width: auto; max-width: 100%; object-fit: contain; }
 .card h3 { margin: 2px 0 0; font: 700 19px/1.25 var(--font-display); }
 .endpoint { font: 400 12.5px/1.4 var(--font-mono); color: var(--muted); word-break: break-all; }
 .endpoint a { color: var(--muted); text-decoration-color: rgba(154,163,199,0.4); }
