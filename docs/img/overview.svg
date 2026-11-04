@@ -1,0 +1,109 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 640" width="1200" height="640" font-family="Inter, Segoe UI, Helvetica, Arial, sans-serif">
+  <title>eosc-catalogues-test: how the test suite works</title>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#64748b"/>
+    </marker>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0f172a"/><stop offset="1" stop-color="#111c33"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="640" rx="18" fill="url(#bg)"/>
+  <text x="40" y="52" fill="#f8fafc" font-size="26" font-weight="700">How the test suite works</text>
+  <text x="40" y="80" fill="#94a3b8" font-size="15">One configuration file, three layers of checks, one published page</text>
+
+  <!-- column headings -->
+  <g font-size="12" font-weight="700" letter-spacing="1.5" fill="#64748b">
+    <text x="40" y="122">1 · INPUT</text>
+    <text x="300" y="122">2 · VALIDATE (OFFLINE)</text>
+    <text x="620" y="122">3 · PROBE (NETWORK)</text>
+    <text x="940" y="122">4 · PUBLISH</text>
+  </g>
+
+  <!-- sources -->
+  <g>
+    <rect x="40" y="140" width="220" height="70" rx="10" fill="#1e293b" stroke="#334155"/>
+    <text x="56" y="168" fill="#e2e8f0" font-size="14" font-weight="600">Production sheet</text>
+    <text x="56" y="190" fill="#94a3b8" font-size="12">19 catalogues, 12 nodes</text>
+    <rect x="40" y="222" width="220" height="70" rx="10" fill="#1e293b" stroke="#334155"/>
+    <text x="56" y="250" fill="#e2e8f0" font-size="14" font-weight="600">EEN Resource Hub</text>
+    <text x="56" y="272" fill="#94a3b8" font-size="12">3 catalogues, Poland only</text>
+    <path d="M150,292 L150,330" stroke="#64748b" stroke-width="2" marker-end="url(#ar)"/>
+    <path d="M150,210 L150,222" stroke="#64748b" stroke-width="2"/>
+    <rect x="40" y="336" width="220" height="104" rx="12" fill="#172554" stroke="#3b82f6" stroke-width="2"/>
+    <text x="56" y="366" fill="#f8fafc" font-size="16" font-weight="700" font-family="ui-monospace, Menlo, monospace">catalogues.yaml</text>
+    <text x="56" y="390" fill="#bfdbfe" font-size="12">22 entries · 13 nodes</text>
+    <text x="56" y="408" fill="#22d3ee" font-size="12">10 Service Catalogues</text>
+    <text x="56" y="426" fill="#a78bfa" font-size="12">12 Research Product Catalogues</text>
+  </g>
+
+  <!-- validate -->
+  <path d="M260,388 L292,388" stroke="#64748b" stroke-width="2" marker-end="url(#ar)"/>
+  <g>
+    <rect x="300" y="140" width="290" height="300" rx="12" fill="#1e293b" stroke="#334155"/>
+    <text x="318" y="170" fill="#f8fafc" font-size="15" font-weight="700">config.load()</text>
+    <text x="318" y="190" fill="#94a3b8" font-size="12">rejects the file on the first bad entry</text>
+    <g font-size="12" fill="#cbd5e1">
+      <text x="318" y="218">✓ required fields present</text>
+      <text x="318" y="238">✓ id unique</text>
+      <text x="318" y="258">✓ type and protocol known and paired</text>
+      <text x="318" y="278">✓ endpoint is an absolute https URL</text>
+      <text x="318" y="298">✓ OAI-PMH base URL without ?verb=</text>
+      <text x="318" y="318">✓ display_endpoint is https</text>
+      <text x="318" y="338">✓ listed: only comment, evaluation_eosc_a</text>
+    </g>
+    <rect x="316" y="356" width="258" height="70" rx="10" fill="#14532d" stroke="#22c55e"/>
+    <text x="332" y="384" fill="#dcfce7" font-size="14" font-weight="700">pytest · 19 tests</text>
+    <text x="332" y="406" fill="#bbf7d0" font-size="12">CLI 5 · configuration 14</text>
+  </g>
+
+  <!-- probe -->
+  <path d="M590,290 L612,290" stroke="#64748b" stroke-width="2" marker-end="url(#ar)"/>
+  <g>
+    <rect x="620" y="140" width="290" height="300" rx="12" fill="#1e293b" stroke="#334155"/>
+    <text x="638" y="170" fill="#f8fafc" font-size="15" font-weight="700">catalogue-check report</text>
+    <text x="638" y="190" fill="#94a3b8" font-size="12">one GET per endpoint · 20 s timeout</text>
+    <rect x="636" y="206" width="258" height="96" rx="10" fill="#083344" stroke="#22d3ee"/>
+    <text x="652" y="230" fill="#a5f3fc" font-size="13" font-weight="700">Service Catalogue</text>
+    <text x="652" y="250" fill="#cffafe" font-size="12" font-family="ui-monospace, Menlo, monospace">GET &lt;endpoint&gt;</text>
+    <text x="652" y="270" fill="#cffafe" font-size="12">pass = HTTP 200 + JSON</text>
+    <text x="652" y="290" fill="#67e8f9" font-size="11">records item counts, if declared</text>
+    <rect x="636" y="314" width="258" height="112" rx="10" fill="#2e1065" stroke="#a78bfa"/>
+    <text x="652" y="338" fill="#ddd6fe" font-size="13" font-weight="700">Research Product Catalogue</text>
+    <text x="652" y="358" fill="#ede9fe" font-size="12" font-family="ui-monospace, Menlo, monospace">GET &lt;base&gt;?verb=Identify</text>
+    <text x="652" y="378" fill="#ede9fe" font-size="12">pass = HTTP 200 + OAI Identify</text>
+    <text x="652" y="398" fill="#c4b5fd" font-size="11">records repositoryName, baseURL…</text>
+    <text x="652" y="416" fill="#fbbf24" font-size="11">⚠ note if baseURL ≠ endpoint</text>
+  </g>
+
+  <!-- publish -->
+  <path d="M910,290 L932,290" stroke="#64748b" stroke-width="2" marker-end="url(#ar)"/>
+  <g>
+    <rect x="940" y="140" width="220" height="130" rx="12" fill="#1e293b" stroke="#334155"/>
+    <text x="956" y="170" fill="#f8fafc" font-size="15" font-weight="700" font-family="ui-monospace, Menlo, monospace">results.json</text>
+    <g font-size="12" fill="#cbd5e1">
+      <text x="956" y="196">per catalogue: checks + probe</text>
+      <text x="956" y="216">test summary (JUnit XML)</text>
+      <text x="956" y="236">commit, run link, time</text>
+    </g>
+    <path d="M1050,270 L1050,302" stroke="#64748b" stroke-width="2" marker-end="url(#ar)"/>
+    <rect x="940" y="310" width="220" height="130" rx="12" fill="#422006" stroke="#f59e0b" stroke-width="2"/>
+    <text x="956" y="340" fill="#fef3c7" font-size="15" font-weight="700">GitHub Pages</text>
+    <text x="956" y="364" fill="#fde68a" font-size="12">one card per catalogue</text>
+    <text x="956" y="384" fill="#fde68a" font-size="12">node logo and colour</text>
+    <text x="956" y="404" fill="#fde68a" font-size="12">UP · NOTE · DOWN</text>
+    <text x="956" y="424" fill="#fde68a" font-size="12">filter by node</text>
+  </g>
+
+  <!-- triggers band -->
+  <rect x="40" y="476" width="1120" height="128" rx="12" fill="#0b1324" stroke="#1e293b"/>
+  <text x="60" y="504" fill="#94a3b8" font-size="12" font-weight="700" letter-spacing="1.5">GITHUB ACTIONS</text>
+  <g>
+    <rect x="60" y="518" width="520" height="70" rx="10" fill="#1e293b" stroke="#22c55e"/>
+    <text x="78" y="545" fill="#dcfce7" font-size="14" font-weight="700">tests  <tspan fill="#94a3b8" font-weight="400" font-size="12">every push, pull request, manual</tspan></text>
+    <text x="78" y="570" fill="#cbd5e1" font-size="12" font-family="ui-monospace, Menlo, monospace">uv sync --locked → ruff check → pytest   (red if any fails)</text>
+    <rect x="600" y="518" width="540" height="70" rx="10" fill="#1e293b" stroke="#f59e0b"/>
+    <text x="618" y="545" fill="#fef3c7" font-size="14" font-weight="700">results page  <tspan fill="#94a3b8" font-weight="400" font-size="12">push to main, manual</tspan></text>
+    <text x="618" y="570" fill="#cbd5e1" font-size="12" font-family="ui-monospace, Menlo, monospace">pytest --junitxml → report → upload site/ → deploy</text>
+  </g>
+</svg>

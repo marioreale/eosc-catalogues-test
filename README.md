@@ -9,6 +9,9 @@ It is a sibling of
 which checks Node Landing Pages, and uses the same technologies: Python for
 collection and checks, HTML (with Markdown, CSV and JSON) for the reports.
 
+How the test suite works, its workflows and every test are described in
+[docs/](docs/README.md).
+
 ## Scope
 
 1. **Query.** Read each node's catalogue through its public endpoint, the one
