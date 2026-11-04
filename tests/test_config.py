@@ -42,9 +42,14 @@ def test_endpoints_are_https_and_oai_bases_have_no_verb():
             assert "verb=" not in c.endpoint, c.id
 
 
-def test_every_entry_comes_from_the_production_sheet_but_poland():
+# Nodes whose catalogues are not in the production sheet, and where they come
+# from instead. Poland's three catalogues are taken from the Resource Hub.
+KNOWN_EXCEPTIONS = {"eosc-pl": "resource-hub"}
+
+
+def test_every_entry_comes_from_the_production_sheet_but_known_exceptions():
     for c in CATALOGUES:
-        expected = "resource-hub" if c.node == "eosc-pl" else "production"
+        expected = KNOWN_EXCEPTIONS.get(c.node, "production")
         assert c.source == expected, c.id
         assert set(c.listed) <= {"comment", "evaluation_eosc_a"}, c.id
 

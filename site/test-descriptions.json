@@ -26,10 +26,10 @@
       "asserts": "Every endpoint starts with https://; no OAI-PMH endpoint contains verb=.",
       "why": "The probe adds ?verb=Identify itself; a copied request URL would break it."
     },
-    "test_every_entry_comes_from_the_production_sheet_but_poland": {
+    "test_every_entry_comes_from_the_production_sheet_but_known_exceptions": {
       "n": 5,
       "file": "test_config.py",
-      "asserts": "source is resource-hub for Poland and production for every other node. listed holds only comment and evaluation_eosc_a.",
+      "asserts": "source is production for every node except the known exceptions listed in KNOWN_EXCEPTIONS (today only Poland, resource-hub). listed holds only comment and evaluation_eosc_a.",
       "why": "Provenance stays explicit; only the production sheet's two columns are quoted."
     },
     "test_resource_hub_entries_quote_nothing_and_name_their_record": {
