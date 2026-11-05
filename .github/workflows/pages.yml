@@ -43,7 +43,7 @@ jobs:
           git add results
           if git diff --cached --quiet; then exit 0; fi
           git commit -m "results: copy of the results page from ${GITHUB_SHA::7}"
-          git pull --rebase origin main
+          git pull --rebase --autostash origin main   # site/index.html carries the ?v= edit
           git push origin HEAD:main
       - uses: actions/upload-pages-artifact@v3
         with:
