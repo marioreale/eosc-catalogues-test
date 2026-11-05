@@ -1,14 +1,9 @@
 // Renders results.json, written by `catalogue-check report` in the CI run.
 (function () {
-  // One colour per node, stable across runs (keyed by node id).
-  const NODE_COLORS = {
-    'bbmri-eric': '#f472b6', 'cern': '#60a5fa', 'eosc-cz': '#f97316', 'eosc-dto': '#2dd4bf',
-    'data-terra': '#a3e635', 'eosc-fi': '#38bdf8', 'panosc': '#e879f9', 'eudat': '#facc15',
-    'egi': '#fb7185', 'geant': '#818cf8', 'eosc-pl': '#f43f5e', 'eosc-it': '#4ade80',
-    'eosc-sk': '#c084fc', 'ebrains-ri': '#fdba74', 'life-sciences-connect': '#5eead4',
-    'eosc-de': '#fcd34d',
-  };
-  const colorOf = (id) => NODE_COLORS[id] || '#94a3b8';
+  // Palette: lively green for Service Catalogues, mild pink for Research Product
+  // Catalogues, white for neutral elements. Nodes are told apart by their logos.
+  const TYPE_COLORS = { 'service-catalogue': '#008691', 'research-product-catalogue': '#ff5b7f' };
+  const BAR_COLORS = ['#008691', '#ff5b7f', '#ffffff'];
   // Node logos from https://eosc.eu/building-the-eosc-federation (EOSC Nodes tab).
   const LOGOS = new Set(['bbmri-eric', 'cern', 'eosc-cz', 'eosc-dto', 'data-terra', 'eosc-fi', 'panosc',
     'eudat', 'egi', 'geant', 'eosc-pl', 'eosc-it', 'eosc-sk']);
@@ -52,7 +47,7 @@
     if (L.evaluation_eosc_a) quoted.push(`<span class="q st">EOSC-A evaluation: “${esc(L.evaluation_eosc_a)}”</span>`);
     if (!L.comment && !L.evaluation_eosc_a && row.source === 'production') quoted.push('<span class="q none">No comment in the sheet</span>');
 
-    return `<article class="card" data-node="${esc(row.node)}" style="--node:${colorOf(row.node)}">
+    return `<article class="card" data-node="${esc(row.node)}" style="--node:${TYPE_COLORS[row.type] || '#ffffff'}">
       <div class="card-top">
         <div>
           ${LOGOS.has(row.node)
@@ -93,7 +88,7 @@
     $('#meta').innerHTML = `Generated ${esc(whenTxt)}${commit}${run}`;
     $('#foot-run').innerHTML = `generated ${esc(whenTxt)}`;
 
-    const nodeBar = '<div class="bar-mini">' + nodes.map(([id]) => `<i style="background:${colorOf(id)};width:${100 * rows.filter((r) => r.node === id).length / rows.length}%"></i>`).join('') + '</div>';
+    const nodeBar = '<div class="bar-mini">' + nodes.map(([id], i) => `<i style="background:${BAR_COLORS[i % 3]};width:${100 * rows.filter((r) => r.node === id).length / rows.length}%"></i>`).join('') + '</div>';
     $('#kpis').innerHTML = [
       kpi('k-svc', svc.length, 'Service Catalogues'),
       kpi('k-rp', rp.length, 'Research Product Catalogues'),
@@ -112,7 +107,7 @@
     // node filter
     const filter = $('#node-filter');
     filter.innerHTML = `<button class="chip all" aria-pressed="true" data-node="*">All nodes</button>` +
-      nodes.map(([id, name]) => `<button class="chip" aria-pressed="true" data-node="${esc(id)}" style="--node:${colorOf(id)}">${esc(name)}</button>`).join('');
+      nodes.map(([id, name]) => `<button class="chip" aria-pressed="true" data-node="${esc(id)}" style="--node:#ffffff">${esc(name)}</button>`).join('');
     let active = null;
     filter.addEventListener('click', (e) => {
       const b = e.target.closest('button');
