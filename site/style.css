@@ -71,7 +71,7 @@ code { font-family: var(--font-mono); font-size: 0.86em; background: rgba(255,25
 .foot-brand a { display: inline-block; border-radius: 0; }
 .foot-brand a:focus-visible { outline: 2px solid var(--svc); outline-offset: 3px; }
 .eyebrow { margin: 0 0 10px; font: 500 13px/1 var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
-h1 { margin: 0; font: 800 clamp(40px, 7vw, 84px)/0.98 var(--font-display); letter-spacing: -0.02em; }
+h1 { margin: 0; font: 800 clamp(18px, 5.6vw, 78px)/1 var(--font-display); letter-spacing: -0.02em; white-space: nowrap; }
 .title-accent { color: var(--svc); } /* lively green #008691 */
 .lede { max-width: 70ch; margin: 18px 0 6px; font-size: 18px; color: #e6dde1; }
 .meta { margin: 0 0 28px; color: var(--muted); font-size: 14px; }
