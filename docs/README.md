@@ -269,7 +269,10 @@ in `site/test-descriptions.json`.
 
 The page reads `results.json` and shows one card per catalogue. Service
 Catalogues appear in green, Research Product Catalogues in pink. Each card
-has its node's logo, and the page can be filtered by node. The same page is
+has its node's logo, and the page can be filtered by node. Selecting a logo
+opens, in a new tab, the node's page on eosc.eu, the one linked from the node's
+card in the EOSC Nodes tab of [Building the EOSC Federation](https://eosc.eu/building-the-eosc-federation)
+(for example `https://eosc.eu/building-the-eosc-federation/eosc-node-czechia`). The same page is
 published on GitHub Pages and copied to `results/` in the repository.
 
 | Badge | Meaning |

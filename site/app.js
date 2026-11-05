@@ -9,6 +9,16 @@
   const logoSrc = (node) => (window.EMBEDDED_LOGOS || {})[node] || `logos/${node}.png`;
   const LOGOS = new Set(['bbmri-eric', 'cern', 'eosc-cz', 'eosc-dto', 'data-terra', 'eosc-fi', 'panosc',
     'eudat', 'egi', 'geant', 'eosc-pl', 'eosc-it', 'eosc-sk']);
+  // Each logo links to the node's page, as linked from the node cards on
+  // https://eosc.eu/building-the-eosc-federation (EOSC Nodes tab); it opens in a new tab.
+  const NODE_PAGE = 'https://eosc.eu/building-the-eosc-federation/eosc-node-';
+  const NODE_PAGES = {
+    'bbmri-eric': 'bbmri-eric', cern: 'cern', 'data-terra': 'data-terra', egi: 'egi',
+    'eosc-cz': 'czechia', 'eosc-dto': 'digital-twin-of-the-ocean', 'eosc-fi': 'finland',
+    'eosc-it': 'italy', 'eosc-pl': 'poland', 'eosc-sk': 'slovakia', eudat: 'eudat',
+    geant: 'geant', panosc: 'panosc',
+  };
+  const nodePage = (node) => (NODE_PAGES[node] ? NODE_PAGE + NODE_PAGES[node] : '');
   const $ = (s) => document.querySelector(s);
   const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const initials = (name) => name.replace(/^EOSC (Node )?/, '').replace(/[()]/g, '').split(/[\s-]+/).filter(Boolean).slice(0, 2).map((w) => w[0]).join('').toUpperCase();
@@ -49,9 +59,11 @@
     return `<article class="card" data-node="${esc(row.node)}" style="--node:${TYPE_COLORS[row.type] || '#ffffff'}">
       <div class="card-top">
         <div>
-          ${LOGOS.has(row.node)
-            ? `<div class="node-logo"><img src="${esc(logoSrc(row.node))}" alt="${esc(row.node_name)}" loading="lazy" onerror="this.parentNode.outerHTML='<div class=&quot;node-badge&quot;>${esc(row.node_name)}</div>'"></div>`
-            : `<div class="node-badge"><span class="sw" aria-hidden="true">${esc(initials(row.node_name))}</span>${esc(row.node_name)}</div>`}
+          ${LOGOS.has(row.node) && nodePage(row.node)
+            ? `<a class="node-logo" href="${esc(nodePage(row.node))}" target="_blank" rel="noopener" title="${esc(row.node_name)} on eosc.eu (opens in a new tab)"><img src="${esc(logoSrc(row.node))}" alt="${esc(row.node_name)}" loading="lazy" onerror="this.outerHTML='<span class=&quot;node-badge&quot;>${esc(row.node_name)}</span>'"></a>`
+            : LOGOS.has(row.node)
+              ? `<div class="node-logo"><img src="${esc(logoSrc(row.node))}" alt="${esc(row.node_name)}" loading="lazy" onerror="this.parentNode.outerHTML='<div class=&quot;node-badge&quot;>${esc(row.node_name)}</div>'"></div>`
+              : `<div class="node-badge"><span class="sw" aria-hidden="true">${esc(initials(row.node_name))}</span>${esc(row.node_name)}</div>`}
           <h3>${esc(row.name)}</h3>
         </div>
         ${p && (p.observations || []).length

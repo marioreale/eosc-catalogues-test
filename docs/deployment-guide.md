@@ -77,7 +77,7 @@ The other settings live in code and rarely change:
 |---|---|
 | Known nodes and their display names | `NODE_NAMES` in `src/catalogue_check/report.py`, `KNOWN_NODES` in `tests/test_config.py` |
 | Probe timeout (20 s) | `TIMEOUT` in `src/catalogue_check/report.py` |
-| Node logos | `site/logos/<node>.png` and the `LOGOS` list in `site/app.js` |
+| Node logos and their links | `site/logos/<node>.png`, the `LOGOS` list and `NODE_PAGES` in `site/app.js` |
 | Published page addresses | `PAGE_URL` and `PREVIEW_URL` in `src/catalogue_check/report.py` |
 
 ## Run locally
@@ -212,6 +212,11 @@ If the catalogue belongs to a node with no catalogue yet, register the node:
    white background, about 680 × 100 px like the others; it is shown 30 px
    tall in a white box), and add the node id to the `LOGOS` list at the top of
    `site/app.js`. Without a logo, the card shows the node name instead.
+   To make the logo a link to the node's page on eosc.eu (opened in a new tab),
+   add the node id to `NODE_PAGES` in `site/app.js`, with the part of the
+   address after `eosc-node-` used by the node's card on
+   [Building the EOSC Federation](https://eosc.eu/building-the-eosc-federation)
+   (for example `'eosc-cz': 'czechia'`).
 
 ### When the endpoint is not from the production sheet
 

@@ -161,6 +161,8 @@ h1 { margin: 0; font: 800 clamp(18px, 5.6vw, 78px)/1 var(--font-display); letter
   background: #fff; border-radius: 0;
   box-shadow: 0 0 0 2px color-mix(in srgb, var(--node) 70%, transparent);
 }
+a.node-logo { cursor: pointer; transition: box-shadow .15s ease; }
+a.node-logo:hover, a.node-logo:focus-visible { box-shadow: 0 0 0 3px var(--node); outline: none; }
 .node-logo img { display: block; height: 30px; width: auto; max-width: 100%; object-fit: contain; }
 .card h3 { margin: 2px 0 0; font: 700 19px/1.25 var(--font-display); }
 .endpoint { font: 400 12.5px/1.4 var(--font-mono); color: var(--muted); word-break: break-all; }
