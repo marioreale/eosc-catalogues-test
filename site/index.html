@@ -80,6 +80,19 @@
       <p id="suite-sum" class="suite-sum"></p>
       <ul class="suite-list" id="suite-list"></ul>
       <p class="suite-hint">Select a test to see what it checks.</p>
+      <dialog id="check-dialog" class="test-dialog" aria-labelledby="cd-name">
+        <form method="dialog" class="td-close-form"><button class="td-close" aria-label="Close">×</button></form>
+        <p class="td-n" id="cd-n"></p>
+        <h3 id="cd-name" class="td-name td-label"></h3>
+        <span id="cd-outcome" class="td-outcome"></span>
+        <div id="cd-value-row"><h4>Value checked</h4><p><code id="cd-value" class="td-value"></code></p></div>
+        <h4>Passes when</h4>
+        <p id="cd-passes"></p>
+        <div id="cd-why-row"><h4>Why</h4><p id="cd-why"></p></div>
+        <p id="cd-caveat" class="td-param" hidden></p>
+        <div id="cd-tests-row"><h4>Also enforced by the tests</h4><ul id="cd-tests" class="td-tests"></ul></div>
+        <p class="td-src">These checks read the entry in <code>catalogues.yaml</code>, without network access. See the <a href="https://github.com/marioreale/eosc-catalogues-test/blob/main/docs/README.md#3-availability-probe" target="_blank" rel="noopener">documentation</a>.</p>
+      </dialog>
       <dialog id="test-dialog" class="test-dialog" aria-labelledby="td-name">
         <form method="dialog" class="td-close-form"><button class="td-close" aria-label="Close">×</button></form>
         <p class="td-n" id="td-n"></p>

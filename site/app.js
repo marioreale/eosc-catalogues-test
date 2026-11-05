@@ -31,8 +31,8 @@
   function card(row) {
     const v = verdict(row);
     const p = row.probe;
-    const checks = row.checks.map((c) =>
-      `<span class="ck ${c.passed ? 'ok' : 'ko'}" title="${esc(c.label)}${c.detail ? ': ' + esc(c.detail) : ''} — ${c.passed ? 'pass' : 'FAIL'}" aria-label="${esc(c.label)}: ${c.passed ? 'pass' : 'fail'}">${c.passed ? '✓' : '✕'}</span>`).join('');
+    const checks = row.checks.map((c, i) =>
+      `<button type="button" class="ck ${c.passed ? 'ok' : 'ko'}" data-id="${esc(row.id)}" data-k="${i}" aria-haspopup="dialog" title="${esc(c.label)} — select for details" aria-label="${esc(c.label)}: ${c.passed ? 'pass' : 'fail'}. Show details">${c.passed ? '✓' : '✕'}</button>`).join('');
     const passed = row.checks.filter((c) => c.passed).length;
 
     let probe = '<span class="probe-line">Not probed in this run</span>';
@@ -105,6 +105,7 @@
     $('#n-svc').textContent = svc.length;
     $('#n-rp').textContent = rp.length;
 
+    rowsById = new Map(rows.map((r) => [r.id, r]));
     $('#cards-svc').innerHTML = svc.map(card).join('') || '<p class="empty">No Service Catalogues configured.</p>';
     $('#cards-rp').innerHTML = rp.map(card).join('') || '<p class="empty">No Research Product Catalogues configured.</p>';
 
@@ -137,6 +138,47 @@
       $('#suite-sum').textContent = 'The test suite results were not included in this run.';
     }
   }
+
+  // Configuration-check descriptions (the ticks on each card).
+  let rowsById = new Map();
+  let checkInfo = null;
+  function loadCheckInfo() {
+    if (!checkInfo) {
+      checkInfo = fetch('check-descriptions.json', { cache: 'no-store' })
+        .then((r) => (r.ok ? r.json() : { checks: {} }))
+        .catch(() => ({ checks: {} }));
+    }
+    return checkInfo;
+  }
+  function openCheck(row, k, d, opener) {
+    const c = row.checks[k];
+    const key = c.key === 'source' ? 'source:' + row.source : c.key;
+    const info = (d.checks || {})[key];
+    const dlg = $('#check-dialog');
+    $('#cd-n').textContent = `Check ${k + 1} of ${row.checks.length} · ${row.name}`;
+    $('#cd-name').textContent = c.label;
+    const o = $('#cd-outcome');
+    o.textContent = c.passed ? 'Passed' : 'Failed';
+    o.className = 'td-outcome ' + (c.passed ? 'passed' : 'failed');
+    $('#cd-value-row').hidden = !c.detail;
+    $('#cd-value').textContent = c.detail || '';
+    $('#cd-passes').textContent = info ? info.passes : 'No description available for this check yet.';
+    $('#cd-why-row').hidden = !info;
+    $('#cd-why').textContent = info ? info.why : '';
+    $('#cd-caveat').hidden = !(info && info.caveat);
+    $('#cd-caveat').textContent = (info && info.caveat) || '';
+    const tests = (info && info.tests) || [];
+    $('#cd-tests-row').hidden = !tests.length;
+    $('#cd-tests').innerHTML = tests.map((n) => `<li><code>${esc(n)}</code></li>`).join('');
+    dlg.returnFocusTo = opener;
+    dlg.showModal();
+  }
+  document.addEventListener('click', (ev) => {
+    const b = ev.target.closest('button.ck');
+    if (!b) return;
+    const row = rowsById.get(b.dataset.id);
+    if (row) loadCheckInfo().then((d) => openCheck(row, Number(b.dataset.k), d, b));
+  });
 
   // Test descriptions, the same as docs/README.md "The 19 tests".
   let descriptions = null;
@@ -175,12 +217,12 @@
     dlg.returnFocusTo = opener;
     dlg.showModal();
   }
-  (function wireDialog() {
-    const dlg = document.getElementById('test-dialog');
+  ['test-dialog', 'check-dialog'].forEach((id) => {
+    const dlg = document.getElementById(id);
     if (!dlg) return;
     dlg.addEventListener('click', (ev) => { if (ev.target === dlg) dlg.close(); });
     dlg.addEventListener('close', () => { if (dlg.returnFocusTo) dlg.returnFocusTo.focus(); });
-  })();
+  });
 
   fetch('results.json', { cache: 'no-store' })
     .then((r) => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })

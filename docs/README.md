@@ -141,6 +141,10 @@ card on the page shows them:
 Each card shows one of the two `source` checks, so OAI-PMH cards show six
 checks and Service Catalogue cards show five.
 
+On the results page, selecting a tick opens a pop-up with the check, the
+value checked, when it passes, why it matters, and the tests that enforce the
+same rule. The texts are kept in `site/check-descriptions.json`.
+
 ## Workflows
 
 Two GitHub Actions workflows run independently:

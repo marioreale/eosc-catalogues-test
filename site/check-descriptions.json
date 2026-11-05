@@ -1,0 +1,60 @@
+{
+  "note": "The ticks on each card: checks of the catalogue's entry in catalogues.yaml, evaluated without network access. See docs/README.md, section \"3. Availability probe\".",
+  "checks": {
+    "fields": {
+      "passes": "The entry has all seven required fields: id, node, name, type, protocol, endpoint and source.",
+      "why": "Every card, filter and probe relies on these fields.",
+      "caveat": "Always green on the page: a file with a missing field is rejected by config.load() before the page is built.",
+      "tests": [
+        "test_a_bad_file_is_a_configuration_error"
+      ]
+    },
+    "node": {
+      "passes": "The node id is one of the 16 known EOSC Nodes, the same ids as in eosc-basic-compliance.",
+      "why": "The card can show the node's name, colour and logo, and results can be joined with the landing-page checks by node.",
+      "tests": [
+        "test_ids_are_unique_and_nodes_are_known",
+        "test_every_known_node_has_a_display_name"
+      ]
+    },
+    "protocol": {
+      "passes": "A Service Catalogue is queried through the EOSC EU Node services API (een-services-api); a Research Product Catalogue through OAI-PMH (oai-pmh).",
+      "why": "The probe picks its request from the protocol, so a mismatch would query the catalogue the wrong way.",
+      "tests": [
+        "test_type_and_protocol_agree",
+        "test_bad_entries_are_rejected[queried with]"
+      ]
+    },
+    "https": {
+      "passes": "The endpoint queried starts with https://.",
+      "why": "Catalogues are queried over encrypted connections only.",
+      "tests": [
+        "test_endpoints_are_https_and_oai_bases_have_no_verb",
+        "test_bad_entries_are_rejected[https URL]"
+      ]
+    },
+    "oai-base": {
+      "passes": "Research Product Catalogues only: the endpoint is the OAI-PMH base URL, with no request such as ?verb=Identify attached.",
+      "why": "The probe adds ?verb=Identify itself; a copied request URL would produce a broken query.",
+      "tests": [
+        "test_endpoints_are_https_and_oai_bases_have_no_verb",
+        "test_bad_entries_are_rejected[without ?verb=]"
+      ]
+    },
+    "source:production": {
+      "passes": "source is production: the endpoint was taken from the production sheet (production_env_node_services.xlsx).",
+      "why": "Keeps the provenance of every endpoint explicit; the sheet's comments are quoted as written.",
+      "tests": [
+        "test_every_entry_comes_from_the_production_sheet_but_known_exceptions"
+      ]
+    },
+    "source:resource-hub": {
+      "passes": "source is resource-hub: the note names the Hub record (a 21.11166/… PID), and nothing is quoted from the sheet.",
+      "why": "The production sheet does not list this catalogue; naming the Hub record keeps it traceable, and the Hub has no comment column to quote.",
+      "tests": [
+        "test_every_entry_comes_from_the_production_sheet_but_known_exceptions",
+        "test_resource_hub_entries_quote_nothing_and_name_their_record"
+      ]
+    }
+  }
+}
