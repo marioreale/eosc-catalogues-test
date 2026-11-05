@@ -32,13 +32,13 @@ be seen in two places:
   <https://marioreale.github.io/eosc-catalogues-test/>;
 - the [`results/`](../results/) directory of the repository, which holds the
   same page as one self-contained file, `results/index.html`, with styles,
-  script, data and logos inlined ([open it](https://raw.githack.com/marioreale/eosc-catalogues-test/main/results/index.html)). Next to it are
+  script, data and logos inlined ([open it](https://htmlpreview.github.io/?https://github.com/marioreale/eosc-catalogues-test/blob/main/results/index.html)). Next to it are
   `results.json` and [`results/README.md`](../results/README.md), the same
   results as a Markdown table that GitHub shows directly.
 
 GitHub shows HTML files in a repository as source code, so the link opens
-`results/index.html` through raw.githack, which serves files of public
-repositories as web pages. The README also links an alternative, HTML Preview.
+`results/index.html` through HTML Preview (htmlpreview.github.io), which
+renders HTML files of public GitHub repositories as web pages.
 Because nothing in the file is loaded from the repository, it shows the same
 page from a clone or after download too.
 

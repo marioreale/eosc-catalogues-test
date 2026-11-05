@@ -91,7 +91,7 @@ The per-catalogue results can be seen in two places, both rebuilt by the
 - the results page, **https://marioreale.github.io/eosc-catalogues-test/**;
 - the [`results/`](results/) directory of this repository, which holds the
   same page as one self-contained file, `results/index.html` (styles, script,
-  data and logos inlined): [open it](https://raw.githack.com/marioreale/eosc-catalogues-test/main/results/index.html). The file also works from a clone or
+  data and logos inlined): [open it](https://htmlpreview.github.io/?https://github.com/marioreale/eosc-catalogues-test/blob/main/results/index.html). The file also works from a clone or
   after download. Next to it are `results.json` and
   [`results/README.md`](results/README.md), the same results as a Markdown
   table that GitHub shows directly.

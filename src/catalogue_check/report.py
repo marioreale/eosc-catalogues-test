@@ -199,9 +199,7 @@ def write(data: dict, out: Path) -> None:
 
 TYPE_LABELS = {"service-catalogue": "Service", "research-product-catalogue": "Research product"}
 PAGE_URL = "https://marioreale.github.io/eosc-catalogues-test/"
-REPO_FILE = "marioreale/eosc-catalogues-test/main/results/index.html"
-PREVIEW_URL = f"https://raw.githack.com/{REPO_FILE}"
-HTMLPREVIEW_URL = (
+PREVIEW_URL = (
     "https://htmlpreview.github.io/?https://github.com/"
     "marioreale/eosc-catalogues-test/blob/main/results/index.html"
 )
@@ -237,7 +235,7 @@ def markdown(data: dict) -> str:
         "`results page` workflow on every run.",
         "",
         f"**[Open the copy of the page in this directory]({PREVIEW_URL})**",
-        f"(or through [HTML Preview]({HTMLPREVIEW_URL})).",
+        "(shown through HTML Preview, since GitHub displays HTML files as source).",
         "",
         "- `index.html`: the whole results page in one self-contained file, with styles,",
         "  script, data and logos inlined. It shows the same page when opened through the",
