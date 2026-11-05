@@ -193,3 +193,67 @@ def junit_summary(path: Path) -> dict:
 def write(data: dict, out: Path) -> None:
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
+
+
+TYPE_LABELS = {"service-catalogue": "Service", "research-product-catalogue": "Research product"}
+PAGE_URL = "https://marioreale.github.io/eosc-catalogues-test/"
+
+
+def _cell(text: str) -> str:
+    return text.replace("|", "\\|").replace("<", "&lt;").replace(">", "&gt;")
+
+
+def _probe_cell(p: dict | None) -> str:
+    if not p:
+        return "not probed"
+    if p["outcome"] == "pass":
+        verdict = "Up · note" if p.get("observations") else "Up"
+    elif p["outcome"] == "timeout":
+        verdict = "Timeout"
+    else:
+        verdict = "Down"
+    status = f"HTTP {p['http_status']} · " if p.get("http_status") else ""
+    return f"{verdict} ({status}{p['seconds']} s)"
+
+
+def markdown(data: dict) -> str:
+    """The results as Markdown, for reading on GitHub next to the copy of the page."""
+    rows = data["catalogues"]
+    probed = [r for r in rows if r["probe"]]
+    up = sum(r["probe"]["outcome"] == "pass" for r in probed)
+    checks = [c for r in rows for c in r["checks"]]
+    lines = [
+        "# Results",
+        "",
+        f"The same results as the [results page]({PAGE_URL}). This directory holds a copy",
+        "of that page, updated by the `results page` workflow on every run: `index.html`,",
+        "its scripts, styles and logos, and `results.json`. GitHub shows the HTML as source;",
+        "to see the page from a clone, run `python3 -m http.server -d results` and open",
+        "<http://localhost:8000/> (the page reads `results.json`, which browsers do not",
+        "load from a file opened directly). The table below gives the same results.",
+        "",
+        f"Generated {data['generated']}"
+        + (f" from commit `{data['commit'][:7]}`" if data.get("commit") else "")
+        + (f" ([CI run]({data['run_url']}))" if data.get("run_url") else "") + ".",
+        "",
+        f"- Catalogues: {len(rows)} from {len({r['node'] for r in rows})} nodes",
+        f"- Configuration checks passed: {sum(c['passed'] for c in checks)} of {len(checks)}",
+        f"- Endpoints that answered the probe: {up} of {len(probed)}",
+    ]
+    t = data.get("tests")
+    if t:
+        lines.append(f"- Tests: {t['passed']} passed, {t['failed']} failed, "
+                     f"{t['skipped']} skipped, of {t['total']}")
+    lines += ["", "| Node | Catalogue | Type | Checks | Probe | Notes |",
+              "|---|---|---|---|---|---|"]
+    for r in rows:
+        ok = sum(c["passed"] for c in r["checks"])
+        endpoint = r.get("display_endpoint") or r["endpoint"]
+        notes = _cell("; ".join((r["probe"] or {}).get("observations") or []))
+        kind = TYPE_LABELS.get(r["type"], r["type"])
+        lines.append(
+            f"| {_cell(r['node_name'])} | [{_cell(r['name'])}]({endpoint}) | {kind}"
+            f" | {ok}/{len(r['checks'])} | {_probe_cell(r['probe'])} | {notes} |")
+    lines += ["", "A green probe only means the endpoint is up and speaks the expected format;",
+              "none of this is a compliance verdict.", ""]
+    return "\n".join(lines)

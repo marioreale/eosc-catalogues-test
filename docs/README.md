@@ -25,9 +25,17 @@ Three layers act on it:
 | Test suite | `tests/` (pytest) | no | 19 tests: the committed file and the validation rules. |
 | Availability probe | `src/catalogue_check/report.py` | yes | One request per endpoint, with the answer recorded. |
 
-The probe and the test results are written to `site/results.json`. GitHub
-Pages publishes them at
-<https://marioreale.github.io/eosc-catalogues-test/>.
+The probe and the test results are written to `site/results.json`. They can
+be seen in two places:
+
+- the results page on GitHub Pages,
+  <https://marioreale.github.io/eosc-catalogues-test/>;
+- the [`results/`](../results/) directory of the repository, which holds a copy
+  of the same page (`index.html` with its scripts, styles, logos and
+  `results.json`) and the same results as a Markdown table in
+  [`results/README.md`](../results/README.md), which GitHub shows directly.
+
+Both are rebuilt by every run of the "results page" workflow.
 
 ## The configuration file
 
@@ -159,31 +167,39 @@ flowchart LR
       direction TB
       p1[checkout] --> p2["uv sync --locked"] --> p3["pytest -q --junitxml=junit.xml || true"]
       p3 --> p4["catalogue-check report --junit junit.xml --out site/results.json"]
-      p4 --> p5["upload site/ as Pages artifact"] --> p6["deploy to GitHub Pages"]
+      p4 --> p5["copy site/ to results/ and commit"] --> p6["upload site/ as Pages artifact"] --> p7["deploy to GitHub Pages"]
     end
     push(["push to any branch<br/>pull request<br/>manual"]) --> T
     main(["push to main<br/>manual"]) --> P
-    p6 --> web[("marioreale.github.io/<br/>eosc-catalogues-test")]
+    p7 --> web[("marioreale.github.io/<br/>eosc-catalogues-test")]
+    p5 --> repo[("results/ in the repository")]
 ```
 
 | | tests | results page |
 |---|---|---|
 | File | `.github/workflows/tests.yml` | `.github/workflows/pages.yml` |
 | Triggers | every push, every pull request, manual | push to `main`, manual |
-| Steps | install the locked dependencies, lint with ruff, run pytest | install, run pytest with JUnit XML output, probe, build `results.json`, publish |
+| Steps | install the locked dependencies, lint with ruff, run pytest | install, run pytest with JUnit XML output, probe, build `results.json` and `results/README.md`, commit the copy of the page to `results/`, publish |
 | Fails when | lint or any test fails | a step itself breaks; a failing test does not stop publication (`\|\| true`) |
 | Uses the network | no | yes (the probe) |
-| Permissions | `contents: read` | `contents: read`, `pages: write`, `id-token: write` |
+| Permissions | `contents: read` | `contents: write` (to commit `results/`), `pages: write`, `id-token: write` |
 
 A failing test turns the "tests" workflow red. The results page is still
 published, and it shows the failure in its test list. The probe runs only in
 "results page", so an endpoint that is down never fails CI.
+
+The copy in `results/` is committed by the workflow itself, as
+`github-actions[bot]`, with the message
+`results: copy of the results page from <commit>`. Commits pushed with the
+workflow token start no further workflow run, so the copy does not trigger a
+new publication. A run whose results are unchanged commits nothing.
 
 ```mermaid
 sequenceDiagram
     participant Dev as Commit on main
     participant GH as GitHub Actions
     participant Ep as Catalogue endpoints (22)
+    participant Rp as results/ in the repository
     participant Pg as GitHub Pages
     Dev->>GH: push
     par tests
@@ -194,7 +210,8 @@ sequenceDiagram
         GH->>Ep: GET endpoint (or ?verb=Identify)
         Ep-->>GH: status, body, time
       end
-      GH->>GH: write site/results.json
+      GH->>GH: write site/results.json and results/README.md
+      GH->>Rp: copy site/ to results/ and commit
       GH->>Pg: upload site/ and deploy
     end
 ```
@@ -241,8 +258,9 @@ in `site/test-descriptions.json`.
 ## What the results page shows
 
 The page reads `results.json` and shows one card per catalogue. Service
-Catalogues appear in cyan, Research Product Catalogues in violet. Each card
-has its node's logo and colour, and the page can be filtered by node.
+Catalogues appear in green, Research Product Catalogues in pink. Each card
+has its node's logo, and the page can be filtered by node. The same page is
+published on GitHub Pages and copied to `results/` in the repository.
 
 | Badge | Meaning |
 |---|---|
@@ -279,4 +297,6 @@ uv run catalogue-check report --no-probe           # results.json without networ
 uv run pytest -q --junitxml=junit.xml
 uv run catalogue-check report --junit junit.xml --out site/results.json
 python3 -m http.server -d site 8000                # then open http://localhost:8000
+uv run catalogue-check report --markdown results/README.md   # also the Markdown table
+python3 -m http.server -d results 8000             # the copy committed by CI
 ```

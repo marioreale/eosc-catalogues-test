@@ -84,17 +84,26 @@ answered 404 (field `display_endpoint` and the entry's note).
 
 ## Results page
 
-The per-catalogue results are published at
-**https://marioreale.github.io/eosc-catalogues-test/**, rebuilt by the
+The per-catalogue results can be seen in two places, both rebuilt by the
 `results page` workflow on every push to `main` (or by hand, through
-*Run workflow*). Each run:
+*Run workflow*):
+
+- the results page, **https://marioreale.github.io/eosc-catalogues-test/**;
+- the [`results/`](results/) directory of this repository: a copy of the same
+  page (`index.html`, scripts, styles, logos and `results.json`), plus
+  [`results/README.md`](results/README.md), the same results as a Markdown
+  table that GitHub shows directly. To view the copied page from a clone, run
+  `python3 -m http.server -d results` and open <http://localhost:8000/>.
+
+Each run:
 
 1. runs the test suite (`pytest`, results included in the page);
 2. runs `catalogue-check report`, which, for each catalogue, evaluates the
    configuration checks entry by entry and sends one request to its endpoint
    (`GET` for a Service Catalogue, `?verb=Identify` for OAI-PMH), recording
    the HTTP status, the time taken and a few facts from the answer;
-3. publishes `site/` (static HTML reading `results.json`) to GitHub Pages.
+3. copies `site/` to `results/` and commits it, as `github-actions[bot]`;
+4. publishes `site/` (static HTML reading `results.json`) to GitHub Pages.
 
 A card is green when the endpoint answered in the expected format, amber when
 it answered but something deserves a look (for example an Identify `baseURL`

@@ -1,14 +1,15 @@
 name: results page
 
 # Runs the test suite, probes every catalogue endpoint once and publishes the
-# per-catalogue results to GitHub Pages.
+# per-catalogue results to GitHub Pages. A copy of the same page, with the
+# results as Markdown, is committed to results/ in the repository.
 on:
   push:
     branches: [main]
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write   # to commit the copy of the page to results/
   pages: write
   id-token: write
 
@@ -26,10 +27,24 @@ jobs:
       # The page shows the test results whatever they are, so a failing test
       # does not stop the publication; the "tests" workflow still goes red.
       - run: uv run pytest -q --junitxml=junit.xml || true
-      - run: uv run catalogue-check report --junit junit.xml --out site/results.json
+      - run: >-
+          uv run catalogue-check report --junit junit.xml --out site/results.json
+          --markdown results/README.md
       # GitHub Pages lets browsers cache files for 10 minutes. Tagging the script
       # and stylesheet with the commit makes every publication load fresh copies.
       - run: sed -i "s/?v=dev/?v=${GITHUB_SHA::7}/g" site/index.html
+      # Copy of the published page in results/, committed by the workflow.
+      # Commits pushed with the workflow token start no further workflow run.
+      - name: Commit the copy of the page to results/
+        run: |
+          rsync -a --delete --exclude README.md site/ results/
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add results
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "results: copy of the results page from ${GITHUB_SHA::7}"
+          git pull --rebase origin main
+          git push origin HEAD:main
       - uses: actions/upload-pages-artifact@v3
         with:
           path: site

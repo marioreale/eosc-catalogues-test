@@ -53,6 +53,7 @@ def report(
     out: Path = typer.Option(Path("site/results.json"), "--out", help="Where to write the JSON."),
     probe: bool = typer.Option(True, "--probe/--no-probe", help="Send one request per endpoint."),
     junit: Path | None = typer.Option(None, "--junit", help="pytest JUnit XML to include."),
+    md: Path | None = typer.Option(None, "--markdown", help="Also write the results as Markdown."),
 ) -> None:
     """Write per-catalogue results (configuration checks and availability probe) as JSON."""
     from catalogue_check import report as rep
@@ -65,6 +66,9 @@ def report(
     tests = rep.junit_summary(junit) if junit and junit.exists() else None
     data = rep.build(entries, probe, tests)
     rep.write(data, out)
+    if md:
+        md.parent.mkdir(parents=True, exist_ok=True)
+        md.write_text(rep.markdown(data), encoding="utf-8")
     answered = sum((r["probe"] or {}).get("outcome") == "pass" for r in data["catalogues"])
     typer.echo(f"Wrote {out}: {len(entries)} catalogue(s)"
                + (f", {answered} answered the probe." if probe else "."))
