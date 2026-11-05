@@ -282,7 +282,16 @@ published on GitHub Pages and copied to `results/` in the repository.
 | NOT PROBED | The JSON was built with `--no-probe`. |
 
 The header counts catalogues, nodes, endpoints that answered, and tests passed. The test list
-comes from the JUnit XML of the same run.
+comes from the JUnit XML of the same run. Selecting one of the five boxes opens a pop-up
+listing what it counts, from the same `results.json`:
+
+| Box | Pop-up |
+|---|---|
+| Service Catalogues | Each Service Catalogue, its endpoint and its contributing node. |
+| Research Product Catalogues | Each Research Product Catalogue, its OAI-PMH base URL and its contributing node. |
+| contributing nodes | Each node with the catalogues it contributes, marked Service or Research Product. |
+| endpoints answered the probe | Each endpoint queried, its node and the probe result (HTTP status, time); endpoints that did not answer first. |
+| tests passed | Each test case, its file and its outcome; failed tests first. |
 
 ## What is not tested
 

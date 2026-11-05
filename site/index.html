@@ -26,6 +26,14 @@
       <p class="meta" id="meta">Loading results…</p>
 
       <div class="kpis" id="kpis" aria-live="polite"></div>
+      <p class="kpi-hint">Select a box to list its items.</p>
+      <dialog id="kpi-dialog" class="test-dialog kpi-dialog" aria-labelledby="kd-title">
+        <form method="dialog" class="td-close-form"><button class="td-close" aria-label="Close">×</button></form>
+        <p class="td-n">Summary · this run</p>
+        <h3 id="kd-title" class="td-name td-label"></h3>
+        <p id="kd-sub" class="kd-intro"></p>
+        <div id="kd-body" class="kd-body"></div>
+      </dialog>
     </div>
   </header>
 

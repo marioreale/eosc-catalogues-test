@@ -13,6 +13,7 @@
   const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const initials = (name) => name.replace(/^EOSC (Node )?/, '').replace(/[()]/g, '').split(/[\s-]+/).filter(Boolean).slice(0, 2).map((w) => w[0]).join('').toUpperCase();
 
+  const OUTCOME = { passed: 'Passed', failed: 'Failed', skipped: 'Skipped' };
   const SOURCE_LABEL = { production: 'Production sheet', 'resource-hub': 'Resource Hub' };
 
   function verdict(row) {
@@ -67,8 +68,94 @@
     </article>`;
   }
 
-  function kpi(cls, value, label, bar) {
-    return `<div class="kpi ${cls}"><div class="v">${value}</div><div class="l">${label}</div>${bar || ''}</div>`;
+  // Each summary box is a button: it opens #kpi-dialog with the items it counts.
+  function kpi(cls, value, label, bar, key) {
+    if (!key) return `<div class="kpi ${cls}"><div class="v">${value}</div><div class="l">${label}</div>${bar || ''}</div>`;
+    return `<button type="button" class="kpi kpi-btn ${cls}" data-kpi="${key}" aria-haspopup="dialog" title="Select to list the items">
+      <div class="v">${value}</div><div class="l">${label}</div>${bar || ''}<span class="kpi-more" aria-hidden="true">List ›</span></button>`;
+  }
+
+  const endpointOf = (r) => r.display_endpoint || (r.probe ? r.probe.url : r.endpoint);
+  const link = (url, text) => `<a href="${esc(url)}" rel="noopener" target="_blank">${esc(text || url)}</a>`;
+  const typeTag = (r) => r.type === 'service-catalogue'
+    ? '<span class="kd-type svc">Service</span>' : '<span class="kd-type rp">Research Product</span>';
+
+  function catalogueTable(list) {
+    return `<table class="kd-table"><thead><tr><th>#</th><th>Catalogue and endpoint</th><th>Contributing node</th></tr></thead><tbody>${
+      list.map((r, i) => `<tr><td class="kd-i">${i + 1}</td><td><b>${esc(r.name)}</b><div class="kd-url">${link(endpointOf(r), r.display_endpoint || r.endpoint)}</div></td><td>${esc(r.node_name)}</td></tr>`).join('')
+    }</tbody></table>`;
+  }
+
+  function kpiContent(key, data) {
+    const rows = data.catalogues;
+    const svc = rows.filter((r) => r.type === 'service-catalogue');
+    const rp = rows.filter((r) => r.type === 'research-product-catalogue');
+    if (key === 'svc') return {
+      title: `${svc.length} Service Catalogues`,
+      sub: 'Queried through the EOSC EU Node services API (GET /services).',
+      body: catalogueTable(svc),
+    };
+    if (key === 'rp') return {
+      title: `${rp.length} Research Product Catalogues`,
+      sub: 'Queried through OAI-PMH (?verb=Identify) on the base URL.',
+      body: catalogueTable(rp),
+    };
+    if (key === 'nodes') {
+      const nodes = [...new Map(rows.map((r) => [r.node, r.node_name])).entries()].sort((a, b) => a[1].localeCompare(b[1]));
+      return {
+        title: `${nodes.length} contributing nodes`,
+        sub: 'Each node with the catalogues it contributes.',
+        body: `<table class="kd-table"><thead><tr><th>#</th><th>Node</th><th>Catalogues</th></tr></thead><tbody>${
+          nodes.map(([id, name], i) => {
+            const own = rows.filter((r) => r.node === id);
+            return `<tr><td class="kd-i">${i + 1}</td><td><b>${esc(name)}</b><div class="kd-sub">${own.length} catalogue${own.length === 1 ? '' : 's'}</div></td><td><ul class="kd-list">${
+              own.map((r) => `<li>${typeTag(r)} ${link(endpointOf(r), r.name)}</li>`).join('')}</ul></td></tr>`;
+          }).join('')
+        }</tbody></table>`,
+      };
+    }
+    if (key === 'probe') {
+      const probed = rows.filter((r) => r.probe);
+      const up = probed.filter((r) => r.probe.outcome === 'pass').length;
+      const order = (r) => (r.probe.outcome === 'pass' ? 1 : 0); // anything not answering first
+      const list = [...probed].sort((a, b) => order(a) - order(b));
+      return {
+        title: `${up}/${probed.length} endpoints answered the probe`,
+        sub: 'One request per endpoint in this run. Endpoints that did not answer are listed first.',
+        body: `<table class="kd-table"><thead><tr><th>#</th><th>Endpoint queried</th><th>Node</th><th>Probe</th></tr></thead><tbody>${
+          list.map((r, i) => {
+            const p = r.probe;
+            const v = verdict(r);
+            return `<tr><td class="kd-i">${i + 1}</td><td>${typeTag(r)} <b>${esc(r.name)}</b><div class="kd-url">${link(p.url)}</div></td><td>${esc(r.node_name)}</td><td><span class="verdict ${v.cls}">${esc(v.text)}</span><div class="kd-sub">${esc(p.summary)}${p.http_status ? ' · HTTP ' + p.http_status : ''} · ${p.seconds}s</div></td></tr>`;
+          }).join('')
+        }</tbody></table>`,
+      };
+    }
+    if (key === 'tests') {
+      const t = data.tests;
+      const order = { failed: 0, skipped: 1, passed: 2 };
+      const list = [...t.cases].sort((a, b) => (order[a.outcome] ?? 0) - (order[b.outcome] ?? 0));
+      return {
+        title: `${t.passed}/${t.total} tests passed`,
+        sub: `pytest, same run: ${t.passed} passed, ${t.failed} failed, ${t.skipped} skipped. Failed tests are listed first.`,
+        body: `<table class="kd-table"><thead><tr><th>#</th><th>Test</th><th>File</th><th>Outcome</th></tr></thead><tbody>${
+          list.map((c, i) => `<tr><td class="kd-i">${i + 1}</td><td><code>${esc(c.name)}</code></td><td class="kd-nw"><code>${esc(c.file.replace(/^tests\./, ''))}.py</code></td><td><span class="td-outcome ${esc(c.outcome)}">${esc(OUTCOME[c.outcome] || c.outcome)}</span></td></tr>`).join('')
+        }</tbody></table><p class="td-src">What each test checks: see the <a href="#suite-h">Test suite</a> section below, or the <a href="https://github.com/marioreale/eosc-catalogues-test/blob/main/docs/README.md#the-19-tests" target="_blank" rel="noopener">documentation</a>.</p>`,
+      };
+    }
+    return null;
+  }
+
+  function openKpi(key, data, opener) {
+    const c = kpiContent(key, data);
+    if (!c) return;
+    $('#kd-title').textContent = c.title;
+    $('#kd-sub').textContent = c.sub;
+    $('#kd-body').innerHTML = c.body;
+    const dlg = $('#kpi-dialog');
+    dlg.returnFocusTo = opener;
+    dlg.showModal();
+    $('#kd-body').scrollTop = 0;
   }
 
   function render(data) {
@@ -90,13 +177,17 @@
 
     const nodeBar = '<div class="bar-mini">' + nodes.map(([id], i) => `<i style="background:${BAR_COLORS[i % 3]};width:${100 * rows.filter((r) => r.node === id).length / rows.length}%"></i>`).join('') + '</div>';
     $('#kpis').innerHTML = [
-      kpi('k-svc', svc.length, 'Service Catalogues'),
-      kpi('k-rp', rp.length, 'Research Product Catalogues'),
-      kpi('', nodes.length, 'contributing nodes', nodeBar),
-      kpi(probed && up === probed ? 'k-pass' : 'k-fail', probed ? `${up}/${probed}` : '–', 'endpoints answered the probe'),
-      t ? kpi(t.failed ? 'k-fail' : 'k-pass', `${t.passed}/${t.total}`, 'tests passed' + (cfgFail ? ` · ${cfgFail} config failures` : ''))
+      kpi('k-svc', svc.length, 'Service Catalogues', '', 'svc'),
+      kpi('k-rp', rp.length, 'Research Product Catalogues', '', 'rp'),
+      kpi('', nodes.length, 'contributing nodes', nodeBar, 'nodes'),
+      kpi(probed && up === probed ? 'k-pass' : 'k-fail', probed ? `${up}/${probed}` : '–', 'endpoints answered the probe', '', probed ? 'probe' : ''),
+      t ? kpi(t.failed ? 'k-fail' : 'k-pass', `${t.passed}/${t.total}`, 'tests passed' + (cfgFail ? ` · ${cfgFail} config failures` : ''), '', 'tests')
         : kpi('', '–', 'test suite not included'),
     ].join('');
+    $('#kpis').addEventListener('click', (ev) => {
+      const b = ev.target.closest('button.kpi-btn');
+      if (b) openKpi(b.dataset.kpi, data, b);
+    });
     $('#n-svc').textContent = svc.length;
     $('#n-rp').textContent = rp.length;
 
@@ -214,7 +305,6 @@
     }
     return null;
   }
-  const OUTCOME = { passed: 'Passed', failed: 'Failed', skipped: 'Skipped' };
   function openTest(c, d, opener) {
     const dlg = $('#test-dialog');
     const info = describe(c.name, d);
@@ -231,7 +321,7 @@
     dlg.returnFocusTo = opener;
     dlg.showModal();
   }
-  ['test-dialog', 'check-dialog', 'note-dialog'].forEach((id) => {
+  ['test-dialog', 'check-dialog', 'note-dialog', 'kpi-dialog'].forEach((id) => {
     const dlg = document.getElementById(id);
     if (!dlg) return;
     dlg.addEventListener('click', (ev) => { if (ev.target === dlg) dlg.close(); });
