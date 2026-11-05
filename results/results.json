@@ -1,0 +1,1519 @@
+{
+  "generated": "2026-11-05T10:51:59Z",
+  "version": "0.1.0",
+  "tests": {
+    "total": 19,
+    "passed": 19,
+    "failed": 0,
+    "skipped": 0,
+    "cases": [
+      {
+        "name": "test_version",
+        "file": "tests.test_cli",
+        "outcome": "passed"
+      },
+      {
+        "name": "test_catalogues_lists_the_configured_ones",
+        "file": "tests.test_cli",
+        "outcome": "passed"
+      },
+      {
+        "name": "test_an_empty_list_is_reported",
+        "file": "tests.test_cli",
+        "outcome": "passed"
+      },
+      {
+        "name": "test_a_bad_file_is_a_configuration_error",
+        "file": "tests.test_cli",
+        "outcome": "passed"
+      },
+      {
+        "name": "test_report_without_probe_writes_per_catalogue_checks",
+        "file": "tests.test_cli",
+        "outcome": "passed"
+      },
+      {
+        "name": "test_the_first_catalogues_are_configured",
+        "file": "tests.test_config",
+        "outcome": "passed"
+      },
+      {
+        "name": "test_ids_are_unique_and_nodes_are_known",
+        "file": "tests.test_config",
+        "outcome": "passed"
+      },
+      {
+        "name": "test_type_and_protocol_agree",
+        "file": "tests.test_config",
+        "outcome": "passed"
+      },
+      {
+        "name": "test_endpoints_are_https_and_oai_bases_have_no_verb",
+        "file": "tests.test_config",
+        "outcome": "passed"
+      },
+      {
+        "name": "test_every_entry_comes_from_the_production_sheet_but_known_exceptions",
+        "file": "tests.test_config",
+        "outcome": "passed"
+      },
+      {
+        "name": "test_resource_hub_entries_quote_nothing_and_name_their_record",
+        "file": "tests.test_config",
+        "outcome": "passed"
+      },
+      {
+        "name": "test_a_display_endpoint_is_explained_in_the_note",
+        "file": "tests.test_config",
+        "outcome": "passed"
+      },
+      {
+        "name": "test_bad_entries_are_rejected[service-catalogue-oai-pmh-https://x.example/services-queried with]",
+        "file": "tests.test_config",
+        "outcome": "passed"
+      },
+      {
+        "name": "test_bad_entries_are_rejected[dataset-catalogue-oai-pmh-https://x.example/oai-unknown type]",
+        "file": "tests.test_config",
+        "outcome": "passed"
+      },
+      {
+        "name": "test_bad_entries_are_rejected[service-catalogue-een-services-api-http://x.example/services-https URL]",
+        "file": "tests.test_config",
+        "outcome": "passed"
+      },
+      {
+        "name": "test_bad_entries_are_rejected[research-product-catalogue-oai-pmh-https://x.example/oai?verb=Identify-without ?verb=]",
+        "file": "tests.test_config",
+        "outcome": "passed"
+      },
+      {
+        "name": "test_duplicate_ids_are_rejected",
+        "file": "tests.test_config",
+        "outcome": "passed"
+      },
+      {
+        "name": "test_unknown_listed_fields_are_rejected",
+        "file": "tests.test_config",
+        "outcome": "passed"
+      },
+      {
+        "name": "test_every_known_node_has_a_display_name",
+        "file": "tests.test_config",
+        "outcome": "passed"
+      }
+    ]
+  },
+  "commit": "38c8af9ad0af888d69c5a687e535fa9b37b1c39c",
+  "run_url": "https://github.com/marioreale/eosc-catalogues-test/actions/runs/42014173845",
+  "catalogues": [
+    {
+      "id": "bbmri-eric-services",
+      "node": "bbmri-eric",
+      "name": "EOSC Node BBMRI-ERIC Service Catalogue",
+      "type": "service-catalogue",
+      "protocol": "een-services-api",
+      "endpoint": "https://eosc-catalogue.bbmri-eric.eu/services",
+      "source": "production",
+      "website": "https://eosc-catalogue.bbmri-eric.eu",
+      "display_endpoint": "",
+      "note": "",
+      "listed": {},
+      "node_name": "BBMRI-ERIC",
+      "checks": [
+        {
+          "key": "fields",
+          "label": "All required fields present",
+          "passed": true,
+          "detail": "id, node, name, type, protocol, endpoint, source"
+        },
+        {
+          "key": "node",
+          "label": "Node is a known EOSC Node",
+          "passed": true,
+          "detail": "bbmri-eric"
+        },
+        {
+          "key": "protocol",
+          "label": "Protocol matches catalogue type",
+          "passed": true,
+          "detail": "service-catalogue → een-services-api"
+        },
+        {
+          "key": "https",
+          "label": "Endpoint uses HTTPS",
+          "passed": true,
+          "detail": "https://eosc-catalogue.bbmri-eric.eu/services"
+        },
+        {
+          "key": "source",
+          "label": "Endpoint taken from the production sheet",
+          "passed": true,
+          "detail": "production"
+        }
+      ],
+      "probe": {
+        "url": "https://eosc-catalogue.bbmri-eric.eu/services",
+        "http_status": 200,
+        "seconds": 0.63,
+        "content_type": "application/json",
+        "outcome": "pass",
+        "summary": "Answered with JSON",
+        "facts": {
+          "total declared": 6,
+          "items on first page": 6
+        },
+        "observations": []
+      }
+    },
+    {
+      "id": "eosc-fi-services",
+      "node": "eosc-fi",
+      "name": "EOSC-FI Service Catalogue",
+      "type": "service-catalogue",
+      "protocol": "een-services-api",
+      "endpoint": "https://data.eosc.fi/v1/services",
+      "source": "production",
+      "website": "https://eosc.fi",
+      "display_endpoint": "",
+      "note": "",
+      "listed": {},
+      "node_name": "EOSC Finland",
+      "checks": [
+        {
+          "key": "fields",
+          "label": "All required fields present",
+          "passed": true,
+          "detail": "id, node, name, type, protocol, endpoint, source"
+        },
+        {
+          "key": "node",
+          "label": "Node is a known EOSC Node",
+          "passed": true,
+          "detail": "eosc-fi"
+        },
+        {
+          "key": "protocol",
+          "label": "Protocol matches catalogue type",
+          "passed": true,
+          "detail": "service-catalogue → een-services-api"
+        },
+        {
+          "key": "https",
+          "label": "Endpoint uses HTTPS",
+          "passed": true,
+          "detail": "https://data.eosc.fi/v1/services"
+        },
+        {
+          "key": "source",
+          "label": "Endpoint taken from the production sheet",
+          "passed": true,
+          "detail": "production"
+        }
+      ],
+      "probe": {
+        "url": "https://data.eosc.fi/v1/services",
+        "http_status": 200,
+        "seconds": 0.97,
+        "content_type": "application/json;charset=UTF-8",
+        "outcome": "pass",
+        "summary": "Answered with JSON",
+        "facts": {
+          "total declared": 7,
+          "items on first page": 7
+        },
+        "observations": []
+      }
+    },
+    {
+      "id": "eosc-dto-services",
+      "node": "eosc-dto",
+      "name": "European DTO Service Catalogue",
+      "type": "service-catalogue",
+      "protocol": "een-services-api",
+      "endpoint": "https://gcat.d4science.org/gcat/ext/eosc/EOSC-Node-DTO/services",
+      "source": "production",
+      "website": "https://eosc-dto.d4science.org/service-catalogue-organization/eoscnodedto-catalogue",
+      "display_endpoint": "",
+      "note": "",
+      "listed": {},
+      "node_name": "EOSC DTO (D4Science)",
+      "checks": [
+        {
+          "key": "fields",
+          "label": "All required fields present",
+          "passed": true,
+          "detail": "id, node, name, type, protocol, endpoint, source"
+        },
+        {
+          "key": "node",
+          "label": "Node is a known EOSC Node",
+          "passed": true,
+          "detail": "eosc-dto"
+        },
+        {
+          "key": "protocol",
+          "label": "Protocol matches catalogue type",
+          "passed": true,
+          "detail": "service-catalogue → een-services-api"
+        },
+        {
+          "key": "https",
+          "label": "Endpoint uses HTTPS",
+          "passed": true,
+          "detail": "https://gcat.d4science.org/gcat/ext/eosc/EOSC-Node-DTO/services"
+        },
+        {
+          "key": "source",
+          "label": "Endpoint taken from the production sheet",
+          "passed": true,
+          "detail": "production"
+        }
+      ],
+      "probe": {
+        "url": "https://gcat.d4science.org/gcat/ext/eosc/EOSC-Node-DTO/services",
+        "http_status": 200,
+        "seconds": 1.33,
+        "content_type": "application/json;charset=UTF-8",
+        "outcome": "pass",
+        "summary": "Answered with JSON",
+        "facts": {
+          "total declared": 34,
+          "items on first page": 10
+        },
+        "observations": []
+      }
+    },
+    {
+      "id": "eosc-sk-services",
+      "node": "eosc-sk",
+      "name": "EOSC Slovakia - Service Catalogue",
+      "type": "service-catalogue",
+      "protocol": "een-services-api",
+      "endpoint": "https://sc.eosc.sk/api/v1/services",
+      "source": "production",
+      "website": "https://sc.eosc.sk/",
+      "display_endpoint": "",
+      "note": "Its envelope adds node, quantity, order, sort and version to total/from/to, unlike the others.",
+      "listed": {},
+      "node_name": "EOSC Node Slovakia",
+      "checks": [
+        {
+          "key": "fields",
+          "label": "All required fields present",
+          "passed": true,
+          "detail": "id, node, name, type, protocol, endpoint, source"
+        },
+        {
+          "key": "node",
+          "label": "Node is a known EOSC Node",
+          "passed": true,
+          "detail": "eosc-sk"
+        },
+        {
+          "key": "protocol",
+          "label": "Protocol matches catalogue type",
+          "passed": true,
+          "detail": "service-catalogue → een-services-api"
+        },
+        {
+          "key": "https",
+          "label": "Endpoint uses HTTPS",
+          "passed": true,
+          "detail": "https://sc.eosc.sk/api/v1/services"
+        },
+        {
+          "key": "source",
+          "label": "Endpoint taken from the production sheet",
+          "passed": true,
+          "detail": "production"
+        }
+      ],
+      "probe": {
+        "url": "https://sc.eosc.sk/api/v1/services",
+        "http_status": 200,
+        "seconds": 0.46,
+        "content_type": "application/json; charset=utf-8",
+        "outcome": "pass",
+        "summary": "Answered with JSON",
+        "facts": {
+          "total declared": 3,
+          "items on first page": 3
+        },
+        "observations": []
+      }
+    },
+    {
+      "id": "data-terra-services",
+      "node": "data-terra",
+      "name": "Data Terra EOSC Node Service Catalogue",
+      "type": "service-catalogue",
+      "protocol": "een-services-api",
+      "endpoint": "https://services.earth-data.eu/services",
+      "source": "production",
+      "website": "https://earth-data.eu/",
+      "display_endpoint": "",
+      "note": "",
+      "listed": {},
+      "node_name": "Data Terra",
+      "checks": [
+        {
+          "key": "fields",
+          "label": "All required fields present",
+          "passed": true,
+          "detail": "id, node, name, type, protocol, endpoint, source"
+        },
+        {
+          "key": "node",
+          "label": "Node is a known EOSC Node",
+          "passed": true,
+          "detail": "data-terra"
+        },
+        {
+          "key": "protocol",
+          "label": "Protocol matches catalogue type",
+          "passed": true,
+          "detail": "service-catalogue → een-services-api"
+        },
+        {
+          "key": "https",
+          "label": "Endpoint uses HTTPS",
+          "passed": true,
+          "detail": "https://services.earth-data.eu/services"
+        },
+        {
+          "key": "source",
+          "label": "Endpoint taken from the production sheet",
+          "passed": true,
+          "detail": "production"
+        }
+      ],
+      "probe": {
+        "url": "https://services.earth-data.eu/services",
+        "http_status": 200,
+        "seconds": 0.6,
+        "content_type": "application/json",
+        "outcome": "pass",
+        "summary": "Answered with JSON",
+        "facts": {
+          "total declared": 21,
+          "items on first page": 10
+        },
+        "observations": []
+      }
+    },
+    {
+      "id": "eudat-services",
+      "node": "eudat",
+      "name": "EUDAT Node Service Catalogue",
+      "type": "service-catalogue",
+      "protocol": "een-services-api",
+      "endpoint": "https://portal.eudat.eu/api/services",
+      "source": "production",
+      "website": "https://portal.eudat.eu/catalog",
+      "display_endpoint": "",
+      "note": "",
+      "listed": {},
+      "node_name": "EUDAT",
+      "checks": [
+        {
+          "key": "fields",
+          "label": "All required fields present",
+          "passed": true,
+          "detail": "id, node, name, type, protocol, endpoint, source"
+        },
+        {
+          "key": "node",
+          "label": "Node is a known EOSC Node",
+          "passed": true,
+          "detail": "eudat"
+        },
+        {
+          "key": "protocol",
+          "label": "Protocol matches catalogue type",
+          "passed": true,
+          "detail": "service-catalogue → een-services-api"
+        },
+        {
+          "key": "https",
+          "label": "Endpoint uses HTTPS",
+          "passed": true,
+          "detail": "https://portal.eudat.eu/api/services"
+        },
+        {
+          "key": "source",
+          "label": "Endpoint taken from the production sheet",
+          "passed": true,
+          "detail": "production"
+        }
+      ],
+      "probe": {
+        "url": "https://portal.eudat.eu/api/services",
+        "http_status": 200,
+        "seconds": 0.58,
+        "content_type": "application/json",
+        "outcome": "pass",
+        "summary": "Answered with JSON",
+        "facts": {
+          "total declared": 7,
+          "items on first page": 7
+        },
+        "observations": []
+      }
+    },
+    {
+      "id": "geant-services",
+      "node": "geant",
+      "name": "GEANT Service Catalogue",
+      "type": "service-catalogue",
+      "protocol": "een-services-api",
+      "endpoint": "https://geant-node-catalogue.geant.org/services",
+      "source": "production",
+      "website": "https://geant-node-catalogue.geant.org",
+      "display_endpoint": "",
+      "note": "Unlike GÉANT's landing page, the catalogue API answered without a Cloudflare challenge.",
+      "listed": {},
+      "node_name": "GÉANT",
+      "checks": [
+        {
+          "key": "fields",
+          "label": "All required fields present",
+          "passed": true,
+          "detail": "id, node, name, type, protocol, endpoint, source"
+        },
+        {
+          "key": "node",
+          "label": "Node is a known EOSC Node",
+          "passed": true,
+          "detail": "geant"
+        },
+        {
+          "key": "protocol",
+          "label": "Protocol matches catalogue type",
+          "passed": true,
+          "detail": "service-catalogue → een-services-api"
+        },
+        {
+          "key": "https",
+          "label": "Endpoint uses HTTPS",
+          "passed": true,
+          "detail": "https://geant-node-catalogue.geant.org/services"
+        },
+        {
+          "key": "source",
+          "label": "Endpoint taken from the production sheet",
+          "passed": true,
+          "detail": "production"
+        }
+      ],
+      "probe": {
+        "url": "https://geant-node-catalogue.geant.org/services",
+        "http_status": 200,
+        "seconds": 0.36,
+        "content_type": "application/json",
+        "outcome": "pass",
+        "summary": "Answered with JSON",
+        "facts": {
+          "total declared": 4,
+          "items on first page": 4
+        },
+        "observations": []
+      }
+    },
+    {
+      "id": "egi-services",
+      "node": "egi",
+      "name": "EGI Service Catalogue",
+      "type": "service-catalogue",
+      "protocol": "een-services-api",
+      "endpoint": "https://egi-eosc-catalogue.dyn.cloud.e-infra.cz/services",
+      "source": "production",
+      "website": "https://www.egi.eu/services",
+      "display_endpoint": "",
+      "note": "The host root, https://egi-eosc-catalogue.dyn.cloud.e-infra.cz/, answers HTTP 404; /services is the listing (16 services on 4 November 2026, all in one page).",
+      "listed": {},
+      "node_name": "EGI",
+      "checks": [
+        {
+          "key": "fields",
+          "label": "All required fields present",
+          "passed": true,
+          "detail": "id, node, name, type, protocol, endpoint, source"
+        },
+        {
+          "key": "node",
+          "label": "Node is a known EOSC Node",
+          "passed": true,
+          "detail": "egi"
+        },
+        {
+          "key": "protocol",
+          "label": "Protocol matches catalogue type",
+          "passed": true,
+          "detail": "service-catalogue → een-services-api"
+        },
+        {
+          "key": "https",
+          "label": "Endpoint uses HTTPS",
+          "passed": true,
+          "detail": "https://egi-eosc-catalogue.dyn.cloud.e-infra.cz/services"
+        },
+        {
+          "key": "source",
+          "label": "Endpoint taken from the production sheet",
+          "passed": true,
+          "detail": "production"
+        }
+      ],
+      "probe": {
+        "url": "https://egi-eosc-catalogue.dyn.cloud.e-infra.cz/services",
+        "http_status": 200,
+        "seconds": 1.27,
+        "content_type": "application/json",
+        "outcome": "pass",
+        "summary": "Answered with JSON",
+        "facts": {
+          "total declared": 16,
+          "items on first page": 16
+        },
+        "observations": []
+      }
+    },
+    {
+      "id": "eosc-it-services",
+      "node": "eosc-it",
+      "name": "EOSC Node | Italy Service Catalogue",
+      "type": "service-catalogue",
+      "protocol": "een-services-api",
+      "endpoint": "https://gcat.d4science.org/gcat/ext/eosc/EOSC-IT_Node/services",
+      "source": "production",
+      "website": "https://eosc.it/catalogue",
+      "display_endpoint": "",
+      "note": "Same gCat software as the DTO catalogue. Its listing includes IRIS AperTO, which is also listed below as a research product catalogue.",
+      "listed": {},
+      "node_name": "EOSC Node Italy",
+      "checks": [
+        {
+          "key": "fields",
+          "label": "All required fields present",
+          "passed": true,
+          "detail": "id, node, name, type, protocol, endpoint, source"
+        },
+        {
+          "key": "node",
+          "label": "Node is a known EOSC Node",
+          "passed": true,
+          "detail": "eosc-it"
+        },
+        {
+          "key": "protocol",
+          "label": "Protocol matches catalogue type",
+          "passed": true,
+          "detail": "service-catalogue → een-services-api"
+        },
+        {
+          "key": "https",
+          "label": "Endpoint uses HTTPS",
+          "passed": true,
+          "detail": "https://gcat.d4science.org/gcat/ext/eosc/EOSC-IT_Node/services"
+        },
+        {
+          "key": "source",
+          "label": "Endpoint taken from the production sheet",
+          "passed": true,
+          "detail": "production"
+        }
+      ],
+      "probe": {
+        "url": "https://gcat.d4science.org/gcat/ext/eosc/EOSC-IT_Node/services",
+        "http_status": 200,
+        "seconds": 0.38,
+        "content_type": "application/json;charset=UTF-8",
+        "outcome": "pass",
+        "summary": "Answered with JSON",
+        "facts": {
+          "total declared": 6,
+          "items on first page": 6
+        },
+        "observations": []
+      }
+    },
+    {
+      "id": "panosc-services",
+      "node": "panosc",
+      "name": "PaNOSC Service Catalogue",
+      "type": "service-catalogue",
+      "protocol": "een-services-api",
+      "endpoint": "https://pan-training.eu/service-catalogue/api/v3/services",
+      "source": "production",
+      "website": "https://services.tesshub.hzdr.de/collections/eosc-panosc-node-services",
+      "display_endpoint": "",
+      "note": "Paginated: 17 services on 4 November 2026, 10 returned per page. Like Slovakia's, its envelope adds count, order, sort and version.",
+      "listed": {},
+      "node_name": "PaNOSC",
+      "checks": [
+        {
+          "key": "fields",
+          "label": "All required fields present",
+          "passed": true,
+          "detail": "id, node, name, type, protocol, endpoint, source"
+        },
+        {
+          "key": "node",
+          "label": "Node is a known EOSC Node",
+          "passed": true,
+          "detail": "panosc"
+        },
+        {
+          "key": "protocol",
+          "label": "Protocol matches catalogue type",
+          "passed": true,
+          "detail": "service-catalogue → een-services-api"
+        },
+        {
+          "key": "https",
+          "label": "Endpoint uses HTTPS",
+          "passed": true,
+          "detail": "https://pan-training.eu/service-catalogue/api/v3/services"
+        },
+        {
+          "key": "source",
+          "label": "Endpoint taken from the production sheet",
+          "passed": true,
+          "detail": "production"
+        }
+      ],
+      "probe": {
+        "url": "https://pan-training.eu/service-catalogue/api/v3/services",
+        "http_status": 200,
+        "seconds": 0.54,
+        "content_type": "application/json",
+        "outcome": "pass",
+        "summary": "Answered with JSON",
+        "facts": {
+          "total declared": 17,
+          "items on first page": 10
+        },
+        "observations": []
+      }
+    },
+    {
+      "id": "bbmri-eric-oai",
+      "node": "bbmri-eric",
+      "name": "EOSC Node BBMRI-ERIC Data Set Catalogue",
+      "type": "research-product-catalogue",
+      "protocol": "oai-pmh",
+      "endpoint": "https://eosc-catalogue.bbmri-eric.eu/oai",
+      "source": "production",
+      "website": "",
+      "display_endpoint": "",
+      "note": "",
+      "listed": {
+        "comment": "Improvement requested"
+      },
+      "node_name": "BBMRI-ERIC",
+      "checks": [
+        {
+          "key": "fields",
+          "label": "All required fields present",
+          "passed": true,
+          "detail": "id, node, name, type, protocol, endpoint, source"
+        },
+        {
+          "key": "node",
+          "label": "Node is a known EOSC Node",
+          "passed": true,
+          "detail": "bbmri-eric"
+        },
+        {
+          "key": "protocol",
+          "label": "Protocol matches catalogue type",
+          "passed": true,
+          "detail": "research-product-catalogue → oai-pmh"
+        },
+        {
+          "key": "https",
+          "label": "Endpoint uses HTTPS",
+          "passed": true,
+          "detail": "https://eosc-catalogue.bbmri-eric.eu/oai"
+        },
+        {
+          "key": "oai-base",
+          "label": "OAI-PMH base URL has no ?verb=",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "key": "source",
+          "label": "Endpoint taken from the production sheet",
+          "passed": true,
+          "detail": "production"
+        }
+      ],
+      "probe": {
+        "url": "https://eosc-catalogue.bbmri-eric.eu/oai?verb=Identify",
+        "http_status": 200,
+        "seconds": 0.74,
+        "content_type": "text/xml; charset=utf-8",
+        "outcome": "pass",
+        "summary": "Answered Identify",
+        "facts": {
+          "repositoryName": "BBMRI-ERIC EOSC Node Research Product Catalogue",
+          "protocolVersion": "2.0",
+          "baseURL": "https://eosc-catalogue.bbmri-eric.eu/oai",
+          "earliestDatestamp": "2026-07-27"
+        },
+        "observations": []
+      }
+    },
+    {
+      "id": "cern-opendata-oai",
+      "node": "cern",
+      "name": "CERN Open Data Portal",
+      "type": "research-product-catalogue",
+      "protocol": "oai-pmh",
+      "endpoint": "https://opendata.cern/oai2d",
+      "source": "production",
+      "website": "",
+      "display_endpoint": "",
+      "note": "The sheet gives https://opendata.cern/oai2d?verb=Identify; the base URL is used here.",
+      "listed": {},
+      "node_name": "CERN",
+      "checks": [
+        {
+          "key": "fields",
+          "label": "All required fields present",
+          "passed": true,
+          "detail": "id, node, name, type, protocol, endpoint, source"
+        },
+        {
+          "key": "node",
+          "label": "Node is a known EOSC Node",
+          "passed": true,
+          "detail": "cern"
+        },
+        {
+          "key": "protocol",
+          "label": "Protocol matches catalogue type",
+          "passed": true,
+          "detail": "research-product-catalogue → oai-pmh"
+        },
+        {
+          "key": "https",
+          "label": "Endpoint uses HTTPS",
+          "passed": true,
+          "detail": "https://opendata.cern/oai2d"
+        },
+        {
+          "key": "oai-base",
+          "label": "OAI-PMH base URL has no ?verb=",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "key": "source",
+          "label": "Endpoint taken from the production sheet",
+          "passed": true,
+          "detail": "production"
+        }
+      ],
+      "probe": {
+        "url": "https://opendata.cern/oai2d?verb=Identify",
+        "http_status": 200,
+        "seconds": 1.01,
+        "content_type": "text/xml; charset=utf-8",
+        "outcome": "pass",
+        "summary": "Answered Identify",
+        "facts": {
+          "repositoryName": "CERN Open Data Portal",
+          "protocolVersion": "2.0",
+          "baseURL": "https://opendata.cern/oai2d",
+          "earliestDatestamp": "2024-11-28T12:44:10Z"
+        },
+        "observations": []
+      }
+    },
+    {
+      "id": "eosc-it-cnr-iris-oai",
+      "node": "eosc-it",
+      "name": "CNR IRIS",
+      "type": "research-product-catalogue",
+      "protocol": "oai-pmh",
+      "endpoint": "https://iris.cnr.it/oai/openaire4",
+      "source": "production",
+      "website": "",
+      "display_endpoint": "",
+      "note": "Did not answer Identify within 20 s on 23 October 2026, nor in some later runs.",
+      "listed": {},
+      "node_name": "EOSC Node Italy",
+      "checks": [
+        {
+          "key": "fields",
+          "label": "All required fields present",
+          "passed": true,
+          "detail": "id, node, name, type, protocol, endpoint, source"
+        },
+        {
+          "key": "node",
+          "label": "Node is a known EOSC Node",
+          "passed": true,
+          "detail": "eosc-it"
+        },
+        {
+          "key": "protocol",
+          "label": "Protocol matches catalogue type",
+          "passed": true,
+          "detail": "research-product-catalogue → oai-pmh"
+        },
+        {
+          "key": "https",
+          "label": "Endpoint uses HTTPS",
+          "passed": true,
+          "detail": "https://iris.cnr.it/oai/openaire4"
+        },
+        {
+          "key": "oai-base",
+          "label": "OAI-PMH base URL has no ?verb=",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "key": "source",
+          "label": "Endpoint taken from the production sheet",
+          "passed": true,
+          "detail": "production"
+        }
+      ],
+      "probe": {
+        "url": "https://iris.cnr.it/oai/openaire4?verb=Identify",
+        "http_status": 200,
+        "seconds": 0.71,
+        "content_type": "text/xml;charset=UTF-8",
+        "outcome": "pass",
+        "summary": "Answered Identify",
+        "facts": {
+          "repositoryName": "IRIS - CNR - prod",
+          "protocolVersion": "2.0",
+          "baseURL": "https://iris.cnr.it/oai/openaire4",
+          "earliestDatestamp": "2024-02-12T15:23:29Z"
+        },
+        "observations": []
+      }
+    },
+    {
+      "id": "eosc-it-unito-iris-oai",
+      "node": "eosc-it",
+      "name": "IRIS AperTO (Università di Torino)",
+      "type": "research-product-catalogue",
+      "protocol": "oai-pmh",
+      "endpoint": "https://iris.unito.it/oai/openaire4",
+      "source": "production",
+      "website": "",
+      "display_endpoint": "",
+      "note": "Did not answer Identify within 20 s on 23 October 2026.",
+      "listed": {},
+      "node_name": "EOSC Node Italy",
+      "checks": [
+        {
+          "key": "fields",
+          "label": "All required fields present",
+          "passed": true,
+          "detail": "id, node, name, type, protocol, endpoint, source"
+        },
+        {
+          "key": "node",
+          "label": "Node is a known EOSC Node",
+          "passed": true,
+          "detail": "eosc-it"
+        },
+        {
+          "key": "protocol",
+          "label": "Protocol matches catalogue type",
+          "passed": true,
+          "detail": "research-product-catalogue → oai-pmh"
+        },
+        {
+          "key": "https",
+          "label": "Endpoint uses HTTPS",
+          "passed": true,
+          "detail": "https://iris.unito.it/oai/openaire4"
+        },
+        {
+          "key": "oai-base",
+          "label": "OAI-PMH base URL has no ?verb=",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "key": "source",
+          "label": "Endpoint taken from the production sheet",
+          "passed": true,
+          "detail": "production"
+        }
+      ],
+      "probe": {
+        "url": "https://iris.unito.it/oai/openaire4?verb=Identify",
+        "http_status": 200,
+        "seconds": 0.67,
+        "content_type": "text/xml;charset=UTF-8",
+        "outcome": "pass",
+        "summary": "Answered Identify",
+        "facts": {
+          "repositoryName": "IRIS - UNITO - prod",
+          "protocolVersion": "2.0",
+          "baseURL": "https://iris.unito.it/oai/openaire4",
+          "earliestDatestamp": "2006-01-19T13:38:47Z"
+        },
+        "observations": []
+      }
+    },
+    {
+      "id": "data-terra-oai",
+      "node": "data-terra",
+      "name": "Data Terra research products",
+      "type": "research-product-catalogue",
+      "protocol": "oai-pmh",
+      "endpoint": "https://resources.earth-data.eu/oai",
+      "source": "production",
+      "website": "",
+      "display_endpoint": "",
+      "note": "",
+      "listed": {
+        "comment": "Improvement requested"
+      },
+      "node_name": "Data Terra",
+      "checks": [
+        {
+          "key": "fields",
+          "label": "All required fields present",
+          "passed": true,
+          "detail": "id, node, name, type, protocol, endpoint, source"
+        },
+        {
+          "key": "node",
+          "label": "Node is a known EOSC Node",
+          "passed": true,
+          "detail": "data-terra"
+        },
+        {
+          "key": "protocol",
+          "label": "Protocol matches catalogue type",
+          "passed": true,
+          "detail": "research-product-catalogue → oai-pmh"
+        },
+        {
+          "key": "https",
+          "label": "Endpoint uses HTTPS",
+          "passed": true,
+          "detail": "https://resources.earth-data.eu/oai"
+        },
+        {
+          "key": "oai-base",
+          "label": "OAI-PMH base URL has no ?verb=",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "key": "source",
+          "label": "Endpoint taken from the production sheet",
+          "passed": true,
+          "detail": "production"
+        }
+      ],
+      "probe": {
+        "url": "https://resources.earth-data.eu/oai?verb=Identify",
+        "http_status": 200,
+        "seconds": 0.6,
+        "content_type": "text/xml; charset=UTF-8",
+        "outcome": "pass",
+        "summary": "Answered Identify",
+        "facts": {
+          "repositoryName": "Data Terra EOSC Node",
+          "protocolVersion": "2.0",
+          "baseURL": "https://resources.earth-data.eu/oai",
+          "earliestDatestamp": "2026-05-03T00:00:00Z"
+        },
+        "observations": []
+      }
+    },
+    {
+      "id": "panosc-rodare-oai",
+      "node": "panosc",
+      "name": "RODARE (Rossendorf Data Repository)",
+      "type": "research-product-catalogue",
+      "protocol": "oai-pmh",
+      "endpoint": "https://rodare.hzdr.de/oai2d",
+      "source": "production",
+      "website": "",
+      "display_endpoint": "",
+      "note": "The sheet gives https://rodare.hzdr.de/oai2d?verb=Identify; the base URL is used here.",
+      "listed": {},
+      "node_name": "PaNOSC",
+      "checks": [
+        {
+          "key": "fields",
+          "label": "All required fields present",
+          "passed": true,
+          "detail": "id, node, name, type, protocol, endpoint, source"
+        },
+        {
+          "key": "node",
+          "label": "Node is a known EOSC Node",
+          "passed": true,
+          "detail": "panosc"
+        },
+        {
+          "key": "protocol",
+          "label": "Protocol matches catalogue type",
+          "passed": true,
+          "detail": "research-product-catalogue → oai-pmh"
+        },
+        {
+          "key": "https",
+          "label": "Endpoint uses HTTPS",
+          "passed": true,
+          "detail": "https://rodare.hzdr.de/oai2d"
+        },
+        {
+          "key": "oai-base",
+          "label": "OAI-PMH base URL has no ?verb=",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "key": "source",
+          "label": "Endpoint taken from the production sheet",
+          "passed": true,
+          "detail": "production"
+        }
+      ],
+      "probe": {
+        "url": "https://rodare.hzdr.de/oai2d?verb=Identify",
+        "http_status": 200,
+        "seconds": 0.77,
+        "content_type": "text/xml; charset=utf-8",
+        "outcome": "pass",
+        "summary": "Answered Identify",
+        "facts": {
+          "repositoryName": "RODARE",
+          "protocolVersion": "2.0",
+          "baseURL": "https://rodare.hzdr.de/oai2d",
+          "earliestDatestamp": "2018-02-28T12:52:32Z"
+        },
+        "observations": []
+      }
+    },
+    {
+      "id": "eudat-b2find-oai",
+      "node": "eudat",
+      "name": "B2FIND",
+      "type": "research-product-catalogue",
+      "protocol": "oai-pmh",
+      "endpoint": "https://b2find.eudat.eu/oai",
+      "source": "production",
+      "website": "",
+      "display_endpoint": "",
+      "note": "",
+      "listed": {
+        "evaluation_eosc_a": "Catalogue openly accessible, UAP/AUP linked"
+      },
+      "node_name": "EUDAT",
+      "checks": [
+        {
+          "key": "fields",
+          "label": "All required fields present",
+          "passed": true,
+          "detail": "id, node, name, type, protocol, endpoint, source"
+        },
+        {
+          "key": "node",
+          "label": "Node is a known EOSC Node",
+          "passed": true,
+          "detail": "eudat"
+        },
+        {
+          "key": "protocol",
+          "label": "Protocol matches catalogue type",
+          "passed": true,
+          "detail": "research-product-catalogue → oai-pmh"
+        },
+        {
+          "key": "https",
+          "label": "Endpoint uses HTTPS",
+          "passed": true,
+          "detail": "https://b2find.eudat.eu/oai"
+        },
+        {
+          "key": "oai-base",
+          "label": "OAI-PMH base URL has no ?verb=",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "key": "source",
+          "label": "Endpoint taken from the production sheet",
+          "passed": true,
+          "detail": "production"
+        }
+      ],
+      "probe": {
+        "url": "https://b2find.eudat.eu/oai?verb=Identify",
+        "http_status": 200,
+        "seconds": 1.42,
+        "content_type": "text/xml; charset=utf-8",
+        "outcome": "pass",
+        "summary": "Answered Identify",
+        "facts": {
+          "repositoryName": "B2FIND",
+          "protocolVersion": "2.0",
+          "baseURL": "http://131.175.206.246/oai",
+          "earliestDatestamp": "2025-06-19T09:01:52Z"
+        },
+        "observations": [
+          "Identify declares baseURL http://131.175.206.246/oai, not the endpoint queried"
+        ]
+      }
+    },
+    {
+      "id": "eosc-dto-zenodo-oai",
+      "node": "eosc-dto",
+      "name": "EOSC Node | EU DTO Zenodo Community",
+      "type": "research-product-catalogue",
+      "protocol": "oai-pmh",
+      "endpoint": "https://zenodo.org/oai2d",
+      "source": "production",
+      "website": "",
+      "display_endpoint": "",
+      "note": "This is all of Zenodo; the node's records are one community, so a harvest needs that community's OAI set, still to be identified.",
+      "listed": {},
+      "node_name": "EOSC DTO (D4Science)",
+      "checks": [
+        {
+          "key": "fields",
+          "label": "All required fields present",
+          "passed": true,
+          "detail": "id, node, name, type, protocol, endpoint, source"
+        },
+        {
+          "key": "node",
+          "label": "Node is a known EOSC Node",
+          "passed": true,
+          "detail": "eosc-dto"
+        },
+        {
+          "key": "protocol",
+          "label": "Protocol matches catalogue type",
+          "passed": true,
+          "detail": "research-product-catalogue → oai-pmh"
+        },
+        {
+          "key": "https",
+          "label": "Endpoint uses HTTPS",
+          "passed": true,
+          "detail": "https://zenodo.org/oai2d"
+        },
+        {
+          "key": "oai-base",
+          "label": "OAI-PMH base URL has no ?verb=",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "key": "source",
+          "label": "Endpoint taken from the production sheet",
+          "passed": true,
+          "detail": "production"
+        }
+      ],
+      "probe": {
+        "url": "https://zenodo.org/oai2d?verb=Identify",
+        "http_status": 200,
+        "seconds": 0.33,
+        "content_type": "text/xml; charset=utf-8",
+        "outcome": "pass",
+        "summary": "Answered Identify",
+        "facts": {
+          "repositoryName": "Zenodo",
+          "protocolVersion": "2.0",
+          "baseURL": "https://zenodo.org/oai2d",
+          "earliestDatestamp": "2014-02-03T14:41:33Z"
+        },
+        "observations": []
+      }
+    },
+    {
+      "id": "eosc-cz-nmd-oai",
+      "node": "eosc-cz",
+      "name": "National Metadata Directory",
+      "type": "research-product-catalogue",
+      "protocol": "oai-pmh",
+      "endpoint": "https://test1.nma.du.cesnet.cz/oai2d",
+      "source": "production",
+      "website": "",
+      "display_endpoint": "https://nma.du.cesnet.cz/oai2d",
+      "note": "Shown as https://nma.du.cesnet.cz/oai2d, the intended production address, but queried at https://test1.nma.du.cesnet.cz/oai2d, the address the production sheet lists. On 4 November 2026 the production address did not work: its server presented a generic certificate (\"TRAEFIK DEFAULT CERT\", not valid for the host) and answered \"404 page not found\"; the test1 address answered Identify.",
+      "listed": {
+        "evaluation_eosc_a": "https://test1.nma.du.cesnet.cz/"
+      },
+      "node_name": "EOSC Node Czechia",
+      "checks": [
+        {
+          "key": "fields",
+          "label": "All required fields present",
+          "passed": true,
+          "detail": "id, node, name, type, protocol, endpoint, source"
+        },
+        {
+          "key": "node",
+          "label": "Node is a known EOSC Node",
+          "passed": true,
+          "detail": "eosc-cz"
+        },
+        {
+          "key": "protocol",
+          "label": "Protocol matches catalogue type",
+          "passed": true,
+          "detail": "research-product-catalogue → oai-pmh"
+        },
+        {
+          "key": "https",
+          "label": "Endpoint uses HTTPS",
+          "passed": true,
+          "detail": "https://test1.nma.du.cesnet.cz/oai2d"
+        },
+        {
+          "key": "oai-base",
+          "label": "OAI-PMH base URL has no ?verb=",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "key": "source",
+          "label": "Endpoint taken from the production sheet",
+          "passed": true,
+          "detail": "production"
+        }
+      ],
+      "probe": {
+        "url": "https://test1.nma.du.cesnet.cz/oai2d?verb=Identify",
+        "http_status": 200,
+        "seconds": 1.02,
+        "content_type": "text/xml; charset=utf-8",
+        "outcome": "pass",
+        "summary": "Answered Identify",
+        "facts": {
+          "repositoryName": "jejej",
+          "protocolVersion": "2.0",
+          "baseURL": "https://test1.nma.du.cesnet.cz/oai2d",
+          "earliestDatestamp": "2026-05-22T07:10:42Z"
+        },
+        "observations": []
+      }
+    },
+    {
+      "id": "eosc-pl-mostwiedzy-oai",
+      "node": "eosc-pl",
+      "name": "Most Wiedzy Open Research Data Catalog",
+      "type": "research-product-catalogue",
+      "protocol": "oai-pmh",
+      "endpoint": "https://mostwiedzy.pl/en/oai-pmh",
+      "source": "resource-hub",
+      "website": "https://mostwiedzy.pl/",
+      "display_endpoint": "",
+      "note": "Hub record 21.11166/kFNSMX (registered 5 October 2026), re3data r3d100013366. The Hub records it as not OpenAIRE-compliant (\"Not compatible / Not relevant\"). Identify reports its baseURL with a trailing slash.",
+      "listed": {},
+      "node_name": "EOSC Node Poland",
+      "checks": [
+        {
+          "key": "fields",
+          "label": "All required fields present",
+          "passed": true,
+          "detail": "id, node, name, type, protocol, endpoint, source"
+        },
+        {
+          "key": "node",
+          "label": "Node is a known EOSC Node",
+          "passed": true,
+          "detail": "eosc-pl"
+        },
+        {
+          "key": "protocol",
+          "label": "Protocol matches catalogue type",
+          "passed": true,
+          "detail": "research-product-catalogue → oai-pmh"
+        },
+        {
+          "key": "https",
+          "label": "Endpoint uses HTTPS",
+          "passed": true,
+          "detail": "https://mostwiedzy.pl/en/oai-pmh"
+        },
+        {
+          "key": "oai-base",
+          "label": "OAI-PMH base URL has no ?verb=",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "key": "source",
+          "label": "Resource Hub entry names its Hub record",
+          "passed": true,
+          "detail": "resource-hub"
+        }
+      ],
+      "probe": {
+        "url": "https://mostwiedzy.pl/en/oai-pmh?verb=Identify",
+        "http_status": 200,
+        "seconds": 0.91,
+        "content_type": "text/xml; charset=UTF-8",
+        "outcome": "pass",
+        "summary": "Answered Identify",
+        "facts": {
+          "repositoryName": "MOST Wiedzy",
+          "protocolVersion": "2.0",
+          "baseURL": "https://mostwiedzy.pl/en/oai-pmh/",
+          "earliestDatestamp": "2016-01-01T00:00:00Z"
+        },
+        "observations": [
+          "Identify declares baseURL https://mostwiedzy.pl/en/oai-pmh/, not the endpoint queried"
+        ]
+      }
+    },
+    {
+      "id": "eosc-pl-repod-oai",
+      "node": "eosc-pl",
+      "name": "RepOD Repository for Open Data",
+      "type": "research-product-catalogue",
+      "protocol": "oai-pmh",
+      "endpoint": "https://repod.icm.edu.pl/oai",
+      "source": "resource-hub",
+      "website": "https://repod.icm.edu.pl/",
+      "display_endpoint": "",
+      "note": "Hub record 21.11166/3S6tct (registered 7 October 2026). The Hub declares https://repod.icm.edu.pl/oai?verb=Identify; the base URL is used here, as Identify confirms (a Dataverse OAI server). The Hub records it as not OpenAIRE-compliant.",
+      "listed": {},
+      "node_name": "EOSC Node Poland",
+      "checks": [
+        {
+          "key": "fields",
+          "label": "All required fields present",
+          "passed": true,
+          "detail": "id, node, name, type, protocol, endpoint, source"
+        },
+        {
+          "key": "node",
+          "label": "Node is a known EOSC Node",
+          "passed": true,
+          "detail": "eosc-pl"
+        },
+        {
+          "key": "protocol",
+          "label": "Protocol matches catalogue type",
+          "passed": true,
+          "detail": "research-product-catalogue → oai-pmh"
+        },
+        {
+          "key": "https",
+          "label": "Endpoint uses HTTPS",
+          "passed": true,
+          "detail": "https://repod.icm.edu.pl/oai"
+        },
+        {
+          "key": "oai-base",
+          "label": "OAI-PMH base URL has no ?verb=",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "key": "source",
+          "label": "Resource Hub entry names its Hub record",
+          "passed": true,
+          "detail": "resource-hub"
+        }
+      ],
+      "probe": {
+        "url": "https://repod.icm.edu.pl/oai?verb=Identify",
+        "http_status": 200,
+        "seconds": 0.68,
+        "content_type": "text/xml;charset=UTF-8",
+        "outcome": "pass",
+        "summary": "Answered Identify",
+        "facts": {
+          "repositoryName": "RepOD Dataverse OAI Archive",
+          "protocolVersion": "2.0",
+          "baseURL": "https://repod.icm.edu.pl/oai",
+          "earliestDatestamp": "2020-09-25T18:45:09Z"
+        },
+        "observations": []
+      }
+    },
+    {
+      "id": "eosc-pl-rohub-oai",
+      "node": "eosc-pl",
+      "name": "ROHub",
+      "type": "research-product-catalogue",
+      "protocol": "oai-pmh",
+      "endpoint": "https://api.rohub.org/api/oai2d/",
+      "source": "resource-hub",
+      "website": "https://reliance.rohub.org/",
+      "display_endpoint": "",
+      "note": "Hub record 21.11166/l9sqU5 (registered 7 October 2026), re3data r3d100013832, declared OpenAIRE 4.0 compatible. Its Identify response gives a broken baseURL (\"https://<arguments.base.Str object at …>/api/oai2d/\"), which a harvester that trusts Identify would follow.",
+      "listed": {},
+      "node_name": "EOSC Node Poland",
+      "checks": [
+        {
+          "key": "fields",
+          "label": "All required fields present",
+          "passed": true,
+          "detail": "id, node, name, type, protocol, endpoint, source"
+        },
+        {
+          "key": "node",
+          "label": "Node is a known EOSC Node",
+          "passed": true,
+          "detail": "eosc-pl"
+        },
+        {
+          "key": "protocol",
+          "label": "Protocol matches catalogue type",
+          "passed": true,
+          "detail": "research-product-catalogue → oai-pmh"
+        },
+        {
+          "key": "https",
+          "label": "Endpoint uses HTTPS",
+          "passed": true,
+          "detail": "https://api.rohub.org/api/oai2d/"
+        },
+        {
+          "key": "oai-base",
+          "label": "OAI-PMH base URL has no ?verb=",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "key": "source",
+          "label": "Resource Hub entry names its Hub record",
+          "passed": true,
+          "detail": "resource-hub"
+        }
+      ],
+      "probe": {
+        "url": "https://api.rohub.org/api/oai2d/?verb=Identify",
+        "http_status": 200,
+        "seconds": 1.11,
+        "content_type": "application/xml; charset=utf-8",
+        "outcome": "pass",
+        "summary": "Answered Identify",
+        "facts": {
+          "repositoryName": "rohub2020 repository",
+          "protocolVersion": "2.0",
+          "baseURL": "https://<arguments.base.Str object at 0x7fe6316da090>/api/oai2d/",
+          "earliestDatestamp": "2012-12-14T10:35:19Z"
+        },
+        "observations": [
+          "Identify declares baseURL https://<arguments.base.Str object at 0x7fe6316da090>/api/oai2d/, not the endpoint queried"
+        ]
+      }
+    }
+  ]
+}

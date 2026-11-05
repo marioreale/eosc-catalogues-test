@@ -1,0 +1,120 @@
+{
+  "source": "docs/README.md, section \"The 19 tests\"",
+  "note": "Tests 8 to 11 are cases of one parametrized test; each writes a small invalid file to a temporary directory and expects a ConfigError with the given message.",
+  "tests": {
+    "test_the_first_catalogues_are_configured": {
+      "n": 1,
+      "file": "test_config.py",
+      "asserts": "There are 22 entries; 10 are Service Catalogues; there are 13 distinct nodes.",
+      "why": "Any entry added or removed by mistake shows up as a failing count."
+    },
+    "test_ids_are_unique_and_nodes_are_known": {
+      "n": 2,
+      "file": "test_config.py",
+      "asserts": "No id appears twice, and every node is one of the 16 node ids of eosc-basic-compliance.",
+      "why": "Results from the two projects can be joined by node."
+    },
+    "test_type_and_protocol_agree": {
+      "n": 3,
+      "file": "test_config.py",
+      "asserts": "Each entry's protocol is the one its type requires.",
+      "why": "A Service Catalogue is never probed with OAI-PMH, and the reverse."
+    },
+    "test_endpoints_are_https_and_oai_bases_have_no_verb": {
+      "n": 4,
+      "file": "test_config.py",
+      "asserts": "Every endpoint starts with https://; no OAI-PMH endpoint contains verb=.",
+      "why": "The probe adds ?verb=Identify itself; a copied request URL would break it."
+    },
+    "test_every_entry_comes_from_the_production_sheet_but_known_exceptions": {
+      "n": 5,
+      "file": "test_config.py",
+      "asserts": "source is production for every node except the known exceptions listed in KNOWN_EXCEPTIONS (today only Poland, resource-hub). listed holds only comment and evaluation_eosc_a.",
+      "why": "Provenance stays explicit; only the production sheet's two columns are quoted."
+    },
+    "test_resource_hub_entries_quote_nothing_and_name_their_record": {
+      "n": 6,
+      "file": "test_config.py",
+      "asserts": "There are exactly 3 Resource Hub entries. None has listed, and each note cites a \"Hub record 21.11166/…\" PID.",
+      "why": "The Hub has no comment column, so nothing is attributed to it, and each entry can be traced."
+    },
+    "test_a_display_endpoint_is_explained_in_the_note": {
+      "n": 7,
+      "file": "test_config.py",
+      "asserts": "Only eosc-cz-nmd-oai has a display_endpoint. It differs from endpoint, and both URLs appear in the note.",
+      "why": "Showing one URL while querying another is always disclosed."
+    },
+    "test_bad_entries_are_rejected[queried with]": {
+      "n": 8,
+      "file": "test_config.py",
+      "asserts": "A Service Catalogue declared with oai-pmh is rejected.",
+      "why": "Checks the type/protocol rule in config.load()."
+    },
+    "test_bad_entries_are_rejected[unknown type]": {
+      "n": 9,
+      "file": "test_config.py",
+      "asserts": "A type such as dataset-catalogue is rejected.",
+      "why": "Only the two catalogue types exist."
+    },
+    "test_bad_entries_are_rejected[https URL]": {
+      "n": 10,
+      "file": "test_config.py",
+      "asserts": "An http:// endpoint is rejected.",
+      "why": "HTTPS only."
+    },
+    "test_bad_entries_are_rejected[without ?verb=]": {
+      "n": 11,
+      "file": "test_config.py",
+      "asserts": "An OAI-PMH endpoint ending in ?verb=Identify is rejected.",
+      "why": "Base URLs only."
+    },
+    "test_duplicate_ids_are_rejected": {
+      "n": 12,
+      "file": "test_config.py",
+      "asserts": "Two entries with the same id are rejected.",
+      "why": "Ids are keys on the page and in the JSON."
+    },
+    "test_unknown_listed_fields_are_rejected": {
+      "n": 13,
+      "file": "test_config.py",
+      "asserts": "listed: {status: …} is rejected.",
+      "why": "Quotes are limited to the two production-sheet columns; for example, the sheet's status is not carried over."
+    },
+    "test_every_known_node_has_a_display_name": {
+      "n": 14,
+      "file": "test_config.py",
+      "asserts": "NODE_NAMES in report.py covers exactly the 16 known nodes.",
+      "why": "Every card can show a readable node name."
+    },
+    "test_version": {
+      "n": 15,
+      "file": "test_cli.py",
+      "asserts": "catalogue-check version exits 0 and prints the package version.",
+      "why": "The command-line tool installs and starts."
+    },
+    "test_catalogues_lists_the_configured_ones": {
+      "n": 16,
+      "file": "test_cli.py",
+      "asserts": "catalogue-check catalogues exits 0, lists bbmri-eric-services, and ends with \"22 catalogue(s): 10 service, 12 research product.\"",
+      "why": "The listing command reads the committed file and counts it correctly."
+    },
+    "test_an_empty_list_is_reported": {
+      "n": 17,
+      "file": "test_cli.py",
+      "asserts": "An empty catalogues: [] file prints \"No catalogues configured yet.\" and exits 0.",
+      "why": "An empty file is reported, not treated as an error."
+    },
+    "test_a_bad_file_is_a_configuration_error": {
+      "n": 18,
+      "file": "test_cli.py",
+      "asserts": "An entry with only an id makes the command exit with status 2.",
+      "why": "A malformed file stops the tool with a distinct exit code."
+    },
+    "test_report_without_probe_writes_per_catalogue_checks": {
+      "n": 19,
+      "file": "test_cli.py",
+      "asserts": "catalogue-check report --no-probe writes JSON with 22 catalogues. Each has a node name, no probe result, and all its configuration checks passing.",
+      "why": "The results page's data file is built correctly, without using the network."
+    }
+  }
+}
