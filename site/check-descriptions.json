@@ -43,7 +43,7 @@
     },
     "source:production": {
       "passes": "source is production: the endpoint was taken from the production sheet (production_env_node_services.xlsx).",
-      "why": "Keeps the provenance of every endpoint explicit; the sheet's comments are quoted as written.",
+      "why": "Keeps the provenance of every endpoint explicit.",
       "tests": [
         "test_every_entry_comes_from_the_production_sheet_but_known_exceptions"
       ]

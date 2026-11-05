@@ -59,7 +59,7 @@ Each entry has these fields:
 | `display_endpoint` | no | A URL shown instead of `endpoint`. Only Czechia has one, and its `note` explains why. |
 | `website` | no | The catalogue's home page. |
 | `note` | no | Free-text provenance; Resource Hub entries give their Hub record PID. |
-| `listed` | no | The sheet's own words, quoted: `comment` and `evaluation_eosc_a` only. |
+| `listed` | no | The sheet's own words, quoted: `comment` and `evaluation_eosc_a` only. Kept in `results.json`, not shown on the results page. |
 
 ## The three layers of checks
 

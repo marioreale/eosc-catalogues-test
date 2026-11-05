@@ -42,10 +42,7 @@
     const quoted = [];
     String(row.source).split(',').map((s) => s.trim()).forEach((s) =>
       quoted.push(`<span class="q ${s === 'resource-hub' ? 'hub' : ''}">${esc(SOURCE_LABEL[s] || s)}</span>`));
-    const L = row.listed || {};
-    if (L.comment) quoted.push(`<span class="q st">Comment: “${esc(L.comment)}”</span>`);
-    if (L.evaluation_eosc_a) quoted.push(`<span class="q st">EOSC-A evaluation: “${esc(L.evaluation_eosc_a)}”</span>`);
-    if (!L.comment && !L.evaluation_eosc_a && row.source === 'production') quoted.push('<span class="q none">No comment in the sheet</span>');
+    // The sheet's comments (row.listed) stay in results.json but are not shown on the cards.
 
     return `<article class="card" data-node="${esc(row.node)}" style="--node:${TYPE_COLORS[row.type] || '#ffffff'}">
       <div class="card-top">
