@@ -12,6 +12,9 @@ runs it and what each test asserts.
 - [What is not tested](#what-is-not-tested)
 - [Running it locally](#running-it-locally)
 
+To install, configure and run the suite, add a catalogue, re-run it online and
+re-publish the results, see the [deployment guide](deployment-guide.md).
+
 ## Overview
 
 ![How the test suite works](img/overview.svg)
@@ -307,3 +310,7 @@ python3 -m http.server -d site 8000                # then open http://localhost:
 uv run catalogue-check report --junit junit.xml --out site/results.json --markdown results/README.md
 uv run catalogue-check bundle                      # results/index.html, one self-contained file
 ```
+
+Adding a Service or Research Product Catalogue, a new node, re-running the
+suite online and re-publishing the results are described step by step in the
+[deployment guide](deployment-guide.md).

@@ -10,7 +10,9 @@ which checks Node Landing Pages, and uses the same technologies: Python for
 collection and checks, HTML (with Markdown, CSV and JSON) for the reports.
 
 How the test suite works, its workflows and every test are described in
-[docs/](docs/README.md).
+[docs/](docs/README.md). To install, configure and run it, add a Service or
+Research Product Catalogue, re-run it online and re-publish the results, see
+the [deployment guide](docs/deployment-guide.md).
 
 ## Scope
 
@@ -120,3 +122,6 @@ uv run catalogue-check report       # write site/results.json (add --no-probe fo
 uv run catalogue-check bundle       # write results/index.html, the self-contained page
 uv run pytest -q
 ```
+
+Step by step, including adding a catalogue and re-running the suite online:
+[docs/deployment-guide.md](docs/deployment-guide.md).
