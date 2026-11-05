@@ -3,8 +3,8 @@
 The same results as the [results page](https://marioreale.github.io/eosc-catalogues-test/), updated by the
 `results page` workflow on every run.
 
-**[Open the copy of the page in this directory](https://raw.githack.com/marioreale/eosc-catalogues-test/main/results/index.html)**
-(or through [HTML Preview](https://htmlpreview.github.io/?https://github.com/marioreale/eosc-catalogues-test/blob/main/results/index.html)).
+**[Open the copy of the page in this directory](https://htmlpreview.github.io/?https://github.com/marioreale/eosc-catalogues-test/blob/main/results/index.html)**
+(shown through HTML Preview, since GitHub displays HTML files as source).
 
 - `index.html`: the whole results page in one self-contained file, with styles,
   script, data and logos inlined. It shows the same page when opened through the
@@ -13,7 +13,7 @@ The same results as the [results page](https://marioreale.github.io/eosc-catalog
 - `results.json`: the data of the run.
 - `README.md`: this summary.
 
-Generated 2026-11-05T11:02:49Z from commit `713f1d1` ([CI run](https://github.com/marioreale/eosc-catalogues-test/actions/runs/42015633424)).
+Generated 2026-11-05T12:23:01Z from commit `f204e75` ([CI run](https://github.com/marioreale/eosc-catalogues-test/actions/runs/42026564953)).
 
 - Catalogues: 22 from 13 nodes
 - Configuration checks passed: 122 of 122
@@ -22,28 +22,28 @@ Generated 2026-11-05T11:02:49Z from commit `713f1d1` ([CI run](https://github.co
 
 | Node | Catalogue | Type | Checks | Probe | Notes |
 |---|---|---|---|---|---|
-| BBMRI-ERIC | [EOSC Node BBMRI-ERIC Service Catalogue](https://eosc-catalogue.bbmri-eric.eu/services) | Service | 5/5 | Up (HTTP 200 · 1.4 s) |  |
-| EOSC Finland | [EOSC-FI Service Catalogue](https://data.eosc.fi/v1/services) | Service | 5/5 | Up (HTTP 200 · 1.22 s) |  |
-| EOSC DTO (D4Science) | [European DTO Service Catalogue](https://gcat.d4science.org/gcat/ext/eosc/EOSC-Node-DTO/services) | Service | 5/5 | Up (HTTP 200 · 1.75 s) |  |
-| EOSC Node Slovakia | [EOSC Slovakia - Service Catalogue](https://sc.eosc.sk/api/v1/services) | Service | 5/5 | Up (HTTP 200 · 0.59 s) |  |
-| Data Terra | [Data Terra EOSC Node Service Catalogue](https://services.earth-data.eu/services) | Service | 5/5 | Up (HTTP 200 · 0.51 s) |  |
-| EUDAT | [EUDAT Node Service Catalogue](https://portal.eudat.eu/api/services) | Service | 5/5 | Up (HTTP 200 · 0.52 s) |  |
-| GÉANT | [GEANT Service Catalogue](https://geant-node-catalogue.geant.org/services) | Service | 5/5 | Up (HTTP 200 · 0.48 s) |  |
-| EGI | [EGI Service Catalogue](https://egi-eosc-catalogue.dyn.cloud.e-infra.cz/services) | Service | 5/5 | Up (HTTP 200 · 1.7 s) |  |
-| EOSC Node Italy | [EOSC Node \| Italy Service Catalogue](https://gcat.d4science.org/gcat/ext/eosc/EOSC-IT_Node/services) | Service | 5/5 | Up (HTTP 200 · 0.45 s) |  |
-| PaNOSC | [PaNOSC Service Catalogue](https://pan-training.eu/service-catalogue/api/v3/services) | Service | 5/5 | Up (HTTP 200 · 0.56 s) |  |
-| BBMRI-ERIC | [EOSC Node BBMRI-ERIC Data Set Catalogue](https://eosc-catalogue.bbmri-eric.eu/oai) | Research product | 6/6 | Up (HTTP 200 · 0.6 s) |  |
-| CERN | [CERN Open Data Portal](https://opendata.cern/oai2d) | Research product | 6/6 | Up (HTTP 200 · 0.91 s) |  |
-| EOSC Node Italy | [CNR IRIS](https://iris.cnr.it/oai/openaire4) | Research product | 6/6 | Up (HTTP 200 · 0.95 s) |  |
-| EOSC Node Italy | [IRIS AperTO (Università di Torino)](https://iris.unito.it/oai/openaire4) | Research product | 6/6 | Up (HTTP 200 · 0.74 s) |  |
-| Data Terra | [Data Terra research products](https://resources.earth-data.eu/oai) | Research product | 6/6 | Up (HTTP 200 · 0.51 s) |  |
-| PaNOSC | [RODARE (Rossendorf Data Repository)](https://rodare.hzdr.de/oai2d) | Research product | 6/6 | Up (HTTP 200 · 0.66 s) |  |
-| EUDAT | [B2FIND](https://b2find.eudat.eu/oai) | Research product | 6/6 | Up · note (HTTP 200 · 1.41 s) | Identify declares baseURL http://131.175.206.246/oai, not the endpoint queried |
-| EOSC DTO (D4Science) | [EOSC Node \| EU DTO Zenodo Community](https://zenodo.org/oai2d) | Research product | 6/6 | Up (HTTP 200 · 0.47 s) |  |
-| EOSC Node Czechia | [National Metadata Directory](https://nma.du.cesnet.cz/oai2d) | Research product | 6/6 | Up (HTTP 200 · 1.15 s) |  |
-| EOSC Node Poland | [Most Wiedzy Open Research Data Catalog](https://mostwiedzy.pl/en/oai-pmh) | Research product | 6/6 | Up · note (HTTP 200 · 1.13 s) | Identify declares baseURL https://mostwiedzy.pl/en/oai-pmh/, not the endpoint queried |
-| EOSC Node Poland | [RepOD Repository for Open Data](https://repod.icm.edu.pl/oai) | Research product | 6/6 | Up (HTTP 200 · 0.8 s) |  |
-| EOSC Node Poland | [ROHub](https://api.rohub.org/api/oai2d/) | Research product | 6/6 | Up · note (HTTP 200 · 0.87 s) | Identify declares baseURL https://&lt;arguments.base.Str object at 0x7f59d64ba110&gt;/api/oai2d/, not the endpoint queried |
+| BBMRI-ERIC | [EOSC Node BBMRI-ERIC Service Catalogue](https://eosc-catalogue.bbmri-eric.eu/services) | Service | 5/5 | Up (HTTP 200 · 0.63 s) |  |
+| EOSC Finland | [EOSC-FI Service Catalogue](https://data.eosc.fi/v1/services) | Service | 5/5 | Up (HTTP 200 · 1.48 s) |  |
+| EOSC DTO (D4Science) | [European DTO Service Catalogue](https://gcat.d4science.org/gcat/ext/eosc/EOSC-Node-DTO/services) | Service | 5/5 | Up (HTTP 200 · 2.18 s) |  |
+| EOSC Node Slovakia | [EOSC Slovakia - Service Catalogue](https://sc.eosc.sk/api/v1/services) | Service | 5/5 | Up (HTTP 200 · 0.47 s) |  |
+| Data Terra | [Data Terra EOSC Node Service Catalogue](https://services.earth-data.eu/services) | Service | 5/5 | Up (HTTP 200 · 0.41 s) |  |
+| EUDAT | [EUDAT Node Service Catalogue](https://portal.eudat.eu/api/services) | Service | 5/5 | Up (HTTP 200 · 0.47 s) |  |
+| GÉANT | [GEANT Service Catalogue](https://geant-node-catalogue.geant.org/services) | Service | 5/5 | Up (HTTP 200 · 0.37 s) |  |
+| EGI | [EGI Service Catalogue](https://egi-eosc-catalogue.dyn.cloud.e-infra.cz/services) | Service | 5/5 | Up (HTTP 200 · 1.33 s) |  |
+| EOSC Node Italy | [EOSC Node \| Italy Service Catalogue](https://gcat.d4science.org/gcat/ext/eosc/EOSC-IT_Node/services) | Service | 5/5 | Up (HTTP 200 · 0.88 s) |  |
+| PaNOSC | [PaNOSC Service Catalogue](https://pan-training.eu/service-catalogue/api/v3/services) | Service | 5/5 | Up (HTTP 200 · 0.59 s) |  |
+| BBMRI-ERIC | [EOSC Node BBMRI-ERIC Data Set Catalogue](https://eosc-catalogue.bbmri-eric.eu/oai) | Research product | 6/6 | Up (HTTP 200 · 0.47 s) |  |
+| CERN | [CERN Open Data Portal](https://opendata.cern/oai2d) | Research product | 6/6 | Up (HTTP 200 · 0.57 s) |  |
+| EOSC Node Italy | [CNR IRIS](https://iris.cnr.it/oai/openaire4) | Research product | 6/6 | Up (HTTP 200 · 0.46 s) |  |
+| EOSC Node Italy | [IRIS AperTO (Università di Torino)](https://iris.unito.it/oai/openaire4) | Research product | 6/6 | Up (HTTP 200 · 0.8 s) |  |
+| Data Terra | [Data Terra research products](https://resources.earth-data.eu/oai) | Research product | 6/6 | Up (HTTP 200 · 0.58 s) |  |
+| PaNOSC | [RODARE (Rossendorf Data Repository)](https://rodare.hzdr.de/oai2d) | Research product | 6/6 | Up (HTTP 200 · 0.69 s) |  |
+| EUDAT | [B2FIND](https://b2find.eudat.eu/oai) | Research product | 6/6 | Up · note (HTTP 200 · 1.31 s) | Identify declares baseURL http://131.175.206.246/oai, not the endpoint queried |
+| EOSC DTO (D4Science) | [EOSC Node \| EU DTO Zenodo Community](https://zenodo.org/oai2d) | Research product | 6/6 | Up (HTTP 200 · 0.49 s) |  |
+| EOSC Node Czechia | [National Metadata Directory](https://nma.du.cesnet.cz/oai2d) | Research product | 6/6 | Up (HTTP 200 · 1.72 s) |  |
+| EOSC Node Poland | [Most Wiedzy Open Research Data Catalog](https://mostwiedzy.pl/en/oai-pmh) | Research product | 6/6 | Up · note (HTTP 200 · 1.25 s) | Identify declares baseURL https://mostwiedzy.pl/en/oai-pmh/, not the endpoint queried |
+| EOSC Node Poland | [RepOD Repository for Open Data](https://repod.icm.edu.pl/oai) | Research product | 6/6 | Up (HTTP 200 · 0.66 s) |  |
+| EOSC Node Poland | [ROHub](https://api.rohub.org/api/oai2d/) | Research product | 6/6 | Up · note (HTTP 200 · 1.66 s) | Identify declares baseURL https://&lt;arguments.base.Str object at 0x7fe6316da090&gt;/api/oai2d/, not the endpoint queried |
 
 A green probe only means the endpoint is up and speaks the expected format;
 none of this is a compliance verdict.
