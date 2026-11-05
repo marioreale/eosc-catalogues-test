@@ -72,3 +72,16 @@ def report(
     answered = sum((r["probe"] or {}).get("outcome") == "pass" for r in data["catalogues"])
     typer.echo(f"Wrote {out}: {len(entries)} catalogue(s)"
                + (f", {answered} answered the probe." if probe else "."))
+
+
+@app.command()
+def bundle(
+    site: Path = typer.Option(Path("site"), "--site", help="Built site, with results.json."),
+    out: Path = typer.Option(Path("results/index.html"), "--out", help="Where to write the page."),
+) -> None:
+    """Write the results page as one self-contained HTML file."""
+    from catalogue_check import report as rep
+
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(rep.bundle(site), encoding="utf-8")
+    typer.echo(f"Wrote {out} ({out.stat().st_size // 1024} KB).")

@@ -33,11 +33,15 @@ jobs:
       # GitHub Pages lets browsers cache files for 10 minutes. Tagging the script
       # and stylesheet with the commit makes every publication load fresh copies.
       - run: sed -i "s/?v=dev/?v=${GITHUB_SHA::7}/g" site/index.html
-      # Copy of the published page in results/, committed by the workflow.
-      # Commits pushed with the workflow token start no further workflow run.
+      # Copy of the published page in results/, committed by the workflow:
+      # one self-contained index.html (styles, script, data and logos inlined),
+      # results.json and README.md. Commits pushed with the workflow token
+      # start no further workflow run.
       - name: Commit the copy of the page to results/
         run: |
-          rsync -a --delete --exclude README.md site/ results/
+          find results -mindepth 1 ! -name README.md -delete
+          uv run catalogue-check bundle --site site --out results/index.html
+          cp site/results.json results/results.json
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add results

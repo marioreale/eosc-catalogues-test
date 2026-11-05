@@ -5,6 +5,8 @@
   const TYPE_COLORS = { 'service-catalogue': '#008691', 'research-product-catalogue': '#ff5b7f' };
   const BAR_COLORS = ['#008691', '#ff5b7f', '#ffffff'];
   // Node logos from https://eosc.eu/building-the-eosc-federation (EOSC Nodes tab).
+  // A self-contained copy of the page (results/index.html) embeds the logos as data URIs.
+  const logoSrc = (node) => (window.EMBEDDED_LOGOS || {})[node] || `logos/${node}.png`;
   const LOGOS = new Set(['bbmri-eric', 'cern', 'eosc-cz', 'eosc-dto', 'data-terra', 'eosc-fi', 'panosc',
     'eudat', 'egi', 'geant', 'eosc-pl', 'eosc-it', 'eosc-sk']);
   const $ = (s) => document.querySelector(s);
@@ -47,7 +49,7 @@
       <div class="card-top">
         <div>
           ${LOGOS.has(row.node)
-            ? `<div class="node-logo"><img src="logos/${esc(row.node)}.png" alt="${esc(row.node_name)}" loading="lazy" onerror="this.parentNode.outerHTML='<div class=&quot;node-badge&quot;>${esc(row.node_name)}</div>'"></div>`
+            ? `<div class="node-logo"><img src="${esc(logoSrc(row.node))}" alt="${esc(row.node_name)}" loading="lazy" onerror="this.parentNode.outerHTML='<div class=&quot;node-badge&quot;>${esc(row.node_name)}</div>'"></div>`
             : `<div class="node-badge"><span class="sw" aria-hidden="true">${esc(initials(row.node_name))}</span>${esc(row.node_name)}</div>`}
           <h3>${esc(row.name)}</h3>
         </div>

@@ -30,10 +30,17 @@ be seen in two places:
 
 - the results page on GitHub Pages,
   <https://marioreale.github.io/eosc-catalogues-test/>;
-- the [`results/`](../results/) directory of the repository, which holds a copy
-  of the same page (`index.html` with its scripts, styles, logos and
-  `results.json`) and the same results as a Markdown table in
-  [`results/README.md`](../results/README.md), which GitHub shows directly.
+- the [`results/`](../results/) directory of the repository, which holds the
+  same page as one self-contained file, `results/index.html`, with styles,
+  script, data and logos inlined ([open it](https://raw.githack.com/marioreale/eosc-catalogues-test/main/results/index.html)). Next to it are
+  `results.json` and [`results/README.md`](../results/README.md), the same
+  results as a Markdown table that GitHub shows directly.
+
+GitHub shows HTML files in a repository as source code, so the link opens
+`results/index.html` through raw.githack, which serves files of public
+repositories as web pages. The README also links an alternative, HTML Preview.
+Because nothing in the file is loaded from the repository, it shows the same
+page from a clone or after download too.
 
 Both are rebuilt by every run of the "results page" workflow.
 
@@ -167,7 +174,7 @@ flowchart LR
       direction TB
       p1[checkout] --> p2["uv sync --locked"] --> p3["pytest -q --junitxml=junit.xml || true"]
       p3 --> p4["catalogue-check report --junit junit.xml --out site/results.json"]
-      p4 --> p5["copy site/ to results/ and commit"] --> p6["upload site/ as Pages artifact"] --> p7["deploy to GitHub Pages"]
+      p4 --> p5["catalogue-check bundle: results/index.html, commit"] --> p6["upload site/ as Pages artifact"] --> p7["deploy to GitHub Pages"]
     end
     push(["push to any branch<br/>pull request<br/>manual"]) --> T
     main(["push to main<br/>manual"]) --> P
@@ -179,7 +186,7 @@ flowchart LR
 |---|---|---|
 | File | `.github/workflows/tests.yml` | `.github/workflows/pages.yml` |
 | Triggers | every push, every pull request, manual | push to `main`, manual |
-| Steps | install the locked dependencies, lint with ruff, run pytest | install, run pytest with JUnit XML output, probe, build `results.json` and `results/README.md`, commit the copy of the page to `results/`, publish |
+| Steps | install the locked dependencies, lint with ruff, run pytest | install, run pytest with JUnit XML output, probe, build `results.json` and `results/README.md`, write the self-contained copy of the page to `results/` and commit it, publish |
 | Fails when | lint or any test fails | a step itself breaks; a failing test does not stop publication (`\|\| true`) |
 | Uses the network | no | yes (the probe) |
 | Permissions | `contents: read` | `contents: write` (to commit `results/`), `pages: write`, `id-token: write` |
@@ -211,7 +218,7 @@ sequenceDiagram
         Ep-->>GH: status, body, time
       end
       GH->>GH: write site/results.json and results/README.md
-      GH->>Rp: copy site/ to results/ and commit
+      GH->>Rp: commit the self-contained page to results/
       GH->>Pg: upload site/ and deploy
     end
 ```
@@ -297,6 +304,6 @@ uv run catalogue-check report --no-probe           # results.json without networ
 uv run pytest -q --junitxml=junit.xml
 uv run catalogue-check report --junit junit.xml --out site/results.json
 python3 -m http.server -d site 8000                # then open http://localhost:8000
-uv run catalogue-check report --markdown results/README.md   # also the Markdown table
-python3 -m http.server -d results 8000             # the copy committed by CI
+uv run catalogue-check report --junit junit.xml --out site/results.json --markdown results/README.md
+uv run catalogue-check bundle                      # results/index.html, one self-contained file
 ```

@@ -12,8 +12,10 @@ Two kinds of result, kept apart:
 
 from __future__ import annotations
 
+import base64
 import json
 import os
+import re
 import time
 import xml.etree.ElementTree as ET
 from dataclasses import asdict
@@ -197,6 +199,12 @@ def write(data: dict, out: Path) -> None:
 
 TYPE_LABELS = {"service-catalogue": "Service", "research-product-catalogue": "Research product"}
 PAGE_URL = "https://marioreale.github.io/eosc-catalogues-test/"
+REPO_FILE = "marioreale/eosc-catalogues-test/main/results/index.html"
+PREVIEW_URL = f"https://raw.githack.com/{REPO_FILE}"
+HTMLPREVIEW_URL = (
+    "https://htmlpreview.github.io/?https://github.com/"
+    "marioreale/eosc-catalogues-test/blob/main/results/index.html"
+)
 
 
 def _cell(text: str) -> str:
@@ -225,12 +233,18 @@ def markdown(data: dict) -> str:
     lines = [
         "# Results",
         "",
-        f"The same results as the [results page]({PAGE_URL}). This directory holds a copy",
-        "of that page, updated by the `results page` workflow on every run: `index.html`,",
-        "its scripts, styles and logos, and `results.json`. GitHub shows the HTML as source;",
-        "to see the page from a clone, run `python3 -m http.server -d results` and open",
-        "<http://localhost:8000/> (the page reads `results.json`, which browsers do not",
-        "load from a file opened directly). The table below gives the same results.",
+        f"The same results as the [results page]({PAGE_URL}), updated by the",
+        "`results page` workflow on every run.",
+        "",
+        f"**[Open the copy of the page in this directory]({PREVIEW_URL})**",
+        f"(or through [HTML Preview]({HTMLPREVIEW_URL})).",
+        "",
+        "- `index.html`: the whole results page in one self-contained file, with styles,",
+        "  script, data and logos inlined. It shows the same page when opened through the",
+        "  links above, from a clone, or after download (web fonts load when online).",
+        "  GitHub itself shows HTML files as source code, not as pages.",
+        "- `results.json`: the data of the run.",
+        "- `README.md`: this summary.",
         "",
         f"Generated {data['generated']}"
         + (f" from commit `{data['commit'][:7]}`" if data.get("commit") else "")
@@ -257,3 +271,49 @@ def markdown(data: dict) -> str:
     lines += ["", "A green probe only means the endpoint is up and speaks the expected format;",
               "none of this is a compliance verdict.", ""]
     return "\n".join(lines)
+
+
+def bundle(site: Path) -> str:
+    """The results page as one self-contained HTML file.
+
+    Stylesheet, script, data, pop-up texts and logos are inlined, so the file
+    shows the same page wherever it is opened: from a clone, after download,
+    or through an HTML preview of the file on GitHub. Web fonts still load
+    from their providers when online.
+    """
+    def data_uri(path: Path) -> str:
+        return "data:image/png;base64," + base64.b64encode(path.read_bytes()).decode()
+
+    def script_json(value: object) -> str:
+        return json.dumps(value, ensure_ascii=False).replace("</", "<\\/")
+
+    html = (site / "index.html").read_text(encoding="utf-8")
+    css = (site / "style.css").read_text(encoding="utf-8")
+    js = (site / "app.js").read_text(encoding="utf-8")
+    files = {name: json.loads((site / name).read_text(encoding="utf-8"))
+             for name in ("results.json", "check-descriptions.json", "test-descriptions.json")}
+    logos = {p.stem: data_uri(p) for p in sorted((site / "logos").glob("*.png"))}
+    shim = (
+        "<script>\n"
+        f"window.EMBEDDED_FILES = {script_json(files)};\n"
+        f"window.EMBEDDED_LOGOS = {script_json(logos)};\n"
+        "(() => {\n"
+        "  const realFetch = window.fetch ? window.fetch.bind(window) : null;\n"
+        "  window.fetch = (url, opts) => {\n"
+        "    const name = String(url).split('?')[0];\n"
+        "    if (name in window.EMBEDDED_FILES) {\n"
+        "      return Promise.resolve(new Response(JSON.stringify(window.EMBEDDED_FILES[name]),\n"
+        "        { status: 200, headers: { 'Content-Type': 'application/json' } }));\n"
+        "    }\n"
+        "    return realFetch(url, opts);\n"
+        "  };\n"
+        "})();\n"
+        "</script>\n"
+    )
+    html = re.sub(r'<link rel="stylesheet" href="style\.css[^"]*">',
+                  lambda _: f"<style>\n{css}\n</style>", html)
+    inline_js = "<script>\n" + js.replace("</script", "<\\/script") + "\n</script>"
+    html = re.sub(r'<script src="app\.js[^"]*"></script>', lambda _: shim + inline_js, html)
+    logo = data_uri(site / "eosc-federation-logo.png")
+    html = html.replace('src="eosc-federation-logo.png"', f'src="{logo}"')
+    return html

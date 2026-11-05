@@ -89,11 +89,12 @@ The per-catalogue results can be seen in two places, both rebuilt by the
 *Run workflow*):
 
 - the results page, **https://marioreale.github.io/eosc-catalogues-test/**;
-- the [`results/`](results/) directory of this repository: a copy of the same
-  page (`index.html`, scripts, styles, logos and `results.json`), plus
+- the [`results/`](results/) directory of this repository, which holds the
+  same page as one self-contained file, `results/index.html` (styles, script,
+  data and logos inlined): [open it](https://raw.githack.com/marioreale/eosc-catalogues-test/main/results/index.html). The file also works from a clone or
+  after download. Next to it are `results.json` and
   [`results/README.md`](results/README.md), the same results as a Markdown
-  table that GitHub shows directly. To view the copied page from a clone, run
-  `python3 -m http.server -d results` and open <http://localhost:8000/>.
+  table that GitHub shows directly.
 
 Each run:
 
@@ -102,7 +103,8 @@ Each run:
    configuration checks entry by entry and sends one request to its endpoint
    (`GET` for a Service Catalogue, `?verb=Identify` for OAI-PMH), recording
    the HTTP status, the time taken and a few facts from the answer;
-3. copies `site/` to `results/` and commits it, as `github-actions[bot]`;
+3. writes the self-contained copy of the page to `results/` (`catalogue-check
+   bundle`) and commits it, as `github-actions[bot]`;
 4. publishes `site/` (static HTML reading `results.json`) to GitHub Pages.
 
 A card is green when the endpoint answered in the expected format, amber when
@@ -115,5 +117,6 @@ uv sync
 uv run catalogue-check version
 uv run catalogue-check catalogues   # list and validate catalogues.yaml
 uv run catalogue-check report       # write site/results.json (add --no-probe for offline)
+uv run catalogue-check bundle       # write results/index.html, the self-contained page
 uv run pytest -q
 ```
