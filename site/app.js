@@ -85,8 +85,8 @@
     const whenTxt = isNaN(when) ? data.generated : when.toLocaleString('en-GB', { dateStyle: 'long', timeStyle: 'short', timeZone: 'UTC' }) + ' UTC';
     const run = data.run_url ? ` · <a href="${esc(data.run_url)}">CI run</a>` : '';
     const commit = data.commit ? ` · commit <a href="https://github.com/marioreale/eosc-catalogues-test/commit/${esc(data.commit)}"><code>${esc(data.commit.slice(0, 7))}</code></a>` : '';
-    $('#meta').innerHTML = `Generated ${esc(whenTxt)}${commit}${run}`;
-    $('#foot-run').innerHTML = `generated ${esc(whenTxt)}`;
+    $('#meta').innerHTML = `Generated ${esc(whenTxt)}`;
+    $('#foot-run').innerHTML = `generated ${esc(whenTxt)}${commit}${run}`;
 
     const nodeBar = '<div class="bar-mini">' + nodes.map(([id], i) => `<i style="background:${BAR_COLORS[i % 3]};width:${100 * rows.filter((r) => r.node === id).length / rows.length}%"></i>`).join('') + '</div>';
     $('#kpis').innerHTML = [
