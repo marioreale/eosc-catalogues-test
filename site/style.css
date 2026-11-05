@@ -80,7 +80,7 @@ h1 { margin: 0; font: 800 clamp(40px, 7vw, 84px)/0.98 var(--font-display); lette
 .kpis { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
 .kpi {
   background: rgba(18, 11, 15, 0.8);
-  border: 1px solid var(--line);
+  border: 2px solid rgba(255, 255, 255, 0.75);  /* thicker, clearly visible white frame */
   border-radius: 0;
   padding: 16px 18px;
   backdrop-filter: blur(6px);
