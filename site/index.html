@@ -80,6 +80,18 @@
       <p id="suite-sum" class="suite-sum"></p>
       <ul class="suite-list" id="suite-list"></ul>
       <p class="suite-hint">Select a test to see what it checks.</p>
+      <dialog id="note-dialog" class="test-dialog note-dialog" aria-labelledby="nd-title">
+        <form method="dialog" class="td-close-form"><button class="td-close" aria-label="Close">×</button></form>
+        <p class="td-n" id="nd-n"></p>
+        <h3 id="nd-title" class="td-name td-label">Probe note</h3>
+        <span class="td-outcome warn">Up · note</span>
+        <h4>Endpoint queried</h4>
+        <p><code id="nd-endpoint" class="td-value"></code></p>
+        <h4>Note</h4>
+        <ul id="nd-list" class="nd-list"></ul>
+        <div id="nd-why-row"><h4>What it means</h4><p>The endpoint answered the OAI-PMH <code>Identify</code> request correctly, so the catalogue is up. But the <code>baseURL</code> it declares about itself differs from the address queried. OAI-PMH 2.0 expects them to match; a harvester that trusts <code>Identify</code> would follow the declared address.</p></div>
+        <p class="td-src">Recorded by the availability probe in this run. See the <a href="https://github.com/marioreale/eosc-catalogues-test/blob/main/docs/README.md#3-availability-probe" target="_blank" rel="noopener">documentation</a>.</p>
+      </dialog>
       <dialog id="check-dialog" class="test-dialog" aria-labelledby="cd-name">
         <form method="dialog" class="td-close-form"><button class="td-close" aria-label="Close">×</button></form>
         <p class="td-n" id="cd-n"></p>

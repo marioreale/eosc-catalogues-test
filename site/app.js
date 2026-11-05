@@ -34,9 +34,8 @@
     if (p) {
       const facts = Object.entries(p.facts || {}).filter(([k]) => k !== 'baseURL')
         .map(([k, val]) => `<span class="fact">${esc(k)} <b>${esc(val)}</b></span>`).join('');
-      const obs = (p.observations || []).map((o) => `<div class="obs">⚠ ${esc(o)}</div>`).join('');
       probe = `<div><span class="probe-line">${esc(p.summary)}</span> <span class="t">· ${p.http_status ? 'HTTP ' + p.http_status + ' · ' : ''}${p.seconds}s</span>
-        ${facts ? `<div class="facts">${facts}</div>` : ''}${obs}</div>`;
+        ${facts ? `<div class="facts">${facts}</div>` : ''}</div>`;
     }
 
     const quoted = [];
@@ -52,7 +51,9 @@
             : `<div class="node-badge"><span class="sw" aria-hidden="true">${esc(initials(row.node_name))}</span>${esc(row.node_name)}</div>`}
           <h3>${esc(row.name)}</h3>
         </div>
-        <span class="verdict ${v.cls}">${v.text}</span>
+        ${p && (p.observations || []).length
+          ? `<button type="button" class="verdict verdict-btn ${v.cls}" data-note="${esc(row.id)}" aria-haspopup="dialog" title="Select to read the note">${v.text}</button>`
+          : `<span class="verdict ${v.cls}">${v.text}</span>`}
       </div>
       <div class="endpoint">${row.display_endpoint
         ? `<a href="${esc(row.display_endpoint)}" rel="noopener" target="_blank">${esc(row.display_endpoint)}</a>`
@@ -130,6 +131,25 @@
       $('#suite-sum').textContent = 'The test suite results were not included in this run.';
     }
   }
+
+  // Probe notes: opened from the "Up · note" badge, not shown on the card.
+  function openNote(row, opener) {
+    const p = row.probe || {};
+    $('#nd-n').textContent = row.name;
+    $('#nd-endpoint').textContent = row.endpoint;
+    $('#nd-list').innerHTML = (p.observations || []).map((o) => `<li>${esc(o)}</li>`).join('');
+    const declared = (p.facts || {}).baseURL;
+    $('#nd-why-row').hidden = !declared;
+    const dlg = $('#note-dialog');
+    dlg.returnFocusTo = opener;
+    dlg.showModal();
+  }
+  document.addEventListener('click', (ev) => {
+    const b = ev.target.closest('button.verdict-btn');
+    if (!b) return;
+    const row = rowsById.get(b.dataset.note);
+    if (row) openNote(row, b);
+  });
 
   // Configuration-check descriptions (the ticks on each card).
   let rowsById = new Map();
@@ -209,7 +229,7 @@
     dlg.returnFocusTo = opener;
     dlg.showModal();
   }
-  ['test-dialog', 'check-dialog'].forEach((id) => {
+  ['test-dialog', 'check-dialog', 'note-dialog'].forEach((id) => {
     const dlg = document.getElementById(id);
     if (!dlg) return;
     dlg.addEventListener('click', (ev) => { if (ev.target === dlg) dlg.close(); });

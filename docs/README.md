@@ -247,7 +247,7 @@ has its node's logo and colour, and the page can be filtered by node.
 | Badge | Meaning |
 |---|---|
 | UP | All configuration checks passed, and the probe passed with no observation. |
-| UP · NOTE | The probe passed but recorded an observation, e.g. Identify declares a different `baseURL`. |
+| UP · NOTE | The probe passed but recorded an observation, e.g. Identify declares a different `baseURL`. Select the badge to read the note in a pop-up. |
 | TIMEOUT | No answer within 20 s. |
 | DOWN | The probe returned `fail` (not HTTP 200, or not the expected format) or `error` (connection or TLS). |
 | CONFIG FAILS | At least one configuration check failed. |
