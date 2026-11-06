@@ -23,7 +23,7 @@
       <p class="eyebrow">eosc-catalogues-test · results</p>
       <h1>EOSC Federation <span class="title-accent">Nodes Catalogues</span></h1>
       <p class="lede">This page reports the status and preliminary basic compliance tests outcome for the Nodes Catalogues (both Services and Research Products) that are contributed to the EOSC Exchange by the EOSC Production 1.0 Federation Nodes (excluding the EOSC EU Node [EEN] itself). These resources, in addition to the ones directly contributed by the EEN, are published by the <a href="https://open-science-cloud.ec.europa.eu/resources/all" target="_blank" rel="noopener">EEN Resource Hub</a>.</p>
-      <p class="lede">The test suite today only checks that each endpoint is configured correctly and answers in the right form. Every catalogue configured in <code>catalogues.yaml</code>, one card each, with the node that contributes it. Service Catalogues and Research Product Catalogues are reported separately.</p>
+      <p class="lede">The test suite today only checks that each endpoint is configured correctly and answers in the right form. Every catalogue configured in <code>catalogues.yaml</code>, one card each, with the node that contributes it. Service Catalogues and Research Product Catalogues are reported separately. Further details on what the test suite tests <a href="#scope-dialog" id="scope-open" aria-haspopup="dialog">here</a>.</p>
       <p class="meta" id="meta">Loading results…</p>
 
       <div class="kpis" id="kpis" aria-live="polite"></div>
@@ -34,6 +34,48 @@
         <h3 id="kd-title" class="td-name td-label"></h3>
         <p id="kd-sub" class="kd-intro"></p>
         <div id="kd-body" class="kd-body"></div>
+      </dialog>
+      <dialog id="scope-dialog" class="test-dialog scope-dialog" aria-labelledby="sd-title">
+        <form method="dialog" class="td-close-form"><button class="td-close" aria-label="Close">×</button></form>
+        <p class="td-n">Scope of the test suite</p>
+        <h3 id="sd-title" class="td-name td-label">What this test suite tests today</h3>
+        <div class="sd-body">
+          <h4>Configuration checks (offline)</h4>
+          <p>These check the entry in <code>catalogues.yaml</code>, not the server:</p>
+          <ul>
+            <li>all required fields are present;</li>
+            <li>the node is a known EOSC Node;</li>
+            <li>the protocol matches the catalogue type;</li>
+            <li>the endpoint uses HTTPS;</li>
+            <li>an OAI-PMH base URL has no <code>?verb=</code> in it;</li>
+            <li>the endpoint comes from the production sheet, or the Resource Hub record is named.</li>
+          </ul>
+          <h4>One live request per catalogue (the probe)</h4>
+          <p><b>Service catalogues:</b> a single <code>GET</code> of the endpoint.</p>
+          <ul>
+            <li>Green means HTTP 200 and a body that parses as JSON.</li>
+            <li>It also notes <code>total</code>, <code>totalCount</code> or <code>count</code> and the number of items on the first page, if it finds them.</li>
+            <li>It does not check field names or types, or that the API follows the EEN services API.</li>
+          </ul>
+          <p><b>OAI-PMH (research products):</b> a single <code>?verb=Identify</code>.</p>
+          <ul>
+            <li>Green means HTTP 200, valid XML, no OAI-PMH <code>&lt;error&gt;</code>, and an <code>&lt;Identify&gt;</code> element.</li>
+            <li>It reports <code>repositoryName</code>, <code>protocolVersion</code>, <code>baseURL</code> and <code>earliestDatestamp</code>.</li>
+            <li>It flags a declared <code>baseURL</code> that differs from the endpoint queried, but that does not turn the probe red.</li>
+          </ul>
+          <h4>What it does not test</h4>
+          <table class="kd-table sd-table">
+            <thead><tr><th>Area</th><th>Not tested</th></tr></thead>
+            <tbody>
+              <tr><td><b>OAI-PMH protocol</b></td><td>The other five verbs (<code>ListMetadataFormats</code>, <code>ListSets</code>, <code>ListIdentifiers</code>, <code>ListRecords</code>, <code>GetRecord</code>), resumption tokens, error codes for bad arguments, date ranges, XML schema validation of the responses</td></tr>
+              <tr><td><b>OpenAIRE guidelines</b></td><td>Whether <code>oai_openaire</code> or <code>oai_datacite</code> is offered, the required elements, and the vocabularies</td></tr>
+              <tr><td><b>EEN services API</b></td><td>The response schema, required fields, paging, filtering, versioning</td></tr>
+              <tr><td><b>Harvesting</b></td><td>Reading the whole catalogue, record counts against declared totals, duplicates, deleted records</td></tr>
+              <tr><td><b>Metadata quality</b></td><td>Validation against DCAT or DCAT-AP (for example with SHACL), mandatory properties, licences, persistent identifiers</td></tr>
+            </tbody>
+          </table>
+          <p class="sd-bottom">A green probe therefore shows the endpoint is online and speaks JSON or OAI-PMH. It does not show that the catalogue is compliant.</p>
+        </div>
       </dialog>
     </div>
   </header>

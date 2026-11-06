@@ -333,7 +333,16 @@
     dlg.returnFocusTo = opener;
     dlg.showModal();
   }
-  ['test-dialog', 'check-dialog', 'note-dialog', 'kpi-dialog'].forEach((id) => {
+  // "Further details ... here" in the intro opens the static scope pop-up.
+  $('#scope-open').addEventListener('click', (ev) => {
+    ev.preventDefault();
+    const dlg = $('#scope-dialog');
+    dlg.returnFocusTo = ev.currentTarget;
+    dlg.showModal();
+    dlg.querySelector('.sd-body').scrollTop = 0;
+  });
+
+  ['test-dialog', 'check-dialog', 'note-dialog', 'kpi-dialog', 'scope-dialog'].forEach((id) => {
     const dlg = document.getElementById(id);
     if (!dlg) return;
     dlg.addEventListener('click', (ev) => { if (ev.target === dlg) dlg.close(); });

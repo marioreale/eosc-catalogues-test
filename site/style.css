@@ -306,3 +306,20 @@ details.note p { margin: 8px 0 0; }
 .kd-table .verdict { white-space: nowrap; }
 @media (max-width: 640px) { .kd-table th:nth-child(1), .kd-table td.kd-i { display: none; } .kd-table { font-size: 13px; } }
 .kd-table td.kd-nw code { white-space: nowrap; word-break: normal; }
+
+/* "What this test suite tests today" pop-up (#scope-dialog) */
+.scope-dialog { width: min(820px, calc(100vw - 32px)); max-height: calc(100vh - 48px); display: none; flex-direction: column; }
+.scope-dialog[open] { display: flex; }
+.sd-body { overflow: auto; min-height: 0; padding-right: 4px; }
+.sd-body h4:first-child { margin-top: 4px; }
+.sd-body p { margin: 0 0 6px !important; }
+.sd-body ul { margin: 0 0 10px; padding-left: 20px; font-size: 15px; line-height: 1.55; }
+.sd-body li + li { margin-top: 3px; }
+.sd-body code { font: 500 13px var(--font-mono); background: var(--card-2); padding: 1px 4px; }
+.sd-table { margin-top: 6px; }
+.sd-table td:first-child { white-space: nowrap; width: 1%; padding-right: 18px; }
+.sd-table code { word-break: normal; overflow-wrap: anywhere; }
+.sd-bottom { margin-top: 14px !important; padding: 10px 12px; border-left: 3px solid var(--warn); background: rgba(251, 191, 36, 0.06); }
+@media (max-width: 640px) { .sd-table td:first-child { white-space: normal; width: auto; } }
+.sd-table th { position: static; }
+@media (max-width: 640px) { .sd-table th:nth-child(1) { display: table-cell; } }
