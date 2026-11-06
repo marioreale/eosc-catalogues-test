@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-06T07:35:24Z",
+  "generated": "2026-11-06T07:42:55Z",
   "version": "0.1.0",
   "tests": {
     "total": 19,
@@ -104,8 +104,8 @@
       }
     ]
   },
-  "commit": "7c56f767060906b85d9bd43f0fc68cd5b3e80366",
-  "run_url": "https://github.com/marioreale/eosc-catalogues-test/actions/runs/42181819916",
+  "commit": "3bf1bc8af665b09711181a9bd0fb342e1436d035",
+  "run_url": "https://github.com/marioreale/eosc-catalogues-test/actions/runs/42182630308",
   "catalogues": [
     {
       "id": "bbmri-eric-services",
@@ -155,7 +155,7 @@
       "probe": {
         "url": "https://eosc-catalogue.bbmri-eric.eu/services",
         "http_status": 200,
-        "seconds": 1.1,
+        "seconds": 0.6,
         "content_type": "application/json",
         "outcome": "pass",
         "summary": "Answered with JSON",
@@ -214,7 +214,7 @@
       "probe": {
         "url": "https://data.eosc.fi/v1/services",
         "http_status": 200,
-        "seconds": 0.82,
+        "seconds": 1.13,
         "content_type": "application/json;charset=UTF-8",
         "outcome": "pass",
         "summary": "Answered with JSON",
@@ -273,7 +273,7 @@
       "probe": {
         "url": "https://gcat.d4science.org/gcat/ext/eosc/EOSC-Node-DTO/services",
         "http_status": 200,
-        "seconds": 1.39,
+        "seconds": 1.63,
         "content_type": "application/json;charset=UTF-8",
         "outcome": "pass",
         "summary": "Answered with JSON",
@@ -332,7 +332,7 @@
       "probe": {
         "url": "https://sc.eosc.sk/api/v1/services",
         "http_status": 200,
-        "seconds": 0.44,
+        "seconds": 0.56,
         "content_type": "application/json; charset=utf-8",
         "outcome": "pass",
         "summary": "Answered with JSON",
@@ -391,7 +391,7 @@
       "probe": {
         "url": "https://services.earth-data.eu/services",
         "http_status": 200,
-        "seconds": 0.42,
+        "seconds": 0.52,
         "content_type": "application/json",
         "outcome": "pass",
         "summary": "Answered with JSON",
@@ -450,7 +450,7 @@
       "probe": {
         "url": "https://portal.eudat.eu/api/services",
         "http_status": 200,
-        "seconds": 0.48,
+        "seconds": 0.59,
         "content_type": "application/json",
         "outcome": "pass",
         "summary": "Answered with JSON",
@@ -509,7 +509,7 @@
       "probe": {
         "url": "https://geant-node-catalogue.geant.org/services",
         "http_status": 200,
-        "seconds": 0.52,
+        "seconds": 0.48,
         "content_type": "application/json",
         "outcome": "pass",
         "summary": "Answered with JSON",
@@ -568,7 +568,7 @@
       "probe": {
         "url": "https://egi-eosc-catalogue.dyn.cloud.e-infra.cz/services",
         "http_status": 200,
-        "seconds": 1.32,
+        "seconds": 1.46,
         "content_type": "application/json",
         "outcome": "pass",
         "summary": "Answered with JSON",
@@ -627,7 +627,7 @@
       "probe": {
         "url": "https://gcat.d4science.org/gcat/ext/eosc/EOSC-IT_Node/services",
         "http_status": 200,
-        "seconds": 0.75,
+        "seconds": 0.5,
         "content_type": "application/json;charset=UTF-8",
         "outcome": "pass",
         "summary": "Answered with JSON",
@@ -686,7 +686,7 @@
       "probe": {
         "url": "https://pan-training.eu/service-catalogue/api/v3/services",
         "http_status": 200,
-        "seconds": 0.55,
+        "seconds": 0.48,
         "content_type": "application/json",
         "outcome": "pass",
         "summary": "Answered with JSON",
@@ -753,7 +753,7 @@
       "probe": {
         "url": "https://eosc-catalogue.bbmri-eric.eu/oai?verb=Identify",
         "http_status": 200,
-        "seconds": 0.46,
+        "seconds": 0.92,
         "content_type": "text/xml; charset=utf-8",
         "outcome": "pass",
         "summary": "Answered Identify",
@@ -820,7 +820,7 @@
       "probe": {
         "url": "https://opendata.cern/oai2d?verb=Identify",
         "http_status": 200,
-        "seconds": 0.77,
+        "seconds": 0.88,
         "content_type": "text/xml; charset=utf-8",
         "outcome": "pass",
         "summary": "Answered Identify",
@@ -887,7 +887,7 @@
       "probe": {
         "url": "https://iris.cnr.it/oai/openaire4?verb=Identify",
         "http_status": 200,
-        "seconds": 0.68,
+        "seconds": 0.82,
         "content_type": "text/xml;charset=UTF-8",
         "outcome": "pass",
         "summary": "Answered Identify",
@@ -1023,7 +1023,7 @@
       "probe": {
         "url": "https://resources.earth-data.eu/oai?verb=Identify",
         "http_status": 200,
-        "seconds": 0.76,
+        "seconds": 0.66,
         "content_type": "text/xml; charset=UTF-8",
         "outcome": "pass",
         "summary": "Answered Identify",
@@ -1090,7 +1090,7 @@
       "probe": {
         "url": "https://rodare.hzdr.de/oai2d?verb=Identify",
         "http_status": 200,
-        "seconds": 0.52,
+        "seconds": 0.78,
         "content_type": "text/xml; charset=utf-8",
         "outcome": "pass",
         "summary": "Answered Identify",
@@ -1159,7 +1159,7 @@
       "probe": {
         "url": "https://b2find.eudat.eu/oai?verb=Identify",
         "http_status": 200,
-        "seconds": 1.3,
+        "seconds": 1.46,
         "content_type": "text/xml; charset=utf-8",
         "outcome": "pass",
         "summary": "Answered Identify",
@@ -1228,7 +1228,7 @@
       "probe": {
         "url": "https://zenodo.org/oai2d?verb=Identify",
         "http_status": 200,
-        "seconds": 0.34,
+        "seconds": 0.57,
         "content_type": "text/xml; charset=utf-8",
         "outcome": "pass",
         "summary": "Answered Identify",
@@ -1297,7 +1297,7 @@
       "probe": {
         "url": "https://test1.nma.du.cesnet.cz/oai2d?verb=Identify",
         "http_status": 200,
-        "seconds": 1.29,
+        "seconds": 1.18,
         "content_type": "text/xml; charset=utf-8",
         "outcome": "pass",
         "summary": "Answered Identify",
@@ -1364,7 +1364,7 @@
       "probe": {
         "url": "https://mostwiedzy.pl/en/oai-pmh?verb=Identify",
         "http_status": 200,
-        "seconds": 0.77,
+        "seconds": 1.11,
         "content_type": "text/xml; charset=UTF-8",
         "outcome": "pass",
         "summary": "Answered Identify",
@@ -1433,7 +1433,7 @@
       "probe": {
         "url": "https://repod.icm.edu.pl/oai?verb=Identify",
         "http_status": 200,
-        "seconds": 0.76,
+        "seconds": 1.25,
         "content_type": "text/xml;charset=UTF-8",
         "outcome": "pass",
         "summary": "Answered Identify",
@@ -1500,7 +1500,7 @@
       "probe": {
         "url": "https://api.rohub.org/api/oai2d/?verb=Identify",
         "http_status": 200,
-        "seconds": 0.93,
+        "seconds": 1.39,
         "content_type": "application/xml; charset=utf-8",
         "outcome": "pass",
         "summary": "Answered Identify",
