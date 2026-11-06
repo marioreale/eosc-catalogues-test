@@ -71,8 +71,8 @@
           : `<span class="verdict ${v.cls}">${v.text}</span>`}
       </div>
       <div class="endpoint">${row.display_endpoint
-        ? `<a href="${esc(row.display_endpoint)}" rel="noopener" target="_blank">${esc(row.display_endpoint)}</a>`
-        : `<a href="${esc(p ? p.url : row.endpoint)}" rel="noopener" target="_blank">${esc(row.endpoint)}</a>`}</div>
+        ? esc(row.display_endpoint)
+        : esc(row.endpoint)}</div>
       <div class="row"><span>Config ${passed}/${row.checks.length}</span><div class="checks">${checks}</div></div>
       <div class="row"><span>Probe</span>${probe}</div>
       <div class="row"><span>Source</span><div class="quote">${quoted.join('')}</div></div>
@@ -88,13 +88,14 @@
   }
 
   const endpointOf = (r) => r.display_endpoint || (r.probe ? r.probe.url : r.endpoint);
-  const link = (url, text) => `<a href="${esc(url)}" rel="noopener" target="_blank">${esc(text || url)}</a>`;
+  // Endpoint URLs are shown as plain text, never as links.
+  const plain = (url, text) => esc(text || url);
   const typeTag = (r) => r.type === 'service-catalogue'
     ? '<span class="kd-type svc">Service</span>' : '<span class="kd-type rp">Research Product</span>';
 
   function catalogueTable(list) {
     return `<table class="kd-table"><thead><tr><th>#</th><th>Catalogue and endpoint</th><th>Contributing node</th></tr></thead><tbody>${
-      list.map((r, i) => `<tr><td class="kd-i">${i + 1}</td><td><b>${esc(r.name)}</b><div class="kd-url">${link(endpointOf(r), r.display_endpoint || r.endpoint)}</div></td><td>${esc(r.node_name)}</td></tr>`).join('')
+      list.map((r, i) => `<tr><td class="kd-i">${i + 1}</td><td><b>${esc(r.name)}</b><div class="kd-url">${plain(endpointOf(r), r.display_endpoint || r.endpoint)}</div></td><td>${esc(r.node_name)}</td></tr>`).join('')
     }</tbody></table>`;
   }
 
@@ -121,7 +122,7 @@
           nodes.map(([id, name], i) => {
             const own = rows.filter((r) => r.node === id);
             return `<tr><td class="kd-i">${i + 1}</td><td><b>${esc(name)}</b><div class="kd-sub">${own.length} catalogue${own.length === 1 ? '' : 's'}</div></td><td><ul class="kd-list">${
-              own.map((r) => `<li>${typeTag(r)} ${link(endpointOf(r), r.name)}</li>`).join('')}</ul></td></tr>`;
+              own.map((r) => `<li>${typeTag(r)} ${plain(endpointOf(r), r.name)}</li>`).join('')}</ul></td></tr>`;
           }).join('')
         }</tbody></table>`,
       };
@@ -138,7 +139,7 @@
           list.map((r, i) => {
             const p = r.probe;
             const v = verdict(r);
-            return `<tr><td class="kd-i">${i + 1}</td><td>${typeTag(r)} <b>${esc(r.name)}</b><div class="kd-url">${link(p.url)}</div></td><td>${esc(r.node_name)}</td><td><span class="verdict ${v.cls}">${esc(v.text)}</span><div class="kd-sub">${esc(p.summary)}${p.http_status ? ' · HTTP ' + p.http_status : ''} · ${p.seconds}s</div></td></tr>`;
+            return `<tr><td class="kd-i">${i + 1}</td><td>${typeTag(r)} <b>${esc(r.name)}</b><div class="kd-url">${plain(p.url)}</div></td><td>${esc(r.node_name)}</td><td><span class="verdict ${v.cls}">${esc(v.text)}</span><div class="kd-sub">${esc(p.summary)}${p.http_status ? ' · HTTP ' + p.http_status : ''} · ${p.seconds}s</div></td></tr>`;
           }).join('')
         }</tbody></table>`,
       };
